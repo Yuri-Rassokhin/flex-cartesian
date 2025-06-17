@@ -10,7 +10,7 @@
 
 ✅ Functions over Cartesian vectors are decoupled from dimensionality
 
-✅ Calculate over dimensions using `s.cartesian { |v| v.dim1 + v.dim2}` syntax
+✅ Calculate over named dimensions using `s.cartesian { |v| puts "#{v.dim1} and #{v.dim2}" }` syntax
 
 ✅ Lazy and eager evaluation
 
