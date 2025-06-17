@@ -1,8 +1,6 @@
 # FlexCartesian
 
-**Ruby implementation of flexible and human-friendly operations on Cartesian products.**  
-
----
+**Ruby implementation of flexible and human-friendly operations on Cartesian products**  
 
 ## Features
 
@@ -24,8 +22,6 @@
 
 ✅ Structured and colorized terminal output  
 
----
-
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -45,8 +41,6 @@ Or install it manually:
 ```bash
 gem install flex-cartesian
 ```
-
----
 
 ## Usage
 
@@ -87,8 +81,6 @@ s.cartesian(lazy: true).take(2).each { |v| puts v.inspect }
 s = FlexCartesian.from_json("path/to/config.json")
 s.output
 ```
-
----
 
 ## JSON/YAML input example
 
