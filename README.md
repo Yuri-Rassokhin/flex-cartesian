@@ -10,7 +10,7 @@
 
 ✅ Functions over Cartesian vectors are decoupled from dimensionality
 
-✅ Calculate over dimensions using `.dim1 + .dim2` syntax in the block  
+✅ Calculate over dimensions using `s.cartesian { |v| v.dim1 + v.dim2}` syntax
 
 ✅ Lazy and eager evaluation
 
@@ -48,16 +48,15 @@ gem install flex-cartesian
 require 'flex-cartesian'
 
 # Define a Cartesian space with named dimensions:
-s = FlexCartesian.new({
+example = {
   dim1: [1, 2],
   dim2: ['x', 'y'],
   dim3: [true, false]
-})
+}
+s = FlexCartesian.new(example)
 
-# Iterate over all combinations and calculate a function on each combination:
-s.cartesian do |v|
-  puts "#{v.dim1}-#{v.dim2}" if v.dim3
-end
+# Iterate over all combinations and calculate function on each combination:
+s.cartesian { |v| puts "#{v.dim1}-#{v.dim2}" if v.dim3 }
 
 # Get number of Cartesian combinations:
 puts "Total size: #{s.size}"
@@ -67,58 +66,25 @@ array = s.to_a(limit: 3)
 puts array.inspect
 
 # Display progress bar (useful for large Cartesian spaces)
-s.progress_each do |v|
-  do_something(v)
-end
+s.progress_each { |v| do_something(v) }
 
 # Print Cartesian space as table
 s.output(align: true)
 
-# Lazy evaluation
+# Lazy evaluation without materializing entire Cartesian product in memory:
 s.cartesian(lazy: true).take(2).each { |v| puts v.inspect }
 
 # Load from JSON or YAML
-s = FlexCartesian.from_json("path/to/config.json")
+File.write('example.json', JSON.pretty_generate(example))
+s = FlexCartesian.from_json('exampe.json')
 s.output
-```
 
-## JSON/YAML input example
-
-**config.json**
-```json
-{
-  "dim1": [1, 2],
-  "dim2": ["x", "y"],
-  "dim3": [true, false]
-}
-```
-
-**config.yml**
-```yaml
-dim1:
-  - 1
-  - 2
-dim2:
-  - x
-  - y
-dim3:
-  - true
-  - false
-```
-
----
-
-## Export output
-
-```ruby
 # Export to Markdown
 s.output(format: :markdown, align: true)
 
 # Export to CSV
 s.output(format: :csv)
 ```
-
----
 
 ## License
 
