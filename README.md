@@ -24,22 +24,10 @@
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'flex-cartesian'
-```
-
-And then execute:
+Install dependencies:
 
 ```bash
 bundle install
-```
-
-Or install it manually:
-
-```bash
-gem install flex-cartesian
 ```
 
 ## Usage
