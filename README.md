@@ -1,21 +1,27 @@
 # FlexCartesian
 
 **Ruby implementation of flexible and human-friendly operations on Cartesian products.**  
-Supports dimension-agnostic vector enumeration, named dimensions, functions over dimensions, structured output, lazy and eager evaluation, progress bars, JSON/YAML import, and Markdown/CSV export.
 
 ---
 
 ## Features
 
-
 ✅ Named dimensions with arbitrary keys
+
 ✅ Enumerate over Cartesian product with a single block argument  
+
 ✅ Functions over Cartesian vectors are decoupled from dimensionality
+
 ✅ Calculate over dimensions using `.dim1 + .dim2` syntax in the block  
+
 ✅ Lazy and eager evaluation
+
 ✅ Progress bars for large Cartesian combinations  
+
 ✅ Export of Cartesian space to Markdown or CSV  
+
 ✅ Import of dimension space from JSON or YAML  
+
 ✅ Structured and colorized terminal output  
 
 ---
