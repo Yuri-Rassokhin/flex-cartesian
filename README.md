@@ -24,8 +24,6 @@
 
 ## Installation
 
-Install dependencies:
-
 ```bash
 bundle install
 gem build flex-cartesian.gemspec
