@@ -77,6 +77,102 @@ s.output(format: :markdown, align: true)
 s.output(format: :csv)
 ```
 
+## API Overview
+
+### Initialization
+```ruby
+FlexCartesian.new(dimensions_hash)
+```
+- `dimensions_hash`: a hash with named dimensions; each value can be an `Enumerable` (e.g., arrays, ranges).
+
+Example:
+```ruby
+FlexCartesian.new(dim1: [1, 2], dim2: ['a', 'b'])
+```
+
+---
+
+### Iterate Over All Combinations
+```ruby
+# With block
+cartesian(dims = nil, lazy: false) { |vector| ... }
+
+# Without block: returns Enumerator
+cartesian(dims = nil, lazy: false)
+```
+- `dims`: optional dimensions hash (default is the one provided at initialization).
+- `lazy`: if true, returns a lazy enumerator.
+
+Each combination is passed as a `Struct` with fields matching the dimension names:
+```ruby
+s.cartesian { |v| puts "#{v.dim1} - #{v.dim2}" }
+```
+
+---
+
+### Count Total Combinations
+```ruby
+size(dims = nil) → Integer
+```
+Returns the number of possible combinations.
+
+---
+
+### Convert to Array
+```ruby
+to_a(limit: nil) → Array
+```
+- `limit`: maximum number of combinations to collect.
+
+---
+
+### Iterate with Progress Bar
+```ruby
+progress_each(dims = nil, lazy: false, title: "Processing") { |v| ... }
+```
+Displays a progress bar using `ruby-progressbar`.
+
+---
+
+### Print Table to Console
+```ruby
+output(
+  separator: " | ",
+  colorize: false,
+  align: false,
+  format: :plain  # or :markdown, :csv
+  limit: nil
+)
+```
+Prints all combinations in table form (plain/markdown/CSV).  
+Markdown example:
+```
+| dim1 | dim2 |
+|------|------|
+|  1   | "a"  |
+|  2   | "b"  |
+```
+
+---
+
+### Load from JSON or YAML
+```ruby
+FlexCartesian.from_json("file.json")
+FlexCartesian.from_yaml("file.yaml")
+```
+
+---
+
+### Output from Vectors
+Each yielded combination is a `Struct` extended with:
+```ruby
+output(separator: " | ", colorize: false, align: false)
+```
+Example:
+```ruby
+s.cartesian { |v| v.output(colorize: true, align: true) }
+```
+
 ## License
 
 This project is licensed under the terms of the GNU General Public License v3.0.  
