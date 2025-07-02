@@ -53,6 +53,9 @@ puts "Total size: #{s.size}"
 array = s.to_a(limit: 3)
 puts array.inspect
 
+def do_something(v)
+end
+
 # Display progress bar (useful for large Cartesian spaces)
 s.progress_each { |v| do_something(v) }
 
@@ -64,7 +67,7 @@ s.cartesian(lazy: true).take(2).each { |v| puts v.inspect }
 
 # Load from JSON or YAML
 File.write('example.json', JSON.pretty_generate(example))
-s = FlexCartesian.from_json('exampe.json')
+s = FlexCartesian.from_json('example.json')
 s.output
 
 # Export to Markdown
