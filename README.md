@@ -87,7 +87,13 @@ FlexCartesian.new(dimensions_hash)
 
 Example:
 ```ruby
-FlexCartesian.new(dim1: [1, 2], dim2: ['a', 'b'])
+dimensions = {
+  dim1: [1, 2],
+  dim2: ['x', 'y'],
+  dim3: [true, false]
+}
+
+FlexCartesian.new(dimensions)
 ```
 
 ---
