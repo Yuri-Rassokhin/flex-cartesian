@@ -12,6 +12,8 @@
 
 ✅ Calculate over named dimensions using `s.cartesian { |v| puts "#{v.dim1} and #{v.dim2}" }` syntax
 
+✅ Add calculated functions over dimensions using `s.add_function { |v| v.dim1 + v.dim2 }`
+
 ✅ Lazy and eager evaluation
 
 ✅ Progress bars for large Cartesian combinations  
