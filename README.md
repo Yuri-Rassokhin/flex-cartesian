@@ -49,6 +49,9 @@ s.cartesian { |v| puts "#{v.dim1}-#{v.dim2}" if v.dim3 }
 # Get number of Cartesian combinations:
 puts "Total size: #{s.size}"
 
+# Add calculated function:
+s.add_function(:increment) { |v| v.dim1 + 1 }
+
 # Convert Cartesian space to array of combinations
 array = s.to_a(limit: 3)
 puts array.inspect
@@ -58,6 +61,10 @@ end
 
 # Display progress bar (useful for large Cartesian spaces)
 s.progress_each { |v| do_something(v) }
+
+# Add calculated functions
+s.add_function(:function1) { |v| v.dim1*3 }
+s.add_function(:function2) { |v| v.dim1-1 }
 
 # Print Cartesian space as table
 s.output(align: true)
@@ -113,6 +120,32 @@ Each combination is passed as a `Struct` with fields matching the dimension name
 ```ruby
 s.cartesian { |v| puts "#{v.dim1} - #{v.dim2}" }
 ```
+
+---
+
+### Add Calculated Functions
+```ruby
+add_function(name, &block)
+```
+- `name`: symbol — the name of the virtual dimension (e.g. `:label`)
+- `block`: a function that receives each vector and returns a computed value
+
+Calculated functions show up in `.output` like additional (virtual) dimensions.
+
+Example:
+```ruby
+s = FlexCartesian.new( { dim1: [1, 2], dim2: ['A', 'B'] } )
+s.add_function(:increment) { |v| v.dim1 + 1 }
+
+s.output(format: :markdown)
+# | dim1 | dim2 | increment |
+# |------|------|--------|
+# | 1    | "A"  | 2    |
+# | 1    | "B"  | 2    |
+# ...
+```
+
+> Note: Calculated functions are virtual — they are not part of the base dimensions, but they integrate seamlessly in output.
 
 ---
 
