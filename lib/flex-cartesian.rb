@@ -10,7 +10,6 @@ module FlexOutput
 
     values_list = members.zip(values.map { |v| v.inspect })
 
-    # calculate widths, if align required
     widths = align ? values_list.map { |k, v| [k.to_s.size, v.size].max } : []
 
     line = values_list.each_with_index.map do |(_, val), i|
@@ -28,27 +27,39 @@ class FlexCartesian
 
   def initialize(dimensions = nil)
     @dimensions = dimensions
+    @derived = {}
+  end
+
+  def add_function(name, &block)
+    raise ArgumentError, "Block required" unless block_given?
+    @derived[name.to_sym] = block
   end
 
   def cartesian(dims = nil, lazy: false)
-    dimensions = dims || @dimensions
-    return nil unless dimensions.is_a?(Hash)
+  dimensions = dims || @dimensions
+  return nil unless dimensions.is_a?(Hash)
 
-    names = dimensions.keys
-    values = dimensions.values.map { |dim| dim.is_a?(Enumerable) ? dim.to_a : [dim] }
+  names = dimensions.keys
+  values = dimensions.values.map { |dim| dim.is_a?(Enumerable) ? dim.to_a : [dim] }
 
-    return to_enum(:cartesian, dims, lazy: lazy) unless block_given?
-    return if values.any?(&:empty?)
+  return to_enum(:cartesian, dims, lazy: lazy) unless block_given?
+  return if values.any?(&:empty?)
 
-    struct_class = Struct.new(*names).tap { |sc| sc.include(FlexOutput) }
+  struct_class = Struct.new(*names).tap { |sc| sc.include(FlexOutput) }
 
-    base = values.first.product(*values[1..])
-    enum = lazy ? base.lazy : base
+  base = values.first.product(*values[1..])
+  enum = lazy ? base.lazy : base
 
-    enum.each do |combo|
-      yield struct_class.new(*combo)
+  enum.each do |combo|
+    struct_instance = struct_class.new(*combo)
+
+    @derived&.each do |name, block|
+      struct_instance.define_singleton_method(name) { block.call(struct_instance) }
     end
+
+    yield struct_instance
   end
+end
 
   def size(dims = nil)
     dimensions = dims || @dimensions
@@ -79,7 +90,7 @@ class FlexCartesian
     end
   end
 
-def output(separator: " | ", colorize: false, align: false, format: :plain, limit: nil)
+  def output(separator: " | ", colorize: false, align: false, format: :plain, limit: nil)
   rows = []
   cartesian do |v|
     rows << v
@@ -87,14 +98,15 @@ def output(separator: " | ", colorize: false, align: false, format: :plain, limi
   end
   return if rows.empty?
 
-  headers = rows.first.members.map(&:to_s)
+  headers = (
+    rows.first.members +
+    rows.first.singleton_methods(false).reject { |m| m.to_s.start_with?('__') }
+  ).map(&:to_s)
 
-  # Get widths
   widths = align ? headers.to_h { |h|
-    [h, [h.size, *rows.map { |r| fmt_cell(r[h], false).size }].max]
+    [h, [h.size, *rows.map { |r| fmt_cell(r.send(h), false).size }].max]
   } : {}
 
-  # Title
   case format
   when :markdown
     puts "| " + headers.map { |h| h.ljust(widths[h] || h.size) }.join(" | ") + " |"
@@ -105,9 +117,8 @@ def output(separator: " | ", colorize: false, align: false, format: :plain, limi
     puts headers.map { |h| fmt_cell(h, colorize, widths[h]) }.join(separator)
   end
 
-  # Rows
   rows.each do |row|
-    line = headers.map { |h| fmt_cell(row[h], colorize, widths[h]) }
+    line = headers.map { |h| fmt_cell(row.send(h), colorize, widths[h]) }
     puts format == :csv ? line.join(",") : line.join(separator)
   end
 end
@@ -124,14 +135,13 @@ end
 
 private
 
-def fmt_cell(value, colorize, width = nil)
-  str = case value
-        when String then value  # rows - without inspect
-        else value.inspect      # the rest is good to inspect
-        end
-  str = str.ljust(width) if width
-  colorize ? str.colorize(:cyan) : str
-end
-
+  def fmt_cell(value, colorize, width = nil)
+    str = case value
+          when String then value
+          else value.inspect
+          end
+    str = str.ljust(width) if width
+    colorize ? str.colorize(:cyan) : str
+  end
 end
 
