@@ -13,9 +13,9 @@ Gem::Specification.new do |spec|
   spec.files         = Dir["lib/**/*.rb"] + %w[README.md LICENSE Gemfile]
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "colorize"
-  spec.add_dependency "ruby-progressbar"
-  spec.add_dependency "json"
+  spec.add_dependency "colorize", "~> 0.8"
+  spec.add_dependency "ruby-progressbar", "~> 1.13"
+  spec.add_dependency "json", "~> 2.0"
   spec.add_dependency "yaml"
 
   spec.metadata["source_code_uri"] = spec.homepage
