@@ -53,6 +53,7 @@ puts "Total size: #{s.size}"
 
 # Add calculated function:
 s.add_function(:increment) { |v| v.dim1 + 1 }
+s.output
 
 # Convert Cartesian space to array of combinations
 array = s.to_a(limit: 3)
