@@ -42,7 +42,7 @@ gem install flex-cartesian-*.gem
 
 ## Usage
 
-```
+```ruby
 #!/usr/bin/ruby
 
 require 'flex-cartesian'
