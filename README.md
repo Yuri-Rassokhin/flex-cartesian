@@ -174,9 +174,10 @@ s.cartesian { |v| puts "#{v.dim1} - #{v.dim2}" }
 
 ---
 
-### Add Functions
+### Add / Remove Functions
 ```ruby
 add_function(name, &block)
+remove_function(name)
 ```
 - `name`: symbol — the name of the virtual dimension (e.g. `:label`)
 - `block`: a function that receives each vector and returns a computed value
