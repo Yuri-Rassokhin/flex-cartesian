@@ -5,7 +5,7 @@ require 'json'
 require 'yaml'
 
 module FlexOutput
-  def output(separator: " | ", colorize: false, align: false)
+  def output(separator: " | ", colorize: false, align: true)
     return puts "(empty struct)" unless respond_to?(:members) && respond_to?(:values)
 
     values_list = members.zip(values.map { |v| v.inspect })
@@ -33,6 +33,10 @@ class FlexCartesian
   def add_function(name, &block)
     raise ArgumentError, "Block required" unless block_given?
     @derived[name.to_sym] = block
+  end
+
+  def remove_function(name)
+    @derived.delete(name.to_sym)
   end
 
   def cartesian(dims = nil, lazy: false)
@@ -90,7 +94,7 @@ end
     end
   end
 
-  def output(separator: " | ", colorize: false, align: false, format: :plain, limit: nil)
+  def output(separator: " | ", colorize: false, align: true, format: :plain, limit: nil)
   rows = []
   cartesian do |v|
     rows << v
@@ -123,14 +127,42 @@ end
   end
 end
 
-  def self.from_json(path)
-    data = JSON.parse(File.read(path), symbolize_names: true)
-    new(data)
+def import(path, format: :json)
+  data = case format
+  when :json
+    JSON.parse(File.read(path), symbolize_names: true)
+  when :yaml
+    YAML.safe_load(File.read(path), symbolize_names: true)
+  else
+    raise ArgumentError, "Unsupported format: #{format}. Only :json and :yaml are supported."
   end
 
-  def self.from_yaml(path)
+  raise TypeError, "Expected parsed data to be a Hash" unless data.is_a?(Hash)
+
+  @dimensions = data
+  self
+end
+
+def export(path, format: :json)
+  case format
+  when :json
+    File.write(path, JSON.pretty_generate(@dimensions))
+  when :yaml
+    File.write(path, YAML.dump(@dimensions))
+  else
+    raise ArgumentError, "Unsupported format: #{format}. Only :json and :yaml are supported."
+  end
+end
+
+
+  def from_json(path)
+    data = JSON.parse(File.read(path), symbolize_names: true)
+    @dimensions = data
+  end
+
+  def from_yaml(path)
     data = YAML.safe_load(File.read(path), symbolize_names: true)
-    new(data)
+    @dimensions = data
   end
 
 private
