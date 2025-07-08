@@ -2,6 +2,8 @@
 
 **Ruby implementation of flexible and human-friendly operations on Cartesian products**  
 
+
+
 ## Features
 
 ✅ Named dimensions with arbitrary keys
@@ -12,17 +14,21 @@
 
 ✅ Calculate over named dimensions using `s.cartesian { |v| puts "#{v.dim1} and #{v.dim2}" }` syntax
 
-✅ Add calculated functions over dimensions using `s.add_function { |v| v.dim1 + v.dim2 }`
+✅ Add functions over dimensions using `s.add_function { |v| v.dim1 + v.dim2 }` syntax
 
 ✅ Lazy and eager evaluation
 
-✅ Progress bars for large Cartesian combinations  
+✅ Progress bars for large Cartesian combinations
 
-✅ Export of Cartesian space to Markdown or CSV  
+✅ Export of Cartesian space to Markdown or CSV
 
-✅ Import of dimension space from JSON or YAML  
+✅ Import of Cartesian space from JSON or YAML
+
+✅ Export of Cartesian space to Markdown or CSV
 
 ✅ Structured and colorized terminal output  
+
+
 
 ## Installation
 
@@ -32,60 +38,102 @@ gem build flex-cartesian.gemspec
 gem install flex-cartesian-*.gem
 ```
 
+
+
 ## Usage
 
-```ruby
+```
+#!/usr/bin/ruby
+
 require 'flex-cartesian'
 
-# Define a Cartesian space with named dimensions:
+
+
+# BASIC CONCEPTS
+
+puts "\nDefine named dimensions"
 example = {
   dim1: [1, 2],
   dim2: ['x', 'y'],
   dim3: [true, false]
 }
+
+puts "\nCreate Cartesian space"
 s = FlexCartesian.new(example)
 
-# Iterate over all combinations and calculate function on each combination:
-s.cartesian { |v| puts "#{v.dim1}-#{v.dim2}" if v.dim3 }
-
-# Get number of Cartesian combinations:
-puts "Total size: #{s.size}"
-
-# Add calculated function:
-s.add_function(:increment) { |v| v.dim1 + 1 }
-s.output
-
-# Convert Cartesian space to array of combinations
-array = s.to_a(limit: 3)
-puts array.inspect
-
 def do_something(v)
+  # do something here on vector v and its components 
 end
 
-# Display progress bar (useful for large Cartesian spaces)
+
+
+# ITERATION OVER CARTESIAN SPACE
+
+puts "\nIterate over all Cartesian combinations and execute action (dimensionality-agnostic style)"
+s.cartesian { |v| do_something(v) }
+
+puts "\nIterate over all Cartesian combinations and execute action (dimensionality-aware style)"
+s.cartesian { |v| puts "#{v.dim1} & #{v.dim2}" if v.dim3 }
+
+puts "\nIterate and display progress bar (useful for large Cartesian spaces)"
 s.progress_each { |v| do_something(v) }
 
-# Add calculated functions
-s.add_function(:function1) { |v| v.dim1*3 }
-s.add_function(:function2) { |v| v.dim1-1 }
+puts "\nIterate in lLazy mode, without materializing entire Cartesian product in memory"
+s.cartesian(lazy: true).take(2).each { |v| do_something(v) }
 
-# Print Cartesian space as table
-s.output(align: true)
 
-# Lazy evaluation without materializing entire Cartesian product in memory:
-s.cartesian(lazy: true).take(2).each { |v| puts v.inspect }
 
-# Load from JSON or YAML
-File.write('example.json', JSON.pretty_generate(example))
-s = FlexCartesian.from_json('example.json')
+# FUNCTIONS ON CARTESIAN SPACE
+
+puts "\nAdd function 'triple'"
+puts "Note: function is visualized in .output as a new dimension"
+s.add_function(:triple) { |v| v.dim1 * 3 + (v.dim3 ? 1: 0) }
+# Note: however, function remains a virtual construct, and it cannot be referenced by name
 s.output
 
-# Export to Markdown
-s.output(format: :markdown, align: true)
+puts "\Add and then remove function 'test'"
+s.add_function(:test) { |v| v.dim3.to_i }
+s.remove_function(:test)
 
-# Export to CSV
+
+
+# PRINT
+
+puts "\nPrint Cartesian space as plain table, all functions included"
+s.output
+
+puts "\nPrint Cartesian space as Markdown"
+s.output(format: :markdown)
+
+puts "\nPrint Cartesian space as CSV"
 s.output(format: :csv)
+
+
+
+# IMPORT / EXPORT
+
+puts "\nImport Cartesian space from JSON (similar method for YAML)"
+File.write('example.json', JSON.pretty_generate(example))
+puts "\nNote: after import, all assigned functions will calculate again, and they appear in the output"
+s.import('example.json').output
+
+puts "\nExport Cartesian space to YAML (similar method for JSON)"
+s.export('example.yaml', format: :yaml)
+
+
+
+# UTILITIES
+
+puts "\nGet number of Cartesian combinations"
+puts "Note: .size counts only dimenstions, it ignores functions"
+puts "Total size of Cartesian space: #{s.size}"
+
+puts "\nPartially converting Cartesian space to array:"
+array = s.to_a(limit: 3)
+puts array.inspect
 ```
+
+
 
 ## API Overview
 
@@ -126,14 +174,14 @@ s.cartesian { |v| puts "#{v.dim1} - #{v.dim2}" }
 
 ---
 
-### Add Calculated Functions
+### Add Functions
 ```ruby
 add_function(name, &block)
 ```
 - `name`: symbol — the name of the virtual dimension (e.g. `:label`)
 - `block`: a function that receives each vector and returns a computed value
 
-Calculated functions show up in `.output` like additional (virtual) dimensions.
+Functions show up in `.output` like additional (virtual) dimensions.
 
 Example:
 ```ruby
@@ -148,7 +196,7 @@ s.output(format: :markdown)
 # ...
 ```
 
-> Note: Calculated functions are virtual — they are not part of the base dimensions, but they integrate seamlessly in output.
+> Note: functions are virtual — they are not part of the base dimensions, but they integrate seamlessly in output.
 
 ---
 
@@ -197,22 +245,36 @@ Markdown example:
 
 ---
 
-### Load from JSON or YAML
+### Import from JSON or YAML
 ```ruby
-FlexCartesian.from_json("file.json")
-FlexCartesian.from_yaml("file.yaml")
+import('file.json',
+  format: :json) # or :yaml
+```
+
+Obsolete import methods:
+```ruby
+s.from_json("file.json")
+s.from_yaml("file.yaml")
 ```
 
 ---
 
-### Output from Vectors
+### Export from JSON or YAML
+```ruby
+export('file.json',
+  format: :json) # or :yaml
+```
+
+---
+
+### Print Cartesian Space
 Each yielded combination is a `Struct` extended with:
 ```ruby
-output(separator: " | ", colorize: false, align: false)
+output(separator: " | ", colorize: false, align: true)
 ```
 Example:
 ```ruby
-s.cartesian { |v| v.output(colorize: true, align: true) }
+s.cartesian { |v| v.output(colorize: true, align: false) }
 ```
 
 ## License
