@@ -3,6 +3,7 @@ require 'progressbar'
 require 'colorize'
 require 'json'
 require 'yaml'
+require 'method_source'
 
 module FlexOutput
   def output(separator: " | ", colorize: false, align: true)
@@ -27,7 +28,28 @@ class FlexCartesian
 
   def initialize(dimensions = nil)
     @dimensions = dimensions
+    @conditions = []
     @derived = {}
+  end
+
+  def cond(command = :print, index: nil, &block)
+    case command
+    when :set
+      raise ArgumentError, "Block required" unless block_given?
+      @conditions << block
+      self
+    when :unset
+      raise ArgumentError, "Index of the condition required" unless index
+      @conditions.delete_at(index)
+    when :clear 
+      @conditions.clear
+      self
+    when :print 
+      return if @conditions.empty?
+      @conditions.each_with_index { |cond, idx| puts "#{idx} | #{cond.source.gsub(/^.*?\s/, '')}" }
+    else
+      raise ArgumentError, "unknown condition command: #{command}"
+    end
   end
 
   def add_function(name, &block)
@@ -61,18 +83,26 @@ class FlexCartesian
       struct_instance.define_singleton_method(name) { block.call(struct_instance) }
     end
 
+  next if @conditions.any? { |cond| !cond.call(struct_instance) }
+
     yield struct_instance
   end
 end
 
-  def size(dims = nil)
-    dimensions = dims || @dimensions
-    return 0 unless dimensions.is_a?(Hash)
-
-    values = dimensions.values.map { |dim| dim.is_a?(Enumerable) ? dim.to_a : [dim] }
-    return 0 if values.any?(&:empty?)
-
-    values.map(&:size).inject(1, :*)
+  def size
+    return 0 unless @dimensions.is_a?(Hash)
+    if @conditions.empty?
+      values = @dimensions.values.map { |dim| dim.is_a?(Enumerable) ? dim.to_a : [dim] }
+      return 0 if values.any?(&:empty?)
+      values.map(&:size).inject(1, :*)
+    else
+      size = 0
+      cartesian do |v|
+        next if @conditions.any? { |cond| !cond.call(v) }
+        size += 1
+      end
+      size
+    end
   end
 
   def to_a(limit: nil)
@@ -84,11 +114,10 @@ end
     result
   end
 
-  def progress_each(dims = nil, lazy: false, title: "Processing")
-    total = size(dims)
-    bar = ProgressBar.create(title: title, total: total, format: '%t [%B] %p%% %e')
+  def progress_each(lazy: false, title: "Processing")
+    bar = ProgressBar.create(title: title, total: size, format: '%t [%B] %p%% %e')
 
-    cartesian(dims, lazy: lazy) do |v|
+    cartesian(@dimensions, lazy: lazy) do |v|
       yield v
       bar.increment
     end
