@@ -12,7 +12,7 @@
 
 ✅ Functions over Cartesian vectors are decoupled from dimensionality
 
-✅ Conditions on Cartesian combinations
+✅ Define conditions on Cartesian combinations using `s.cond(:set) { |v| v.dim1 > v.dim2 } }` syntax
 
 ✅ Calculate over named dimensions using `s.cartesian { |v| puts "#{v.dim1} and #{v.dim2}" }` syntax
 
