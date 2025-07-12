@@ -74,8 +74,11 @@ end
 
 # ITERATION OVER CARTESIAN SPACE
 
-# 3. Iterator is dimensionality-agnostic, that is, has a vector syntax that hides dimensions under the hood. This keeps foundational code intact, and isolates modifications in the iterator body 'do_something'.
-# 4. For efficiency on VERY largse Cartesian spaces, there are A). lazy evaluation of each combination, and B). progress bar to track time-consuming calculations.
+# 3. Iterator is dimensionality-agnostic, that is, has a vector syntax that hides dimensions under the hood.
+#    This keeps foundational code intact, and isolates modifications in the iterator body 'do_something'.
+# 4. For efficiency on VERY largse Cartesian spaces, there are
+#    a). lazy evaluation of each combination
+#    b). progress bar to track time-consuming calculations.
 
 puts "\nIterate over all Cartesian combinations and execute action (dimensionality-agnostic style)"
 s.cartesian { |v| do_something(v) }
@@ -93,9 +96,11 @@ s.cartesian(lazy: true).take(2).each { |v| do_something(v) }
 
 # FUNCTIONS ON CARTESIAN SPACE
 
-# 5. A function is a virtual dimension that is calculated based on a vector of base dimensions. You can think of a function as a scalar field defined on Cartesian space.
+# 5. A function is a virtual dimension that is calculated based on a vector of base dimensions.
+#    You can think of a function as a scalar field defined on Cartesian space.
 # 6. Functions are printed as virtual dimensions in .output method.
-# 7. However, functions remains virtual construct, and their values can't be referenced by name (unlike base dimensions). Also, functions do not add to .size of Cartesian space.
+# 7. However, functions remains virtual construct, and their values can't be referenced by name
+#    (unlike regular dimensions). Also, functions do not add to .size of Cartesian space.
 
 puts "\nAdd function 'triple'"
 puts "Note: function is visualized in .output as a new dimension"
@@ -112,9 +117,10 @@ s.remove_function(:test)
 # CONDITIONS ON CARTESIAN SPACE
 
 # 8. A condition is a logical restriction of allowed combitnations for Cartesian space.
-# 9. Using conditions, you can take a slice of Cartesian space. In particular, you can reflect semantical dependency of dimensional values.
+# 9. Using conditions, you can take a slice of Cartesian space.
+#    In particular, you can reflect semantical dependency of dimensional values.
 
-puts "add condition on Cartesian space that leaves only combinations with ood value of the 'dim1' dimension"
+puts "Build Cartesian space that includes only odd values of 'dim1' dimension"
 s.cond(:set) { |v| v.dim1.odd? }
 puts "print all the conditions in format 'index | condition '"
 s.cond
