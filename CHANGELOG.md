@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2 - 2025-07-12
+### Added
+- Logical conditions on Cartesian space
+
 ## 0.1.9 - 2025-07-08
 ### Fixed
 - Documentation
