@@ -164,7 +164,7 @@ s.export('example.yaml', format: :yaml)
 # UTILITIES
 
 puts "\nGet number of Cartesian combinations"
-puts "Note: .size counts only dimenstions, it ignores functions"
+puts "Note: .size counts only dimensions, it ignores virtual constructs (functions, conditions, etc.)"
 puts "Total size of Cartesian space: #{s.size}"
 
 puts "\nPartially converting Cartesian space to array:"
