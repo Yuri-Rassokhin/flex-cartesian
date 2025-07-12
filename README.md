@@ -53,8 +53,6 @@ require 'flex-cartesian'
 
 # BASIC CONCEPTS
 
-
-
 # 1. Cartesian object is a set of combinations of values of dimansions.
 # 2. Dimensions always have names.
 
