@@ -12,6 +12,8 @@
 
 ✅ Functions over Cartesian vectors are decoupled from dimensionality
 
+✅ Conditions on Cartesian combibations
+
 ✅ Calculate over named dimensions using `s.cartesian { |v| puts "#{v.dim1} and #{v.dim2}" }` syntax
 
 ✅ Add functions over dimensions using `s.add_function { |v| v.dim1 + v.dim2 }` syntax
@@ -51,6 +53,11 @@ require 'flex-cartesian'
 
 # BASIC CONCEPTS
 
+
+
+# 1. Cartesian object is a set of combinations of values of dimansions.
+# 2. Dimensions always have names.
+
 puts "\nDefine named dimensions"
 example = {
   dim1: [1, 2],
@@ -69,6 +76,9 @@ end
 
 # ITERATION OVER CARTESIAN SPACE
 
+# 3. Iterator is dimensionality-agnostic, that is, has a vector syntax that hides dimensions under the hood. This keeps foundational code intact, and isolates modifications in the iterator body 'do_something'.
+# 4. For efficiency on VERY largse Cartesian spaces, there are A). lazy evaluation of each combination, and B). progress bar to track time-consuming calculations.
+
 puts "\nIterate over all Cartesian combinations and execute action (dimensionality-agnostic style)"
 s.cartesian { |v| do_something(v) }
 
@@ -85,6 +95,10 @@ s.cartesian(lazy: true).take(2).each { |v| do_something(v) }
 
 # FUNCTIONS ON CARTESIAN SPACE
 
+# 5. A function is a virtual dimension that is calculated based on a vector of base dimensions. You can think of a function as a scalar field defined on Cartesian space.
+# 6. Functions are printed as virtual dimensions in .output method.
+# 7. However, functions remains virtual construct, and their values can't be referenced by name (unlike base dimensions). Also, functions do not add to .size of Cartesian space.
+
 puts "\nAdd function 'triple'"
 puts "Note: function is visualized in .output as a new dimension"
 s.add_function(:triple) { |v| v.dim1 * 3 + (v.dim3 ? 1: 0) }
@@ -94,6 +108,27 @@ s.output
 puts "\Add and then remove function 'test'"
 s.add_function(:test) { |v| v.dim3.to_i }
 s.remove_function(:test)
+
+
+
+# CONDITIONS ON CARTESIAN SPACE
+
+# 8. A condition is a logical restriction on allowed dimensional values or combinations of dimensional values of Cartesian space.
+# 9. Using conditions, you can take a slice of Cartesian space. In particular, you can reflect semantical dependency of dimensional values.
+
+puts "add condition on Cartesian space that leaves only combinations with ood value of the 'dim1' dimension"
+s.cond(:set) { |v| v.dim1.odd? }
+puts "print all the conditions in format 'index | condition '"
+s.cond
+puts "Test the condition: print the updated Cartesian space"
+s.output
+puts "Test the condition: check the updated size of Cartesian space"
+puts "New size: #{s.size}"
+puts "Clear condition #0"
+s.cond(:unset, index: 0)
+puts "Clear all conditions"
+s.cond(:clear)
+puts "Restored size without conditions: #{s.size}"
 
 
 
