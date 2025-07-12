@@ -111,7 +111,7 @@ s.remove_function(:test)
 
 # CONDITIONS ON CARTESIAN SPACE
 
-# 8. A condition is a logical restriction on allowed dimensional values or combinations of dimensional values of Cartesian space.
+# 8. A condition is a logical restriction of allowed combitnations for Cartesian space.
 # 9. Using conditions, you can take a slice of Cartesian space. In particular, you can reflect semantical dependency of dimensional values.
 
 puts "add condition on Cartesian space that leaves only combinations with ood value of the 'dim1' dimension"
