@@ -12,7 +12,7 @@
 
 ✅ Functions over Cartesian vectors are decoupled from dimensionality
 
-✅ Conditions on Cartesian combibations
+✅ Conditions on Cartesian combinations
 
 ✅ Calculate over named dimensions using `s.cartesian { |v| puts "#{v.dim1} and #{v.dim2}" }` syntax
 
@@ -312,6 +312,23 @@ Example:
 ```ruby
 s.cartesian { |v| v.output(colorize: true, align: false) }
 ```
+
+---
+
+### Conditions on Cartesian Space
+cond(command = :print, # or :set, :unset, :clear
+     index: nil, # index of a conditions to unset
+     &block # defintiion of the condition to set
+     )
+Example:
+```ruby
+s.cond(:set) { |v| v.dim1 > v.dim3 }
+s.cond # defaults to s.cond(:print) and shows all the conditions in the form 'index | definition'
+s.cond(:unset, 0) # remove previously set condition
+s.cond(:clear) # remove all conditions, if any
+```
+
+
 
 ## License
 
