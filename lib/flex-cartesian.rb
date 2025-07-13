@@ -161,7 +161,7 @@ end
     end
   end
 
-def output(separator: " | ", colorize: false, align: true, format: :plain, limit: nil)
+  def output(separator: " | ", colorize: false, align: true, format: :plain, limit: nil, file: nil)
   rows = if @function_results && !@function_results.empty?
            @function_results.keys
          else
@@ -190,21 +190,33 @@ def output(separator: " | ", colorize: false, align: true, format: :plain, limit
     [h, [h.size, *values].max]
   } : {}
 
+  lines = []
+
+  # Header
   case format
   when :markdown
-    puts "| " + headers.map { |h| h.ljust(widths[h] || h.size) }.join(" | ") + " |"
-    puts "|-" + headers.map { |h| "-" * (widths[h] || h.size) }.join("-|-") + "-|"
+    lines << "| " + headers.map { |h| h.ljust(widths[h] || h.size) }.join(" | ") + " |"
+    lines << "|-" + headers.map { |h| "-" * (widths[h] || h.size) }.join("-|-") + "-|"
   when :csv
-    puts headers.join(",")
+    lines << headers.join(",")
   else
-    puts headers.map { |h| fmt_cell(h, colorize, widths[h]) }.join(separator)
+    lines << headers.map { |h| fmt_cell(h, colorize, widths[h]) }.join(separator)
   end
 
+  # Rows
   rows.each do |row|
     values = row.members.map { |m| row.send(m) } +
              func_names.map { |fname| @function_results&.dig(row, fname) }
+
     line = headers.zip(values).map { |(_, val)| fmt_cell(val, colorize, widths[_]) }
-    puts format == :csv ? line.join(",") : line.join(separator)
+    lines << (format == :csv ? line.join(",") : line.join(separator))
+  end
+
+  # Output
+  if file
+    File.write(file, lines.join("\n") + "\n")
+  else
+    lines.each { |line| puts line }
   end
 end
 
