@@ -320,10 +320,12 @@ s.cartesian { |v| v.output(colorize: true, align: false) }
 ---
 
 ### Conditions on Cartesian Space
+```ruby
 cond(command = :print, # or :set, :unset, :clear
      index: nil, # index of a conditions to unset
      &block # defintiion of the condition to set
      )
+```
 Example:
 ```ruby
 s.cond(:set) { |v| v.dim1 > v.dim3 }
