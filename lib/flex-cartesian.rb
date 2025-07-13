@@ -52,6 +52,35 @@ class FlexCartesian
     end
   end
 
+def func(command = :print, name = nil, &block)
+  case command
+  when :add
+    raise ArgumentError, "Function name and block required for :add" unless name && block_given?
+    add_function(name, &block)
+
+  when :del
+    raise ArgumentError, "Function name required for :del" unless name
+    remove_function(name)
+
+  when :print
+    if @derived.empty?
+      puts "(no functions defined)"
+    else
+      @derived.each do |fname, fblock|
+        source = fblock.source rescue '(source unavailable)'
+
+        # Удаляем всё до первой фигурной скобки или до do
+        body = source.sub(/^.*?\s(?=(\{|\bdo\b))/, '').strip
+
+        puts "  #{fname.inspect.ljust(12)}| #{body}"
+      end
+    end
+
+  else
+    raise ArgumentError, "Unknown command for function: #{command.inspect}"
+  end
+end
+
   def add_function(name, &block)
     raise ArgumentError, "Block required" unless block_given?
     @derived[name.to_sym] = block
