@@ -30,6 +30,7 @@ class FlexCartesian
     @dimensions = dimensions
     @conditions = []
     @derived = {}
+    @function_results = {}  # key: Struct instance.object_id => { fname => value }
   end
 
   def cond(command = :print, index: nil, &block)
@@ -72,6 +73,15 @@ def func(command = :print, name = nil, &block)
         body = source.sub(/^.*?\s(?=(\{|\bdo\b))/, '').strip
 
         puts "  #{fname.inspect.ljust(12)}| #{body}"
+      end
+    end
+
+  when :run
+    @function_results = {}
+    cartesian do |v|
+      @function_results[v] ||= {}
+      @derived.each do |fname, block|
+        @function_results[v][fname] = block.call(v)
       end
     end
 
@@ -151,21 +161,33 @@ end
     end
   end
 
-  def output(separator: " | ", colorize: false, align: true, format: :plain, limit: nil)
-  rows = []
-  cartesian do |v|
-    rows << v
-    break if limit && rows.size >= limit
-  end
+def output(separator: " | ", colorize: false, align: true, format: :plain, limit: nil)
+  rows = if @function_results && !@function_results.empty?
+           @function_results.keys
+         else
+           result = []
+           cartesian do |v|
+             result << v
+             break if limit && result.size >= limit
+           end
+           result
+         end
+
   return if rows.empty?
 
-  headers = (
-    rows.first.members +
-    rows.first.singleton_methods(false).reject { |m| m.to_s.start_with?('__') }
-  ).map(&:to_s)
+  func_names = @derived.keys
+  headers = rows.first.members.map(&:to_s) + func_names.map(&:to_s)
 
   widths = align ? headers.to_h { |h|
-    [h, [h.size, *rows.map { |r| fmt_cell(r.send(h), false).size }].max]
+    values = rows.map do |r|
+      val = if r.members.map(&:to_s).include?(h)
+              r.send(h)
+            else
+              @function_results&.dig(r, h.to_sym)
+            end
+      fmt_cell(val, false).size
+    end
+    [h, [h.size, *values].max]
   } : {}
 
   case format
@@ -179,7 +201,9 @@ end
   end
 
   rows.each do |row|
-    line = headers.map { |h| fmt_cell(row.send(h), colorize, widths[h]) }
+    values = row.members.map { |m| row.send(m) } +
+             func_names.map { |fname| @function_results&.dig(row, fname) }
+    line = headers.zip(values).map { |(_, val)| fmt_cell(val, colorize, widths[_]) }
     puts format == :csv ? line.join(",") : line.join(separator)
   end
 end
