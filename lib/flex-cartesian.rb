@@ -69,7 +69,6 @@ def func(command = :print, name = nil, &block)
       @derived.each do |fname, fblock|
         source = fblock.source rescue '(source unavailable)'
 
-        # Удаляем всё до первой фигурной скобки или до do
         body = source.sub(/^.*?\s(?=(\{|\bdo\b))/, '').strip
 
         puts "  #{fname.inspect.ljust(12)}| #{body}"
