@@ -339,7 +339,7 @@ s.output(format: :csv, file: './benchmark.csv')
 s.output(colorize: true)
 ```
 
-If you run the code, after a while you it will generate benchmark results on the screen:
+If you run the code, after a while it will generate benchmark results on the screen:
 
 ![Ping Benchmark Example](doc/ping_benchmark_example.png)
 
