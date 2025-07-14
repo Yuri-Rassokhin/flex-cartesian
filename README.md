@@ -270,7 +270,14 @@ s.output(format: :csv, file: './benchmark.csv')
 s.output(colorize: true)
 ```
 
-This code is 100% practical and illustrative. You can benchmark:
+You will have the following benchmark results on the screen.
+
+![Ping Benchmark Example](doc/ping_benchmark_example.png)
+
+Additionally, CSV version of this result is saved as './benchmark.csv'
+
+The PING benchmarking code above is 100% practical and illustrative.
+You can modify it and benchmark virtually anything:
 
 - Local block devices using 'dd'
 - GPU-to-Storage connection using 'gdsio'
