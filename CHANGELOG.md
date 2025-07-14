@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0 - 2025-07-14
+### Added
+- Optional flad for hiding function from output
+
+### Fixed
+- Simplified default parameters
+- Unified umbrella method for handling functions
+- Initialization directly from file of dimensions
+
 ## 0.2 - 2025-07-12
 ### Added
 - Logical conditions on Cartesian space
