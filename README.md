@@ -287,7 +287,7 @@ These input parameters form the following dimensions.
 }
 ```
 
-Note that '//' isn't officially supported by JSON, and you may want to remove the comments if you experience parser errors.
+Note that `//` isn't officially supported by JSON, and you may want to remove the comments if you experience parser errors.
 Let us build the code to run over these parameters.
 
 ```ruby
@@ -343,13 +343,13 @@ If you run the code, after a while you it will generate benchmark results on the
 
 ![Ping Benchmark Example](doc/ping_benchmark_example.png)
 
-Additionally, CSV version of this result is saved as './benchmark.csv'
+Additionally, CSV version of this result is saved as `./benchmark.csv`
 
 The PING benchmarking code above is 100% practical and illustrative.
 You can modify it and benchmark virtually anything:
 
-- Local block devices using 'dd'
-- GPU-to-Storage connection using 'gdsio'
+- Local block devices using `dd`
+- GPU-to-Storage connection using `gdsio`
 - Local file systems using FS-based utilities
 - Local CPU RAM using RAM disk or specialized benchmarks for CPU RAM
 - Database performance using SQL client or non-SQL client utilities
