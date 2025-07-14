@@ -172,7 +172,119 @@ array = s.to_a(limit: 3)
 puts array.inspect
 ```
 
+## Example
 
+The most common use case for FlexCartesian is sweep analysis, that is, analysis of target value on all possible combinations of its parameters.
+FlexCartesian has been designed to provide a concise form for sweep analysis:
+
+```ruby
+require 'flex-cartesian'
+
+# create Cartesian space from JSON describing input parameters
+s = FlexCartesian.new(path: './config.json')
+
+# Define the values we want to calculate on all possible combinations of parameters
+s.func(:add, :cmd) { |v| v.threads * v.batch }
+s.func(:add, :performance) { |v| v.cmd / 3 }
+
+# Calculate
+s.func(:run)
+
+# Save result as CSV, to easily open it in any business analytics tool
+s.output(format: :csv, file: './benchmark.csv')
+# For convenience, print result to the terminal
+s.output
+```
+
+As this code is a little artificial, let us build real-world example.
+Perhaps, we want to analyze PING perfomance from our machine to several DNS providers: Google DNS, CloudFlare DNS, and Cisco DNS.
+For each of those services, we would like to know:
+
+- What is our ping time?
+- How does ping scale by packet size?
+- How does ping statistics vary based on count of pings?
+
+These input parameters form the following dimensions as './ping_config.json'
+
+```json
+{
+  "count": [2, 4],
+  "size": [32, 64],
+  "target": [
+    "8.8.8.8",           // Google DNS
+    "1.1.1.1",           // Cloudflare DNS
+    "208.67.222.222"     // Cisco OpenDNS
+  ]
+}
+```
+
+Note that '//' isn't officially supported by JSON, and you may want to remove the comments if you experience parser errors.
+To run sweep analysis over these dimensions, we will build this code.
+
+```ruby
+require 'flex-cartesian'
+
+s = FlexCartesian.new(path: './ping_config.json')
+
+result = {} # here we will store raw result of each ping and fetch target metrics from it
+
+# this function shows actual ping command
+s.func(:add, :command) do |v|
+  "ping -c #{v.count} -s #{v.size} #{v.target}"
+end
+
+# this function gets raw result of actual ping command
+s.func(:add, :raw_ping, hide: true) do |v|
+  result[v.command] ||= `#{v.command} 2>&1`
+end
+
+# this function extracts ping time
+s.func(:add, :time) do |v|
+  if v.raw_ping =~ /min\/avg\/max\/(?:mdev|stddev) = [^\/]+\/([^\/]+)/
+    $1.to_f
+  end
+end
+
+# this function extracts minimum ping time
+s.func(:add, :min) do |v|
+  if v.raw_ping =~ /min\/avg\/max\/(?:mdev|stddev) = ([^\/]+)/
+    $1.to_f
+  end
+end
+
+# funally, this function extracts losses of ping
+s.func(:add, :loss) do |v|
+  if v.raw_ping =~ /(\d+(?:\.\d+)?)% packet loss/
+    $1.to_f
+  end
+end
+
+# this is the spinal axis of FlexCartesian:
+# calculate all functions on the entire Cartesian space of parameters aka dimensions
+s.func(:run)
+
+# save benchmark results to CSV for convenient analysis in BI tools
+s.output(format: :csv, file: './benchmark.csv')
+
+# for convenience, show tabular result on screen as well
+s.output(colorize: true)
+```
+
+This code is 100% practical, and it shows way for the use cases of FlexCartesian.
+You can benchmark
+
+- Local block devices using 'dd'
+- GPU-to-Storage connection using 'gdsio'
+- Local file systems using FS-based utilities
+- Local CPU RAM using RAM disk or specialized benchmarks for CPU RAM
+- Database performance using SQL client or non-SQL client utilities
+- Performance of object storage of cloud providers, be it AWS S3, OCI Object Storage, or anything else
+- Performance of any AI model, from simplistic YOLO to heavy-weight LLM such as LLAMA, Cohere, or DeepSeek
+
+In any case, FlexCartesian will disclose for you complete landscape of the target performance over all configurable parameters.
+You will be able to spot optimal configurations, correlations, bottlenecks, and sweet spots - all in justifiable way.
+
+Here is a bright example of how I used FlexCartesian to [analyze optimal performance/cost of YOLO](https://www.linkedin.com/pulse/comparing-gpu-a10-ampere-a1-shapes-object-oci-yuri-rassokhin-rseqf).
 
 ## API Overview
 

@@ -5,7 +5,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["yuri.rassokhin@gmail.com"]
 
   spec.summary       = "Flexible and human-friendly Cartesian product enumerator for Ruby"
-  spec.description   = "Flexible and human-friendly Cartesian product enumerator for Ruby. Supports functions and conditions on cartesian, dimensionality-agnostic/dimensionality-aware iterators, named dimensions, tabular output, lazy/eager evaluation, progress bar, import from JSON/YAML, and export to Markdown/CSV. Code example: https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/README.md#usage"
+  spec.description   = "Flexible and human-friendly Cartesian product enumerator for Ruby. Supports functions and conditions on cartesian, dimensionality-agnostic/dimensionality-aware iterators, named dimensions, tabular output, lazy/eager evaluation, progress bar, import from JSON/YAML, and export to Markdown/CSV. Code example: https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/README.md#example"
   spec.homepage      = "https://github.com/Yuri-Rassokhin/flex-cartesian"
   spec.license       = "GPL-3.0"
 
