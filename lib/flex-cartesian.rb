@@ -26,11 +26,15 @@ end
 class FlexCartesian
   attr :dimensions
 
-  def initialize(dimensions = nil)
+  def initialize(dimensions = nil, path: nil, format: :json)
+    if dimensions && path
+      $logger.msg "Please specify either dimensions or path to dimensions", :error
+    end
     @dimensions = dimensions
     @conditions = []
     @derived = {}
     @function_results = {}  # key: Struct instance.object_id => { fname => value }
+    import(path, format: format) if path
   end
 
   def cond(command = :print, index: nil, &block)
@@ -161,7 +165,7 @@ end
     end
   end
 
-  def output(separator: " | ", colorize: false, align: true, format: :plain, limit: nil, file: nil)
+  def output(separator: " | ", colorize: true, align: true, format: :plain, limit: nil, file: nil)
   rows = if @function_results && !@function_results.empty?
            @function_results.keys
          else
