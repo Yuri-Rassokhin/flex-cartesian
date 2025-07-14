@@ -4,6 +4,7 @@ require 'colorize'
 require 'json'
 require 'yaml'
 require 'method_source'
+require 'set'
 
 module FlexOutput
   def output(separator: " | ", colorize: false, align: true)
@@ -34,6 +35,7 @@ class FlexCartesian
     @conditions = []
     @derived = {}
     @function_results = {}  # key: Struct instance.object_id => { fname => value }
+    @function_hidden = Set.new
     import(path, format: format) if path
   end
 
@@ -57,11 +59,13 @@ class FlexCartesian
     end
   end
 
-def func(command = :print, name = nil, &block)
+def func(command = :print, name = nil, hide: false, &block)
   case command
   when :add
     raise ArgumentError, "Function name and block required for :add" unless name && block_given?
     add_function(name, &block)
+    @function_hidden.delete(name.to_sym)
+    @function_hidden << name.to_sym if hide
 
   when :del
     raise ArgumentError, "Function name required for :del" unless name
@@ -76,7 +80,7 @@ def func(command = :print, name = nil, &block)
 
         body = source.sub(/^.*?\s(?=(\{|\bdo\b))/, '').strip
 
-        puts "  #{fname.inspect.ljust(12)}| #{body}"
+        puts "  #{fname.inspect.ljust(12)}| #{body}#{@function_hidden.include?(fname) ? ' [HIDDEN]' : ''}"
       end
     end
 
@@ -165,7 +169,7 @@ end
     end
   end
 
-  def output(separator: " | ", colorize: true, align: true, format: :plain, limit: nil, file: nil)
+def output(separator: " | ", colorize: false, align: true, format: :plain, limit: nil, file: nil)
   rows = if @function_results && !@function_results.empty?
            @function_results.keys
          else
@@ -179,8 +183,8 @@ end
 
   return if rows.empty?
 
-  func_names = @derived.keys
-  headers = rows.first.members.map(&:to_s) + func_names.map(&:to_s)
+  visible_func_names = @derived.keys - (@function_hidden || Set.new).to_a
+  headers = rows.first.members.map(&:to_s) + visible_func_names.map(&:to_s)
 
   widths = align ? headers.to_h { |h|
     values = rows.map do |r|
@@ -210,13 +214,13 @@ end
   # Rows
   rows.each do |row|
     values = row.members.map { |m| row.send(m) } +
-             func_names.map { |fname| @function_results&.dig(row, fname) }
+             visible_func_names.map { |fname| @function_results&.dig(row, fname) }
 
     line = headers.zip(values).map { |(_, val)| fmt_cell(val, colorize, widths[_]) }
     lines << (format == :csv ? line.join(",") : line.join(separator))
   end
 
-  # Output
+  # Output to console or file
   if file
     File.write(file, lines.join("\n") + "\n")
   else
