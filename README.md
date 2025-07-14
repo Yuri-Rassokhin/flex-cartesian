@@ -204,7 +204,7 @@ For each of those services, we would like to know:
 - How does ping scale by packet size?
 - How does ping statistics vary based on count of pings?
 
-These input parameters form the following dimensions as './ping_config.json'
+These input parameters form the following dimensions.
 
 ```json
 {
@@ -219,12 +219,12 @@ These input parameters form the following dimensions as './ping_config.json'
 ```
 
 Note that '//' isn't officially supported by JSON, and you may want to remove the comments if you experience parser errors.
-To run sweep analysis over these dimensions, we will build this code.
+Let us build the code to run over these parameters.
 
 ```ruby
 require 'flex-cartesian'
 
-s = FlexCartesian.new(path: './ping_config.json')
+s = FlexCartesian.new(path: './ping_config.json') # file with the parameters as given above
 
 result = {} # here we will store raw result of each ping and fetch target metrics from it
 
@@ -270,8 +270,7 @@ s.output(format: :csv, file: './benchmark.csv')
 s.output(colorize: true)
 ```
 
-This code is 100% practical, and it shows way for the use cases of FlexCartesian.
-You can benchmark
+This code is 100% practical and illustrative. You can benchmark:
 
 - Local block devices using 'dd'
 - GPU-to-Storage connection using 'gdsio'
@@ -280,11 +279,13 @@ You can benchmark
 - Database performance using SQL client or non-SQL client utilities
 - Performance of object storage of cloud providers, be it AWS S3, OCI Object Storage, or anything else
 - Performance of any AI model, from simplistic YOLO to heavy-weight LLM such as LLAMA, Cohere, or DeepSeek
+- ... Any other target application or service
 
-In any case, FlexCartesian will disclose for you complete landscape of the target performance over all configurable parameters.
-You will be able to spot optimal configurations, correlations, bottlenecks, and sweet spots - all in justifiable way.
+In any use case, FlexCartesian will unfold complete landscape of the target performance over all configurable parameters.
+As result, you will be able to spot optimal configurations, correlations, bottlenecks, and sweet spots.
+Moreover, you will make your conclusions in a justifiable way.
 
-Here is a bright example of how I used FlexCartesian to [analyze optimal performance/cost of YOLO](https://www.linkedin.com/pulse/comparing-gpu-a10-ampere-a1-shapes-object-oci-yuri-rassokhin-rseqf).
+Here is an example of how I used FlexCartesian to [analyze optimal performance/cost of YOLO](https://www.linkedin.com/pulse/comparing-gpu-a10-ampere-a1-shapes-object-oci-yuri-rassokhin-rseqf).
 
 ## API Overview
 
