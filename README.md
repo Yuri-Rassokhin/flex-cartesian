@@ -2,8 +2,6 @@
 
 **Ruby implementation of flexible and human-friendly operations on Cartesian products**  
 
-
-
 ## Features
 
 ✅ Named dimensions with arbitrary keys
@@ -30,7 +28,78 @@
 
 ✅ Structured and colorized terminal output  
 
+## Use Cases
 
+`FlexCartesian` is especially useful in the following scenarios.
+
+### 1. Sweep Analysis of Performance
+
+Systematically evaluate an application or algorithm across all combinations of parameters:
+
+- Parameters: `threads`, `batch_size`, `backend`, etc
+- Metrics: `throughput`, `latency`, `memory`
+- Output: CSV or Markdown tables
+
+### 2. Hyperparameter Tuning for ML Models
+
+Iterate over all combinations of hyperparameters:
+
+- Examples: `learning_rate`, `max_depth`, `subsample`, `n_estimators`
+- With constraints (e.g., `max_depth < 10 if learning_rate > 0.1`)
+- With computed evaluation metrics like `accuracy`, `AUC`, etc
+
+### 3. Infrastructure and System Configuration
+
+Generate all valid infrastructure configurations:
+
+```ruby
+region:   ["us-west", "eu-central"]
+tier:     ["basic", "pro"]
+replicas: [1, 3, 5]
+```
+
+With conditions like
+
+```
+"basic" tier cannot have more than one replica.
+```
+
+### 4. Mass Testing of CLI Commands
+Generate and benchmark all valid CLI calls:
+
+```bash
+myapp --threads=4 --batch=32 --backend=torch
+```
+
+Capture runtime, output, errors, etc.
+
+### 5. Input Generation for UI/API Testing
+Automatically cover input parameter spaces for:
+
+- HTTP methods: ["GET", "POST"]
+- User roles: ["guest", "user", "admin"]
+- Language settings: ["en", "fr", "de"]
+
+### 6. Scientific and Engineering Simulations
+Generate multidimensional experimental spaces for:
+
+- Physics simulations
+- Bioinformatics parameter sweeps
+- Network behavior modeling, etc
+
+### 7. Structured Reporting and Visualization
+Output Cartesian data as:
+
+- Markdown (for GitHub rendering)
+- CSV (for Excel, Google Sheets, and more advanced BI tools)
+- Plain text (for CLI previews)
+
+### 8. Test Case Generation
+Use it to drive automated test inputs for:
+
+- RSpec shared examples
+- Minitest table-driven tests
+- PyTest parameterization
 
 ## Installation
 
