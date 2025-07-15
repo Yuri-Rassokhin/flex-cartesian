@@ -287,50 +287,21 @@ Let us build the code to run over these parameters.
 ```ruby
 require 'flex-cartesian'
 
-s = FlexCartesian.new(path: './ping_config.json') # file with the parameters as given above
+s = FlexCartesian.new(path: './ping_parameters.json') # file with the parameters as given above
 
-result = {} # here we will store raw result of each ping and fetch target metrics from it
+result = {} # raw result of each ping
 
-# this function shows actual ping command
-s.func(:add, :command) do |v|
-  "ping -c #{v.count} -s #{v.size} #{v.target}"
-end
+s.func(:add, :command) { |v| "ping -c #{v.count} -s #{v.size} #{v.target}" } # ping command
+s.func(:add, :raw_ping, hide: true) { |v| result[v.command] ||= `#{v.command} 2>&1` } # capturing ping result
+s.func(:add, :time) { |v| v.raw_ping[/min\/avg\/max\/(?:mdev|stddev) = [^\/]+\/([^\/]+)/, 1]&.to_f } # fetch ping time from result
+s.func(:add, :min) { |v| v.raw_ping[/min\/avg\/max\/(?:mdev|stddev) = ([^\/]+)/, 1]&.to_f } # fetch min time from result
+s.func(:add, :loss) { |v| v.raw_ping[/(\d+(?:\.\d+)?)% packet loss/, 1]&.to_f } # fetch ping loss from result
 
-# this function gets raw result of actual ping command
-s.func(:add, :raw_ping, hide: true) do |v|
-  result[v.command] ||= `#{v.command} 2>&1`
-end
+s.func(:run) # Sweep analysis! Benchmark all possible combinations of parameters
 
-# this function extracts ping time
-s.func(:add, :time) do |v|
-  if v.raw_ping =~ /min\/avg\/max\/(?:mdev|stddev) = [^\/]+\/([^\/]+)/
-    $1.to_f
-  end
-end
+s.output(format: :csv, file: './result.csv') # save benchmark result as CSV
 
-# this function extracts minimum ping time
-s.func(:add, :min) do |v|
-  if v.raw_ping =~ /min\/avg\/max\/(?:mdev|stddev) = ([^\/]+)/
-    $1.to_f
-  end
-end
-
-# funally, this function extracts losses of ping
-s.func(:add, :loss) do |v|
-  if v.raw_ping =~ /(\d+(?:\.\d+)?)% packet loss/
-    $1.to_f
-  end
-end
-
-# this is the spinal axis of FlexCartesian:
-# calculate all functions on the entire Cartesian space of parameters aka dimensions
-s.func(:run)
-
-# save benchmark results to CSV for convenient analysis in BI tools
-s.output(format: :csv, file: './benchmark.csv')
-
-# for convenience, show tabular result on screen as well
-s.output(colorize: true)
+s.output(colorize: true) # for convenience, show result in terminal
 ```
 
 If you run the code, after a while it will generate benchmark results on the screen:
