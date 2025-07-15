@@ -166,14 +166,13 @@ s.cartesian(lazy: true).take(2).each { |v| do_something(v) }
 
 # 5. A function is a virtual dimension that is calculated based on a vector of base dimensions.
 #    You can think of a function as a scalar field defined on Cartesian space.
-# 6. Functions are printed as virtual dimensions in .output method.
-# 7. However, functions remains virtual construct, and their values can't be referenced by name
-#    (unlike regular dimensions). Also, functions do not add to .size of Cartesian space.
+# 6. Functions are printed as virtual dimensions in `.output`.
+# 7. Functions do not add to `.size` of Cartesian space.
 
 puts "\nAdd function 'triple'"
 puts "Note: function is visualized in .output as a new dimension"
 s.func(:add, :triple) { |v| v.dim1 * 3 + (v.dim3 ? 1: 0) }
-# Note: however, function remains a virtual construct, and it cannot be referenced by name
+s.func(:run)
 s.output
 
 puts "\Add and then remove function 'test'"
