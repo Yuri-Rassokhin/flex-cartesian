@@ -6,19 +6,19 @@
 
 ✅ Named dimensions with arbitrary keys
 
-✅ Enumerate over Cartesian product with a single block argument  
+✅ Enumerate over Cartesian space with a single block argument  
 
-✅ Functions over Cartesian vectors are decoupled from dimensionality
+✅ Actions on Cartesian are decoupled from dimensionality: `s.cartesian { |v| do_something(v) }`
 
-✅ Define conditions on Cartesian combinations using `s.cond(:set) { |v| v.dim1 > v.dim2 } }` syntax
+✅ Conditions for Cartesian space: `s.cond(:set) { |v| v.dim1 > v.dim2 } }`
 
-✅ Calculate over named dimensions using `s.cartesian { |v| puts "#{v.dim1} and #{v.dim2}" }` syntax
+✅ Calculation over named dimensions: `s.cartesian { |v| puts "#{v.dim1} and #{v.dim2}" }`
 
-✅ Add functions over dimensions using `s.add_function { |v| v.dim1 + v.dim2 }` syntax
+✅ Functions on Cartesian space: `s.func(:add, :my_sum) { |v| v.dim1 + v.dim2 }`
 
 ✅ Lazy and eager evaluation
 
-✅ Progress bars for large Cartesian combinations
+✅ Progress bars for large Cartesian spaces
 
 ✅ Export of Cartesian space to Markdown or CSV
 
@@ -58,10 +58,9 @@ tier:     ["basic", "pro"]
 replicas: [1, 3, 5]
 ```
 
-With conditions like
-
-```
-"basic" tier cannot have more than one replica.
+With conditions like "basic tier cannot have more than one replica:
+```ruby
+s.cond(:set) { |v| (v.tier == "basic" ? v.replicas == 1 : true) }
 ```
 
 ### 4. Mass Testing of CLI Commands
@@ -173,19 +172,19 @@ s.cartesian(lazy: true).take(2).each { |v| do_something(v) }
 
 puts "\nAdd function 'triple'"
 puts "Note: function is visualized in .output as a new dimension"
-s.add_function(:triple) { |v| v.dim1 * 3 + (v.dim3 ? 1: 0) }
+s.func(:add, :triple) { |v| v.dim1 * 3 + (v.dim3 ? 1: 0) }
 # Note: however, function remains a virtual construct, and it cannot be referenced by name
 s.output
 
 puts "\Add and then remove function 'test'"
-s.add_function(:test) { |v| v.dim3.to_i }
-s.remove_function(:test)
+s.func(:add, :test) { |v| v.dim3.to_i }
+s.func(:del, :test)
 
 
 
 # CONDITIONS ON CARTESIAN SPACE
 
-# 8. A condition is a logical restriction of allowed combitnations for Cartesian space.
+# 8. A condition is a logical constraint for allowed combitnations of Cartesian space.
 # 9. Using conditions, you can take a slice of Cartesian space.
 #    In particular, you can reflect semantical dependency of dimensional values.
 
@@ -361,15 +360,19 @@ In any use case, FlexCartesian will unfold complete landscape of the target perf
 As result, you will be able to spot optimal configurations, correlations, bottlenecks, and sweet spots.
 Moreover, you will make your conclusions in a justifiable way.
 
-Here is an example of how I used FlexCartesian to [analyze optimal performance/cost of YOLO](https://www.linkedin.com/pulse/comparing-gpu-a10-ampere-a1-shapes-object-oci-yuri-rassokhin-rseqf).
+Here is example of using FlexCartesian for [performance/cost analysis of YOLO](https://www.linkedin.com/pulse/comparing-gpu-a10-ampere-a1-shapes-object-oci-yuri-rassokhin-rseqf).
+
+
 
 ## API Overview
 
 ### Initialization
 ```ruby
-FlexCartesian.new(dimensions_hash)
+FlexCartesian.new(dimensions = nil, path: nil, format: :json)
 ```
-- `dimensions_hash`: a hash with named dimensions; each value can be an `Enumerable` (e.g., arrays, ranges).
+- `dimensions_hash`: optional hash with named dimensions; each value can be an `Enumerable` (arrays, ranges, etc)
+- `path`: optional path to file with stored dimensions, JSON and YAML supported
+- `format`: optional format of `path` file, defaults to JSON
 
 Example:
 ```ruby
@@ -385,10 +388,11 @@ FlexCartesian.new(dimensions)
 ---
 
 ### Iterate Over All Combinations
+
+Example:
 ```ruby
 # With block
 cartesian(dims = nil, lazy: false) { |vector| ... }
-
 # Without block: returns Enumerator
 cartesian(dims = nil, lazy: false)
 ```
@@ -402,20 +406,30 @@ s.cartesian { |v| puts "#{v.dim1} - #{v.dim2}" }
 
 ---
 
-### Add / Remove Functions
+### Handling Functions
 ```ruby
-add_function(name, &block)
-remove_function(name)
+func(command = :print, name = nil, hide: false, &block)
 ```
-- `name`: symbol — the name of the virtual dimension (e.g. `:label`)
+- `command`: symbol, one of the following
+  - :add to add function as a virtual dimension to Cartesian space
+  - :del to delete function from Cartesian space
+  - :print as defaut action, prints all the functions added to Cartesian space
+  - :run to calculate all the functions defined for Cartesian space
+- `name`: symbol, name of the virtual dimension, e.g. `:my_function`
+- `hide`: flag that hides or shows the function in .output; it is useful to hide intermediate calculations
 - `block`: a function that receives each vector and returns a computed value
 
 Functions show up in `.output` like additional (virtual) dimensions.
 
+> Note: functions must be calculated excpliticy using `:run` command.
+> Before the first calculation, a function has `nil` values in .output.
+> Explicit :run is reequired to unambigously control points in the execution flow where high computational resource is to be consumed.
+> Otherwise, automated recalculation of functions, perhaps, during `.output` would be a difficult-to-track computational burden.
+
 Example:
 ```ruby
 s = FlexCartesian.new( { dim1: [1, 2], dim2: ['A', 'B'] } )
-s.add_function(:increment) { |v| v.dim1 + 1 }
+s.func(:add, :increment) { |v| v.dim1 + 1 }
 
 s.output(format: :markdown)
 # | dim1 | dim2 | increment |
@@ -425,7 +439,6 @@ s.output(format: :markdown)
 # ...
 ```
 
-> Note: functions are virtual — they are not part of the base dimensions, but they integrate seamlessly in output.
 
 ---
 
@@ -453,16 +466,17 @@ Displays a progress bar using `ruby-progressbar`.
 
 ---
 
-### Print Table to Console
+### Print Cartesian
 ```ruby
-output(
-  separator: " | ",
-  colorize: false,
-  align: false,
-  format: :plain  # or :markdown, :csv
-  limit: nil
-)
+output(separator: " | ", colorize: false, align: true, format: :plain, limit: nil, file: nil)
+- `separator`: how to visually separate columns in the output
+- `colorize`: whether to colorize output or not
+- `align`: whether to align output by column or not
+- `format`: one of `:plain`, `:markdown`, or `:csv`
+- `limit`: break the output after the first `limit` Cartesian combinations
+- `file`: print to `file`
 ```
+
 Prints all combinations in table form (plain/markdown/CSV).  
 Markdown example:
 ```
@@ -494,32 +508,23 @@ export('file.json',
   format: :json) # or :yaml
 ```
 
----
-
-### Print Cartesian Space
-Each yielded combination is a `Struct` extended with:
-```ruby
-output(separator: " | ", colorize: false, align: true)
-```
-Example:
-```ruby
-s.cartesian { |v| v.output(colorize: true, align: false) }
-```
-
----
-
 ### Conditions on Cartesian Space
 ```ruby
-cond(command = :print, # or :set, :unset, :clear
-     index: nil, # index of a conditions to unset
-     &block # defintiion of the condition to set
-     )
+cond(command = :print, index: nil, &block)
 ```
+- `command`: one of the following
+  - `:set` to set the condition to Cartesian space
+  - `:unset` to remove the `index` condition from Cartesian space
+  - `:clear` to remove all conditions from Cartesian space
+  - `:print` default command, prints all the conditions on the Cartesian space
+- `index`: index of the condition set to Cartesian space, it is used to remove specified condition
+- `block`: definition of the condition, it should return `true` or `false` to avoid unpredictable behavior
+
 Example:
 ```ruby
 s.cond(:set) { |v| v.dim1 > v.dim3 }
 s.cond # defaults to s.cond(:print) and shows all the conditions in the form 'index | definition'
-s.cond(:unset, 0) # remove previously set condition
+s.cond(:unset, 0) # remove the condition
 s.cond(:clear) # remove all conditions, if any
 ```
 
