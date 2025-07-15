@@ -208,10 +208,8 @@ puts "Restored size without conditions: #{s.size}"
 
 puts "\nPrint Cartesian space as plain table, all functions included"
 s.output
-
 puts "\nPrint Cartesian space as Markdown"
 s.output(format: :markdown)
-
 puts "\nPrint Cartesian space as CSV"
 s.output(format: :csv)
 
@@ -223,7 +221,6 @@ puts "\nImport Cartesian space from JSON (similar method for YAML)"
 File.write('example.json', JSON.pretty_generate(example))
 puts "\nNote: after import, all assigned functions will calculate again, and they appear in the output"
 s.import('example.json').output
-
 puts "\nExport Cartesian space to YAML (similar method for JSON)"
 s.export('example.yaml', format: :yaml)
 
@@ -234,7 +231,6 @@ s.export('example.yaml', format: :yaml)
 puts "\nGet number of Cartesian combinations"
 puts "Note: .size counts only dimensions, it ignores virtual constructs (functions, conditions, etc.)"
 puts "Total size of Cartesian space: #{s.size}"
-
 puts "\nPartially converting Cartesian space to array:"
 array = s.to_a(limit: 3)
 puts array.inspect
@@ -411,10 +407,10 @@ s.cartesian { |v| puts "#{v.dim1} - #{v.dim2}" }
 func(command = :print, name = nil, hide: false, &block)
 ```
 - `command`: symbol, one of the following
-  - :add to add function as a virtual dimension to Cartesian space
-  - :del to delete function from Cartesian space
-  - :print as defaut action, prints all the functions added to Cartesian space
-  - :run to calculate all the functions defined for Cartesian space
+  - `:add` to add function as a virtual dimension to Cartesian space
+  - `:del` to delete function from Cartesian space
+  - `:print` as defaut action, prints all the functions added to Cartesian space
+  - `:run` to calculate all the functions defined for Cartesian space
 - `name`: symbol, name of the virtual dimension, e.g. `:my_function`
 - `hide`: flag that hides or shows the function in .output; it is useful to hide intermediate calculations
 - `block`: a function that receives each vector and returns a computed value
@@ -422,7 +418,7 @@ func(command = :print, name = nil, hide: false, &block)
 Functions show up in `.output` like additional (virtual) dimensions.
 
 > Note: functions must be calculated excpliticy using `:run` command.
-> Before the first calculation, a function has `nil` values in .output.
+> Before the first calculation, a function has `nil` values in `.output`.
 > Explicit :run is reequired to unambigously control points in the execution flow where high computational resource is to be consumed.
 > Otherwise, automated recalculation of functions, perhaps, during `.output` would be a difficult-to-track computational burden.
 
@@ -490,8 +486,9 @@ Markdown example:
 
 ### Import from JSON or YAML
 ```ruby
-import('file.json',
-  format: :json) # or :yaml
+import(path, format: :json)
+- `path`: input file
+- `format`: format to read, `:json` and `:yaml` supported
 ```
 
 Obsolete import methods:
@@ -502,10 +499,11 @@ s.from_yaml("file.yaml")
 
 ---
 
-### Export from JSON or YAML
+### Export to JSON or YAML
 ```ruby
-export('file.json',
-  format: :json) # or :yaml
+export(path, format: :json)
+- `path`: output file
+- `format`: format to export, `:json` and `:yaml` supported
 ```
 
 ### Conditions on Cartesian Space
