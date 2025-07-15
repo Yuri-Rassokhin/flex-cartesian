@@ -425,6 +425,7 @@ Example:
 ```ruby
 s = FlexCartesian.new( { dim1: [1, 2], dim2: ['A', 'B'] } )
 s.func(:add, :increment) { |v| v.dim1 + 1 }
+s.func(:run)
 
 s.output(format: :markdown)
 # | dim1 | dim2 | increment |
@@ -464,17 +465,17 @@ Displays a progress bar using `ruby-progressbar`.
 ### Print Cartesian
 ```ruby
 output(separator: " | ", colorize: false, align: true, format: :plain, limit: nil, file: nil)
+```
 - `separator`: how to visually separate columns in the output
 - `colorize`: whether to colorize output or not
 - `align`: whether to align output by column or not
 - `format`: one of `:plain`, `:markdown`, or `:csv`
 - `limit`: break the output after the first `limit` Cartesian combinations
 - `file`: print to `file`
-```
 
 Prints all combinations in table form (plain/markdown/CSV).  
 Markdown example:
-```
+```markdown
 | dim1 | dim2 |
 |------|------|
 |  1   | "a"  |
@@ -486,9 +487,9 @@ Markdown example:
 ### Import from JSON or YAML
 ```ruby
 import(path, format: :json)
+```
 - `path`: input file
 - `format`: format to read, `:json` and `:yaml` supported
-```
 
 Obsolete import methods:
 ```ruby
@@ -501,9 +502,9 @@ s.from_yaml("file.yaml")
 ### Export to JSON or YAML
 ```ruby
 export(path, format: :json)
+```
 - `path`: output file
 - `format`: format to export, `:json` and `:yaml` supported
-```
 
 ### Conditions on Cartesian Space
 ```ruby
