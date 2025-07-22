@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name          = "flex-cartesian"
-  spec.version       = "1.0"
+  spec.version       = "1.1"
   spec.authors       = ["Yury Rassokhin"]
   spec.email         = ["yuri.rassokhin@gmail.com"]
 
@@ -14,6 +14,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "colorize", "~> 0.8"
   spec.add_dependency "ruby-progressbar", "~> 1.13"
+  spec.add_dependency "progressbar", "~> 1.13"
   spec.add_dependency "json", "~> 2.0"
   spec.add_dependency "method_source", "~> 1.0"
 
