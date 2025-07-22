@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2 - 2025-07-23
+## Added
+- Optional progress bar to the function command :run
+
+## 1.1 - 2025-07=22
+### Fixed
+- Dependencies
+
 ## 1.0 - 2025-07-14
 ### Added
 - Optional flad for hiding function from output

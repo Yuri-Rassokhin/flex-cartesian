@@ -297,7 +297,7 @@ s.func(:add, :time) { |v| v.raw_ping[/min\/avg\/max\/(?:mdev|stddev) = [^\/]+\/(
 s.func(:add, :min) { |v| v.raw_ping[/min\/avg\/max\/(?:mdev|stddev) = ([^\/]+)/, 1]&.to_f } # fetch min time from result
 s.func(:add, :loss) { |v| v.raw_ping[/(\d+(?:\.\d+)?)% packet loss/, 1]&.to_f } # fetch ping loss from result
 
-s.func(:run) # Sweep analysis! Benchmark all possible combinations of parameters
+s.func(:run, progress: true, title: "Pinging") # Sweep analysis! Benchmark all possible combinations of parameters
 
 s.output(format: :csv, file: './result.csv') # save benchmark result as CSV
 
@@ -374,7 +374,7 @@ s.cartesian { |v| puts "#{v.dim1} - #{v.dim2}" }
 
 ### Handling Functions
 ```ruby
-func(command = :print, name = nil, hide: false, &block)
+func(command = :print, name = nil, hide: false, progress: false, title: "calculating functions", &block)
 ```
 - `command`: symbol, one of the following
   - `:add` to add function as a virtual dimension to Cartesian space
@@ -383,6 +383,8 @@ func(command = :print, name = nil, hide: false, &block)
   - `:run` to calculate all the functions defined for Cartesian space
 - `name`: symbol, name of the virtual dimension, e.g. `:my_function`
 - `hide`: flag that hides or shows the function in .output; it is useful to hide intermediate calculations
+- `progress`: show progress bar during `:run`, useful for large Cartesian space
+- `title`: title of the progress bar
 - `block`: a function that receives each vector and returns a computed value
 
 Functions show up in `.output` like additional (virtual) dimensions.

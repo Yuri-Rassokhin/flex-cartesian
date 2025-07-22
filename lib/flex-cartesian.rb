@@ -59,7 +59,7 @@ class FlexCartesian
     end
   end
 
-def func(command = :print, name = nil, hide: false, &block)
+def func(command = :print, name = nil, hide: false, progress: false, title: "calculating functions", &block)
   case command
   when :add
     raise ArgumentError, "Function name and block required for :add" unless name && block_given?
@@ -86,12 +86,26 @@ def func(command = :print, name = nil, hide: false, &block)
 
   when :run
     @function_results = {}
+
+    if progress
+    bar = ProgressBar.create(title: title, total: size, format: '%t [%B] %p%% %e')
+
+    cartesian do |v|
+      @function_results[v] ||= {}
+      @derived.each do |fname, block|
+        @function_results[v][fname] = block.call(v)
+      end
+      bar.increment if progress
+    end
+
+  else
     cartesian do |v|
       @function_results[v] ||= {}
       @derived.each do |fname, block|
         @function_results[v][fname] = block.call(v)
       end
     end
+  end
 
   else
     raise ArgumentError, "Unknown command for function: #{command.inspect}"

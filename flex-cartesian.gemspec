@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name          = "flex-cartesian"
-  spec.version       = "1.1"
+  spec.version       = "1.2"
   spec.authors       = ["Yury Rassokhin"]
   spec.email         = ["yuri.rassokhin@gmail.com"]
 
