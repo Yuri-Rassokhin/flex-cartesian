@@ -211,6 +211,9 @@ puts "\nPrint Cartesian space as Markdown"
 s.output(format: :markdown)
 puts "\nPrint Cartesian space as CSV"
 s.output(format: :csv)
+puts "\nGranular output of Cartesian space dimensions: #{s.dimensions(values: false)}"
+puts "\nGranular output of Cartesian vectors:"
+s.cartesian { |v| puts s.dimensions(v, separator: ' ') }
 
 
 
@@ -435,7 +438,7 @@ Displays a progress bar using `ruby-progressbar`.
 
 ---
 
-### Print Cartesian
+### Generate Output
 ```ruby
 output(separator: " | ", colorize: false, align: true, format: :plain, limit: nil, file: nil)
 ```
@@ -454,6 +457,16 @@ Markdown example:
 |  1   | "a"  |
 |  2   | "b"  |
 ```
+
+```ruby
+dimensions(data = @dimensions, raw: false, separator: ', ', dimensions: true, values: true)
+```
+Generates formatted Cartesian dimensions or vectors of Cartesian space
+- `data`: what to format, either Cartesian vector (usually `s.cartesian { |v| ... }) or entire Cartesian dimensions
+- `raw`: if enabled, overrides any other formarring flags and returns the same as `.inspect`
+- `separator`: how to separate individual components
+- `dimensions`: whether or not show dimension names
+- `values`: whether or not show value(s) associated with dimensions
 
 ---
 

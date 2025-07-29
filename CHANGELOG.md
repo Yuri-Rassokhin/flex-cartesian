@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.2 - 2025-07-28
+### Added
+- .dimensions functionality extended to more granular formatting
+
+## 1.2.1 - 2025-07-28
+### Fixed
+- When adding function, check if its namesake exists
+
 ## 1.2 - 2025-07-23
 ## Added
 - Optional progress bar to the function command :run

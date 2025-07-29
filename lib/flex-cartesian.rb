@@ -25,11 +25,11 @@ module FlexOutput
 end
 
 class FlexCartesian
-  attr :dimensions
 
   def initialize(dimensions = nil, path: nil, format: :json)
     if dimensions && path
-      $logger.msg "Please specify either dimensions or path to dimensions", :error
+      puts "Please specify either dimensions or path to dimensions"
+      exit
     end
     @dimensions = dimensions
     @conditions = []
@@ -37,6 +37,18 @@ class FlexCartesian
     @function_results = {}  # key: Struct instance.object_id => { fname => value }
     @function_hidden = Set.new
     import(path, format: format) if path
+  end
+
+  def dimensions(data = @dimensions, raw: false, separator: ', ', dimensions: true, values: true)
+    return data.inspect if raw # by default, with no data speciaifed, we assume dimensions of Cartesian
+    return nil if not dimensions and not values
+
+    if data.is_a?(Struct) or data.is_a?(Hash) # vector in Cartesian or entire Cartesian
+      data.each_pair.map { |k, v| (dimensions ? "#{k}" : "") + ((dimensions and values) ? "=" : "") + (values ? "#{v}" : "") }.join(separator)
+    else
+      puts "Incorrect type of dimensions: #{data.class}"
+      exit
+    end
   end
 
   def cond(command = :print, index: nil, &block)
@@ -114,6 +126,11 @@ end
 
   def add_function(name, &block)
     raise ArgumentError, "Block required" unless block_given?
+    if reserved_function_names.include?(name.to_sym)
+      raise ArgumentError, "Function name '#{name}' has been already added"
+    elsif reserved_struct_names.include?(name.to_sym)
+      raise ArgumentError, "Name '#{name}' has been reserved for internal method, you can't use it for a function"
+    end
     @derived[name.to_sym] = block
   end
 
@@ -281,6 +298,14 @@ end
   end
 
 private
+
+  def reserved_struct_names
+    (base_struct_methods = Struct.new(:dummy).methods(false) + Struct.new(:dummy).instance_methods(false)).uniq
+  end
+
+  def reserved_function_names
+    (self.methods + self.class.instance_methods(false)).uniq
+  end
 
   def fmt_cell(value, colorize, width = nil)
     str = case value
