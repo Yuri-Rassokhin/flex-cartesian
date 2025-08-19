@@ -34,6 +34,7 @@ class FlexCartesian
     @dimensions = dimensions
     @conditions = []
     @derived = {}
+    @order = { first: nil, last: nil }
     @function_results = {}  # key: Struct instance.object_id => { fname => value }
     @function_hidden = Set.new
     import(path, format: format) if path
@@ -71,11 +72,11 @@ class FlexCartesian
     end
   end
 
-def func(command = :print, name = nil, hide: false, progress: false, title: "calculating functions", &block)
+def func(command = :print, name = nil, hide: false, progress: false, title: "calculating functions", order: nil, &block)
   case command
   when :add
     raise ArgumentError, "Function name and block required for :add" unless name && block_given?
-    add_function(name, &block)
+    add_function(name, order: order, &block)
     @function_hidden.delete(name.to_sym)
     @function_hidden << name.to_sym if hide
 
@@ -89,10 +90,17 @@ def func(command = :print, name = nil, hide: false, progress: false, title: "cal
     else
       @derived.each do |fname, fblock|
         source = fblock.source rescue '(source unavailable)'
-
         body = source.sub(/^.*?\s(?=(\{|\bdo\b))/, '').strip
-
-        puts "  #{fname.inspect.ljust(12)}| #{body}#{@function_hidden.include?(fname) ? ' [HIDDEN]' : ''}"
+        order = ""
+        if @order.value?(fname.to_sym)
+          case @order.key(fname.to_sym)
+          when :first
+            order = " [FIRST]"
+          when :last
+            order = " [LAST]"
+          end
+        end
+        puts "  #{fname.inspect.ljust(12)}| #{body}#{@function_hidden.include?(fname) ? ' [HIDDEN]' : ''}#{order}"
       end
     end
 
@@ -124,18 +132,38 @@ def func(command = :print, name = nil, hide: false, progress: false, title: "cal
   end
 end
 
-  def add_function(name, &block)
+  def add_function(name, order: nil , &block)
     raise ArgumentError, "Block required" unless block_given?
     if reserved_function_names.include?(name.to_sym)
       raise ArgumentError, "Function name '#{name}' has been already added"
     elsif reserved_struct_names.include?(name.to_sym)
       raise ArgumentError, "Name '#{name}' has been reserved for internal method, you can't use it for a function"
     end
-    @derived[name.to_sym] = block
+    if order == :last
+      @derived[name.to_sym] = block # add to the tail of the hash
+      @order[:last] = name.to_sym
+    elsif order == :first
+      @derived = { name.to_sym => block }.merge(@derived) # add to the head of the hash
+      @order[:first] = name.to_sym
+    elsif order == nil
+      if @order[:last] != nil
+        last_name = @order[:last]
+        last_body = @derived[last_name]
+        @derived.delete(@order[:last]) # remove the tail of the hash
+        @derived[name.to_sym] = block # add new function to the tail of the hash
+        @derived[last_name] = last_body # restore :last function in the tail of the hash
+      else
+        @derived[name.to_sym] = block
+      end
+    else
+      raise ArgumentError, "unknown function order '#{order}'"
+    end
   end
 
   def remove_function(name)
     @derived.delete(name.to_sym)
+    @order[:last] = nil if @order[:last] == name.to_sym
+    @order[:first] = nil if @order[:first] == name.to_sym
   end
 
   def cartesian(dims = nil, lazy: false)

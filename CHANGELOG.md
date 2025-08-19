@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.0 - 2025-08-19
+### Added
+- .func accepts flag order:
+
 ## 1.2.2 - 2025-07-28
 ### Added
 - .dimensions functionality extended to more granular formatting

@@ -179,7 +179,16 @@ puts "\Add and then remove function 'test'"
 s.func(:add, :test) { |v| v.dim3.to_i }
 s.func(:del, :test)
 
+puts "\nThis function will calculate first, always"
+s.func(:add, :test_first, order: :first) { puts "HERE" }
 
+puts "\nThis function will calculate last, always"
+s.func(:add, :test_last, order: :last) { puts "HERE" }
+
+puts "\nNew functions respect first and last ones"
+s.func(:add, :test_more) { puts "HERE" }
+
+puts "\nFirst and last functions are handy for pre- and post-processing for each combination"
 
 # CONDITIONS ON CARTESIAN SPACE
 
@@ -377,7 +386,7 @@ s.cartesian { |v| puts "#{v.dim1} - #{v.dim2}" }
 
 ### Handling Functions
 ```ruby
-func(command = :print, name = nil, hide: false, progress: false, title: "calculating functions", &block)
+func(command = :print, name = nil, hide: false, progress: false, title: "calculating functions", order: nil, &block)
 ```
 - `command`: symbol, one of the following
   - `:add` to add function as a virtual dimension to Cartesian space
@@ -388,6 +397,7 @@ func(command = :print, name = nil, hide: false, progress: false, title: "calcula
 - `hide`: flag that hides or shows the function in .output; it is useful to hide intermediate calculations
 - `progress`: show progress bar during `:run`, useful for large Cartesian space
 - `title`: title of the progress bar
+- `order`: can be `:first` or `:last` to make the function calculate before or after all other functions
 - `block`: a function that receives each vector and returns a computed value
 
 Functions show up in `.output` like additional (virtual) dimensions.
