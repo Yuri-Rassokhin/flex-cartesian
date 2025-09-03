@@ -229,6 +229,11 @@ end
   end
 
 def output(separator: " | ", colorize: false, align: true, format: :plain, limit: nil, file: nil)
+  sep = if format == :csv
+          [";", ","].include?(separator) ? separator : ";"
+        else
+          separator
+        end
   rows = if @function_results && !@function_results.empty?
            @function_results.keys
          else
@@ -265,9 +270,9 @@ def output(separator: " | ", colorize: false, align: true, format: :plain, limit
     lines << "| " + headers.map { |h| h.ljust(widths[h] || h.size) }.join(" | ") + " |"
     lines << "|-" + headers.map { |h| "-" * (widths[h] || h.size) }.join("-|-") + "-|"
   when :csv
-    lines << headers.join(",")
+    lines << headers.join(sep)
   else
-    lines << headers.map { |h| fmt_cell(h, colorize, widths[h]) }.join(separator)
+    lines << headers.map { |h| fmt_cell(h, colorize, widths[h]) }.join(sep)
   end
 
   # Rows
@@ -276,7 +281,7 @@ def output(separator: " | ", colorize: false, align: true, format: :plain, limit
              visible_func_names.map { |fname| @function_results&.dig(row, fname) }
 
     line = headers.zip(values).map { |(_, val)| fmt_cell(val, colorize, widths[_]) }
-    lines << (format == :csv ? line.join(",") : line.join(separator))
+    lines << line.join(sep)
   end
 
   # Output to console or file

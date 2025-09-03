@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.1 - 2025-09-03
+## Fixed
+- CSV format expects separator to be one of ";" or "," otherwise enforces ";"
+
 ## 1.3.0 - 2025-08-19
 ### Added
 - .func accepts flag order:
