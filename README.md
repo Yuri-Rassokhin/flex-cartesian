@@ -452,7 +452,7 @@ Displays a progress bar using `ruby-progressbar`.
 ```ruby
 output(separator: " | ", colorize: false, align: true, format: :plain, limit: nil, file: nil)
 ```
-- `separator`: how to visually separate columns in the output
+- `separator`: how to visually separate columns in the output. For :csv, it defaults to ";" unless it's one of ";" or ","
 - `colorize`: whether to colorize output or not
 - `align`: whether to align output by column or not
 - `format`: one of `:plain`, `:markdown`, or `:csv`
