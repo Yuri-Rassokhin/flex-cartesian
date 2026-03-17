@@ -5,6 +5,7 @@ require 'json'
 require 'yaml'
 require 'method_source'
 require 'set'
+require_relative 'plan'
 
 module FlexOutput
   def output(separator: " | ", colorize: false, align: true)
@@ -110,7 +111,7 @@ def func(command = :print, name = nil, hide: false, progress: false, title: "cal
     if progress
     bar = ProgressBar.create(title: title, total: size, format: '%t [%B] %p%% %e')
 
-    cartesian do |v|
+    each_point do |v|
       @function_results[v] ||= {}
       @derived.each do |fname, block|
         @function_results[v][fname] = block.call(v)
@@ -166,6 +167,32 @@ end
     @order[:first] = nil if @order[:first] == name.to_sym
   end
 
+  def plan(type = nil, **opts)
+    @plan =
+      case type
+      when nil, :cartesian
+        nil
+      when :morris
+        require_relative 'plans/morris'
+        Morris.new(dimensions: @dimensions, **opts)
+      else
+        raise ArgumentError, "Unknown plan type: #{type.inspect}"
+      end
+
+    self
+  end
+
+  # Wrapper on top of cartesian iterator
+  # This wrapper decides whether we sweep over entire Cartesian space
+  # or apply a plan to pick selected points only
+  def each_point(&blk)
+    if @plan
+      @plan.each_point(&blk)
+    else
+      cartesian(&blk)
+    end
+  end
+
   def cartesian(dims = nil, lazy: false)
   dimensions = dims || @dimensions
   return nil unless dimensions.is_a?(Hash)
@@ -196,6 +223,9 @@ end
 
   def size
     return 0 unless @dimensions.is_a?(Hash)
+
+    return @plan.size if @plan
+
     if @conditions.empty?
       values = @dimensions.values.map { |dim| dim.is_a?(Enumerable) ? dim.to_a : [dim] }
       return 0 if values.any?(&:empty?)
