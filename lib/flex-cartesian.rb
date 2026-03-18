@@ -306,7 +306,7 @@ def output(separator: " | ", colorize: false, align: true, format: :plain, limit
             else
               @function_results&.dig(r, h.to_sym)
             end
-      Output.fmt_cell(val, false).size
+      Output.fmt_cell(val, colorize: false, header: true).size
     end
     [h, [h.size, *values].max]
   } : {}
@@ -321,7 +321,7 @@ def output(separator: " | ", colorize: false, align: true, format: :plain, limit
   when :csv
     lines << headers.join(sep)
   else
-    lines << headers.map { |h| Output.fmt_cell(h, colorize, widths[h]) }.join(sep)
+    lines << headers.map { |h| Output.fmt_cell(h, colorize: colorize, header: true, width: widths[h]) }.join(sep)
   end
 
   # Rows
@@ -329,7 +329,7 @@ def output(separator: " | ", colorize: false, align: true, format: :plain, limit
     values = row.members.map { |m| row.send(m) } +
              visible_func_names.map { |fname| @function_results&.dig(row, fname) }
 
-    line = headers.zip(values).map { |(_, val)| Output.fmt_cell(val, colorize, widths[_]) }
+    line = headers.zip(values).map { |(_, val)| Output.fmt_cell(val, colorize: colorize, width: widths[_]) }
     lines << line.join(sep)
   end
 
