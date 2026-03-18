@@ -101,6 +101,35 @@ def analyze(results:, metric:)
   end.compact.sort_by { |row| -row[:importance] }
 end
 
+def recommend(rows)
+  return rows if rows.nil? || rows.empty?
+
+  max_importance = rows.map { |r| r[:importance] }.max
+
+  threshold_high = max_importance * 0.2
+  threshold_low  = max_importance * 0.05
+
+  rows.map do |row|
+    imp = row[:importance]
+    sigma = row[:nonlinearity]
+
+    category, recommendation =
+      if imp >= threshold_high
+        if sigma > imp
+          [ "Strong nonlinear influence", "Further investigation with high precision" ]
+        else
+          [ "Strong linear influence", "Fix several pivotal values" ]
+        end
+      elsif imp <= threshold_low
+        [ "Negligible", "Fix its value to reduce dimensiality" ]
+      else
+        [ "Moderate influence", "Further investigation may be required" ]
+      end
+
+    row.merge(category: category, recommendation: recommendation)
+  end
+end
+
   private
 
   def build!

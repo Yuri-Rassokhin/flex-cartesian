@@ -191,9 +191,10 @@ end
     self
   end
 
-  def analyze(metric:, **opts)
+  def analyze(metric:, recommend: false, **opts)
     raise "No active plan" unless @plan
     rows = @plan.analyze(results: @function_results, metric: metric)
+    rows = @plan.recommend(rows) if recommend
     Output.table(rows, **opts)
   end
 
