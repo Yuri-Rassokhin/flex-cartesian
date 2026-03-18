@@ -72,18 +72,15 @@ def analyze(results:, metric:)
     next if y1.nil? || y2.nil?
 
     ee = (y2 - y1).to_f / edge.step
-
     effects[edge.factor] << ee
   end
 
-  # aggregate
   effects.map do |factor, ees|
     n = ees.size
     next if n == 0
 
     mean = ees.sum / n.to_f
-
-    mu_star = ees.map(&:abs).sum / n.to_f
+    importance = ees.map(&:abs).sum / n.to_f
 
     variance =
       if n > 1
@@ -92,16 +89,16 @@ def analyze(results:, metric:)
         0.0
       end
 
-    sigma = Math.sqrt(variance)
+    nonlinearity = Math.sqrt(variance)
 
     {
-      factor: factor,
-      mu_star: mu_star,
-      sigma: sigma,
-      mean: mean,
+      parameter: factor,
+      importance: importance.round(2),
+      nonlinearity: nonlinearity.round(2),
+      mean: mean.round(2),
       n: n
     }
-  end.compact.sort_by { |row| -row[:mu_star] }
+  end.compact.sort_by { |row| -row[:importance] }
 end
 
   private
