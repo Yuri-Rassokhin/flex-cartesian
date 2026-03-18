@@ -95,8 +95,8 @@ def analyze(results:, metric:)
       parameter: factor,
       importance: importance.round(2),
       nonlinearity: nonlinearity.round(2),
-      mean: mean.round(2),
-      n: n
+#      mean: mean.round(2), # not so much informative
+      probes: n
     }
   end.compact.sort_by { |row| -row[:importance] }
 end

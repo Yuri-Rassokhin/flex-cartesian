@@ -6,6 +6,7 @@ require 'yaml'
 require 'method_source'
 require 'set'
 require_relative 'plan'
+require_relative 'output'
 
 module FlexOutput
   def output(separator: " | ", colorize: false, align: true)
@@ -190,9 +191,10 @@ end
     self
   end
 
-  def analyze(metric:)
+  def analyze(metric:, **opts)
     raise "No active plan" unless @plan
-    @plan.analyze(results: @function_results, metric: metric)
+    rows = @plan.analyze(results: @function_results, metric: metric)
+    Output.table(rows, **opts)
   end
 
   # Wrapper on top of cartesian iterator
@@ -303,7 +305,7 @@ def output(separator: " | ", colorize: false, align: true, format: :plain, limit
             else
               @function_results&.dig(r, h.to_sym)
             end
-      fmt_cell(val, false).size
+      Output.fmt_cell(val, false).size
     end
     [h, [h.size, *values].max]
   } : {}
@@ -318,7 +320,7 @@ def output(separator: " | ", colorize: false, align: true, format: :plain, limit
   when :csv
     lines << headers.join(sep)
   else
-    lines << headers.map { |h| fmt_cell(h, colorize, widths[h]) }.join(sep)
+    lines << headers.map { |h| Output.fmt_cell(h, colorize, widths[h]) }.join(sep)
   end
 
   # Rows
@@ -326,7 +328,7 @@ def output(separator: " | ", colorize: false, align: true, format: :plain, limit
     values = row.members.map { |m| row.send(m) } +
              visible_func_names.map { |fname| @function_results&.dig(row, fname) }
 
-    line = headers.zip(values).map { |(_, val)| fmt_cell(val, colorize, widths[_]) }
+    line = headers.zip(values).map { |(_, val)| Output.fmt_cell(val, colorize, widths[_]) }
     lines << line.join(sep)
   end
 
@@ -386,13 +388,5 @@ private
     (self.methods + self.class.instance_methods(false)).uniq
   end
 
-  def fmt_cell(value, colorize, width = nil)
-    str = case value
-          when String then value
-          else value.inspect
-          end
-    str = str.ljust(width) if width
-    colorize ? str.colorize(:cyan) : str
-  end
 end
 
