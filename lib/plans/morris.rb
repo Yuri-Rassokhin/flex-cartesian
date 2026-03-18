@@ -52,6 +52,58 @@ class Morris < Plan
     @points[idx]
   end
 
+def analyze(results:, metric:)
+  raise ArgumentError, "metric must be provided" unless metric
+
+  effects = Hash.new { |h, k| h[k] = [] }
+
+  @edges.each do |edge|
+    from_v = @points[edge.from_idx]
+    to_v   = @points[edge.to_idx]
+
+    from_res = results[from_v]
+    to_res   = results[to_v]
+
+    next unless from_res && to_res
+
+    y1 = from_res[metric]
+    y2 = to_res[metric]
+
+    next if y1.nil? || y2.nil?
+
+    ee = (y2 - y1).to_f / edge.step
+
+    effects[edge.factor] << ee
+  end
+
+  # aggregate
+  effects.map do |factor, ees|
+    n = ees.size
+    next if n == 0
+
+    mean = ees.sum / n.to_f
+
+    mu_star = ees.map(&:abs).sum / n.to_f
+
+    variance =
+      if n > 1
+        ees.map { |e| (e - mean)**2 }.sum / (n - 1).to_f
+      else
+        0.0
+      end
+
+    sigma = Math.sqrt(variance)
+
+    {
+      factor: factor,
+      mu_star: mu_star,
+      sigma: sigma,
+      mean: mean,
+      n: n
+    }
+  end.compact.sort_by { |row| -row[:mu_star] }
+end
+
   private
 
   def build!

@@ -20,5 +20,9 @@ class Plan
     {}
   end
 
+  def analyze(results:, metric:)
+    raise NotImplementedError, "#{self.class} does not implement #analyze"
+  end
+
 end
 

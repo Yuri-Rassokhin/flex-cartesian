@@ -39,6 +39,7 @@ class FlexCartesian
     @function_results = {}  # key: Struct instance.object_id => { fname => value }
     @function_hidden = Set.new
     import(path, format: format) if path
+    @plan = nil
   end
 
   def dimensions(data = @dimensions, raw: false, separator: ', ', dimensions: true, values: true)
@@ -167,6 +168,13 @@ end
     @order[:first] = nil if @order[:first] == name.to_sym
   end
 
+  def decorate_point(v)
+    @derived&.each do |name, block|
+      v.define_singleton_method(name) { block.call(v) }
+    end
+    v
+  end
+
   def plan(type = nil, **opts)
     @plan =
       case type
@@ -182,12 +190,20 @@ end
     self
   end
 
+  def analyze(metric:)
+    raise "No active plan" unless @plan
+    @plan.analyze(results: @function_results, metric: metric)
+  end
+
   # Wrapper on top of cartesian iterator
   # This wrapper decides whether we sweep over entire Cartesian space
   # or apply a plan to pick selected points only
   def each_point(&blk)
     if @plan
-      @plan.each_point(&blk)
+      @plan.each_point do |v|
+        next if @conditions.any? { |cond| !cond.call(v) }
+        blk.call(decorate_point(v))
+      end
     else
       cartesian(&blk)
     end
