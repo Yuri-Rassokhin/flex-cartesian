@@ -26,7 +26,7 @@ class Plan
     raise NotImplementedError, "#{self.class} does not implement #analyze"
   end
 
-  def recommend(rows)
+  def recommend(rows, metric:)
     rows
   end
 

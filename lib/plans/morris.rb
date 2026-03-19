@@ -92,31 +92,31 @@ def analyze(results:, metric:)
     nonlinearity = Math.sqrt(variance)
 
     {
-      parameter: factor,
-      importance: importance.round(2),
+      parameter: factor.to_s,
+      "influence[#{metric}]": importance.round(2),
       nonlinearity: nonlinearity.round(2),
 #      mean: mean.round(2), # not so much informative
       probes: n
     }
-  end.compact.sort_by { |row| -row[:importance] }
+  end.compact.sort_by { |row| -row[:"influence[#{metric}]"] }
 end
 
-def recommend(rows)
+def recommend(rows, metric:)
   return rows if rows.nil? || rows.empty?
 
-  max_importance = rows.map { |r| r[:importance] }.max
+  max_importance = rows.map { |r| r[:"influence[#{metric}]"] }.max
 
   threshold_high = max_importance * 0.2
   threshold_low  = max_importance * 0.05
 
   rows.map do |row|
-    imp = row[:importance]
+    imp = row[:"influence[#{metric}]"]
     sigma = row[:nonlinearity]
 
     category, recommendation =
       if imp >= threshold_high
         if sigma > imp
-          [ "Strong nonlinear influence", "Further investigation with high precision" ]
+          [ "Strong nonlinear influence", "Further investigation with full coverage" ]
         else
           [ "Strong linear influence", "Fix several pivotal values" ]
         end
