@@ -22,11 +22,11 @@ class Plan
     {}
   end
 
-  def analyze(results:, metric:)
-    raise NotImplementedError, "#{self.class} does not implement #analyze"
+  def sensitivity(results:, function:)
+    raise NotImplementedError, "#{self.class} does not implement #sensitivity"
   end
 
-  def recommend(rows, metric:)
+  def recommend(rows, function:)
     rows
   end
 

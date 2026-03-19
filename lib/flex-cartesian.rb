@@ -191,10 +191,10 @@ end
     self
   end
 
-  def analyze(metric:, recommend: false, **opts)
+  def sensitivity(function:, recommend: false, **opts)
     raise "No active plan" unless @plan
-    rows = @plan.analyze(results: @function_results, metric: metric)
-    rows = @plan.recommend(rows, metric: metric) if recommend
+    rows = @plan.sensitivity(results: @function_results, function: function)
+    rows = @plan.recommend(rows, function: function) if recommend
     Output.table(rows, **opts)
   end
 

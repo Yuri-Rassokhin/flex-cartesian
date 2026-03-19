@@ -52,8 +52,8 @@ class Morris < Plan
     @points[idx]
   end
 
-def analyze(results:, metric:)
-  raise ArgumentError, "metric must be provided" unless metric
+def sensitivity(results:, function:)
+  raise ArgumentError, "target function must be provided" unless function
 
   effects = Hash.new { |h, k| h[k] = [] }
 
@@ -66,8 +66,8 @@ def analyze(results:, metric:)
 
     next unless from_res && to_res
 
-    y1 = from_res[metric]
-    y2 = to_res[metric]
+    y1 = from_res[function]
+    y2 = to_res[function]
 
     next if y1.nil? || y2.nil?
 
@@ -93,24 +93,24 @@ def analyze(results:, metric:)
 
     {
       parameter: factor.to_s,
-      "influence[#{metric}]": importance.round(2),
+      "influence[#{function}]": importance.round(2),
       nonlinearity: nonlinearity.round(2),
 #      mean: mean.round(2), # not so much informative
       probes: n
     }
-  end.compact.sort_by { |row| -row[:"influence[#{metric}]"] }
+  end.compact.sort_by { |row| -row[:"influence[#{function}]"] }
 end
 
-def recommend(rows, metric:)
+def recommend(rows, function:)
   return rows if rows.nil? || rows.empty?
 
-  max_importance = rows.map { |r| r[:"influence[#{metric}]"] }.max
+  max_importance = rows.map { |r| r[:"influence[#{function}]"] }.max
 
   threshold_high = max_importance * 0.2
   threshold_low  = max_importance * 0.05
 
   rows.map do |row|
-    imp = row[:"influence[#{metric}]"]
+    imp = row[:"influence[#{function}]"]
     sigma = row[:nonlinearity]
 
     category, recommendation =
