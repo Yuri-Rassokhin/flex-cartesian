@@ -1,5 +1,3 @@
-require_relative 'output'
-
 # This wrapper class describes 'benchmark plan'
 # Effectively, Plan objects picks selected points from
 # Cartesian space instead of sweeping over the entire space
