@@ -79,7 +79,8 @@ def func(command = :print, name = nil, hide: false, progress: false, title: "cal
   when :run
     @function_results = {}
 
-    if progress bar = ProgressBar.create(title: title, total: size, format: '%t [%B] %p%% %e')
+    if progress
+      bar = ProgressBar.create(title: title, total: size, format: '%t [%B] %p%% %e')
 
     each_point do |v|
       @function_results[v] ||= {}
@@ -109,7 +110,7 @@ end
   def each_point(&blk)
     if @plan
       @plan.each_point do |v|
-        next if @conditions.any? { |cond| !cond.call(v) }
+        next unless valid?(v)
         blk.call(decorate_point(v))
       end
     else
@@ -139,7 +140,7 @@ def cartesian(dims = nil, lazy: false)
       struct_instance.define_singleton_method(name) { block.call(struct_instance) }
     end
 
-  next if @conditions.any? { |cond| !cond.call(struct_instance) }
+    next unless valid?(struct_instance)
 
     yield struct_instance
   end
