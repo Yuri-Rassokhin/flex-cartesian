@@ -8,6 +8,8 @@ require 'set'
 require_relative 'plan'
 require_relative 'output'
 
+
+
 module FlexOutput
   def output(separator: " | ", colorize: false, align: true)
     return puts "(empty struct)" unless respond_to?(:members) && respond_to?(:values)
@@ -25,6 +27,8 @@ module FlexOutput
     puts line.join(separator)
   end
 end
+
+
 
 class FlexCartesian
 
@@ -135,47 +139,6 @@ def func(command = :print, name = nil, hide: false, progress: false, title: "cal
   end
 end
 
-  def add_function(name, order: nil , &block)
-    raise ArgumentError, "Block required" unless block_given?
-    if reserved_function_names.include?(name.to_sym)
-      raise ArgumentError, "Function name '#{name}' has been already added"
-    elsif reserved_struct_names.include?(name.to_sym)
-      raise ArgumentError, "Name '#{name}' has been reserved for internal method, you can't use it for a function"
-    end
-    if order == :last
-      @derived[name.to_sym] = block # add to the tail of the hash
-      @order[:last] = name.to_sym
-    elsif order == :first
-      @derived = { name.to_sym => block }.merge(@derived) # add to the head of the hash
-      @order[:first] = name.to_sym
-    elsif order == nil
-      if @order[:last] != nil
-        last_name = @order[:last]
-        last_body = @derived[last_name]
-        @derived.delete(@order[:last]) # remove the tail of the hash
-        @derived[name.to_sym] = block # add new function to the tail of the hash
-        @derived[last_name] = last_body # restore :last function in the tail of the hash
-      else
-        @derived[name.to_sym] = block
-      end
-    else
-      raise ArgumentError, "unknown function order '#{order}'"
-    end
-  end
-
-  def remove_function(name)
-    @derived.delete(name.to_sym)
-    @order[:last] = nil if @order[:last] == name.to_sym
-    @order[:first] = nil if @order[:first] == name.to_sym
-  end
-
-  def decorate_point(v)
-    @derived&.each do |name, block|
-      v.define_singleton_method(name) { block.call(v) }
-    end
-    v
-  end
-
   def plan(type = nil, **opts)
     @plan =
       case type
@@ -212,7 +175,7 @@ end
     end
   end
 
-  def cartesian(dims = nil, lazy: false)
+def cartesian(dims = nil, lazy: false)
   dimensions = dims || @dimensions
   return nil unless dimensions.is_a?(Hash)
 
@@ -379,7 +342,43 @@ end
     @dimensions = data
   end
 
+
+
 private
+
+  def add_function(name, order: nil , &block)
+    raise ArgumentError, "Block required" unless block_given?
+    if reserved_function_names.include?(name.to_sym)
+      raise ArgumentError, "Function name '#{name}' has been already added"
+    elsif reserved_struct_names.include?(name.to_sym)
+      raise ArgumentError, "Name '#{name}' has been reserved for internal method, you can't use it for a function"
+    end
+    if order == :last
+      @derived[name.to_sym] = block # add to the tail of the hash
+      @order[:last] = name.to_sym
+    elsif order == :first
+      @derived = { name.to_sym => block }.merge(@derived) # add to the head of the hash
+      @order[:first] = name.to_sym
+    elsif order == nil
+      if @order[:last] != nil
+        last_name = @order[:last]
+        last_body = @derived[last_name]
+        @derived.delete(@order[:last]) # remove the tail of the hash
+        @derived[name.to_sym] = block # add new function to the tail of the hash
+        @derived[last_name] = last_body # restore :last function in the tail of the hash
+      else
+        @derived[name.to_sym] = block
+      end
+    else
+      raise ArgumentError, "unknown function order '#{order}'"
+    end
+  end
+
+  def remove_function(name)
+    @derived.delete(name.to_sym)
+    @order[:last] = nil if @order[:last] == name.to_sym
+    @order[:first] = nil if @order[:first] == name.to_sym
+  end
 
   def reserved_struct_names
     (base_struct_methods = Struct.new(:dummy).methods(false) + Struct.new(:dummy).instance_methods(false)).uniq
@@ -387,6 +386,13 @@ private
 
   def reserved_function_names
     (self.methods + self.class.instance_methods(false)).uniq
+  end
+
+  def decorate_point(v)
+    @derived&.each do |name, block|
+      v.define_singleton_method(name) { block.call(v) }
+    end
+    v
   end
 
 end
