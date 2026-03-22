@@ -1,17 +1,42 @@
 module FlexCartesianUtilities
 
   def dimensions(data = @dimensions, raw: false, separator: ', ', dimensions: true, values: true)
-    return data.inspect if raw # by default, with no data speciaifed, we assume dimensions of Cartesian
-    return nil if not dimensions and not values
 
-    if data.is_a?(Struct) or data.is_a?(Hash) # vector in Cartesian or entire Cartesian
-      data.each_pair.map { |k, v| (dimensions ? "#{k}" : "") + ((dimensions and values) ? "=" : "") + (values ? "#{v}" : "") }.join(separator)
-    else
-      puts "Incorrect type of dimensions: #{data.class}"
-      exit
+    # DEPRECATED
+    puts "WARNING: `.dimensions` will be renamed to `.elements` in the next version"
+
+    # DEPRECATED FLAG `raw`, TO BE REMOVED
+    if raw
+      puts "WARNING: flag `raw` is deprecated in `.dimensions` and will be removed in the next version, please use `.inspect` instead"
+      return data.inspect
     end
+
+    # edge case: nothing specified
+    return nil if !dimensions && !values
+
+    # edge case: data must be either Struct (vector in parameter space) or Hash (parameter space)
+    if not (data.is_a?(Struct) or data.is_a?(Hash))
+        puts "Incorrect type of dimensions: #{data.class}"
+        raise ArgumentError
+    end
+
+    # if `data` is a vector, process it
+    if data.is_a?(Struct)
+      return nil unless valid?(data)
+      return data.each_pair.map { |k, val| (dimensions ? "#{k}" : "") + ((dimensions && values) ? "=" : "") + (values ? "#{val}" : "") }.join(separator)
+    end
+
+    # finally, if `data` is entire parameter space, recurseively process it vector by vector
+    result = []
+    cartesian(data) do |v|
+      next unless valid?(v)
+      result << dimensions(v, raw: raw, separator: separator, dimensions: dimensions, values: values)
+    end
+
+    result.join("\n")
   end
 
+  # Return number of combinations in parameter space, with respect to conditions
   def size
     return 0 unless @dimensions.is_a?(Hash)
 
@@ -31,6 +56,7 @@ module FlexCartesianUtilities
     end
   end
 
+  # Convert first `limit` combinations of parameter space to array, with respect to conditions
   def to_a(limit: nil)
     result = []
     cartesian do |v|

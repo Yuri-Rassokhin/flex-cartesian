@@ -70,8 +70,7 @@ def func(command = :print, name = nil, hide: false, progress: false, title: "cal
   when :run
     @function_results = {}
 
-    if progress
-    bar = ProgressBar.create(title: title, total: size, format: '%t [%B] %p%% %e')
+    if progress bar = ProgressBar.create(title: title, total: size, format: '%t [%B] %p%% %e')
 
     each_point do |v|
       @function_results[v] ||= {}
@@ -197,6 +196,11 @@ private
       v.define_singleton_method(name) { block.call(v) }
     end
     v
+  end
+
+  # Test if `data` vector satisfies all space conditions
+  def valid?(data)
+    @conditions.none? { |cond| !cond.call(data) }
   end
 
 end

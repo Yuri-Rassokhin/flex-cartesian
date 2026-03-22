@@ -16,8 +16,4 @@ s.output
 s.output(format: :markdown)
 # Same as above, as CSV
 s.output(format: :csv)
-# Print dimension names only
-puts "#{s.dimensions(values: false, separator: ' ')}"
-# print all combinations of the parameter space with dimension names and values
-s.cartesian { |v| puts s.dimensions(v, separator: ' ') }
 
