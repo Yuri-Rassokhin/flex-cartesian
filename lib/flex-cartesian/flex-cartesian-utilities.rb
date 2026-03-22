@@ -1,40 +1,32 @@
 module FlexCartesianUtilities
 
-  def dimensions(data = @dimensions, raw: false, separator: ', ', dimensions: true, values: true)
+def dimensions(data = @dimensions, raw: false, separator: ', ', dimensions: true, values: true, lazy: false)
+  return nil if !dimensions && !values
 
-    # DEPRECATED
-    puts "WARNING: `.dimensions` will be renamed to `.elements` in the next version"
-
-    # DEPRECATED FLAG `raw`, TO BE REMOVED
-    if raw
-      puts "WARNING: flag `raw` is deprecated in `.dimensions` and will be removed in the next version, please use `.inspect` instead"
-      return data.inspect
-    end
-
-    # edge case: nothing specified
-    return nil if !dimensions && !values
-
-    # edge case: data must be either Struct (vector in parameter space) or Hash (parameter space)
-    if not (data.is_a?(Struct) or data.is_a?(Hash))
-        puts "Incorrect type of dimensions: #{data.class}"
-        raise ArgumentError
-    end
-
-    # if `data` is a vector, process it
-    if data.is_a?(Struct)
-      return nil unless valid?(data)
-      return data.each_pair.map { |k, val| (dimensions ? "#{k}" : "") + ((dimensions && values) ? "=" : "") + (values ? "#{val}" : "") }.join(separator)
-    end
-
-    # finally, if `data` is entire parameter space, recurseively process it vector by vector
-    result = []
-    cartesian(data) do |v|
-      next unless valid?(v)
-      result << dimensions(v, raw: raw, separator: separator, dimensions: dimensions, values: values)
-    end
-
-    result.join("\n")
+  unless data.is_a?(Struct) || data.is_a?(Hash)
+    raise ArgumentError, "Incorrect type of dimensions: #{data.class}"
   end
+
+  if data.is_a?(Struct)
+    return nil unless valid?(data)
+
+    return data.each_pair.map { |k, val|
+      (dimensions ? "#{k}" : "") +
+      ((dimensions && values) ? "=" : "") +
+      (values ? "#{val}" : "")
+    }.join(separator)
+  end
+
+  enum = Enumerator.new do |y|
+    cartesian(data, lazy: lazy) do |v|
+      next unless valid?(v)
+      y << dimensions(v, raw: raw, separator: separator, dimensions: dimensions, values: values, lazy: lazy)
+    end
+  end
+
+  return enum if lazy
+  enum.to_a.join("\n")
+end
 
   # Return number of combinations in parameter space, with respect to conditions
   def size

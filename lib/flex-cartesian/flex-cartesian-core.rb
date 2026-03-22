@@ -1,10 +1,18 @@
 module FlexCartesianCore
 
-def initialize(dimensions = nil, path: nil, format: :json)
+def initialize(dimensions = nil, path: nil, format: :json, logger: nil, log_level: Logger::WARN)
+    @logger = logger || Logger.new($stdout)
+    @logger.level = log_level
+
+    @logger.formatter = proc do |severity, _datetime, _progname, msg|
+      "#{severity}: #{msg}\n"
+    end
+
     if dimensions && path
       puts "Please specify either dimensions or path to dimensions"
       exit
     end
+
     @dimensions = dimensions
     @conditions = []
     @derived = {}
@@ -13,6 +21,7 @@ def initialize(dimensions = nil, path: nil, format: :json)
     @function_hidden = Set.new
     import(path, format: format) if path
     @plan = nil
+    deprecations
   end
 
   def cond(command = :print, index: nil, &block)
@@ -201,6 +210,10 @@ private
   # Test if `data` vector satisfies all space conditions
   def valid?(data)
     @conditions.none? { |cond| !cond.call(data) }
+  end
+
+  def log
+    @logger
   end
 
 end
