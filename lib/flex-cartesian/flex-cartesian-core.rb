@@ -78,27 +78,14 @@ def func(command = :print, name = nil, hide: false, progress: false, title: "cal
 
   when :run
     @function_results = {}
-
-    if progress
-      bar = ProgressBar.create(title: title, total: size, format: '%t [%B] %p%% %e')
-
+    bar = progress ? ProgressBar.create(title: title, total: size, format: '%t [%B] %p%% %e') : nil
     each_point do |v|
       @function_results[v] ||= {}
       @derived.each do |fname, block|
         @function_results[v][fname] = block.call(v)
       end
-      bar.increment if progress
+      bar&.increment
     end
-
-  else
-    cartesian do |v|
-      @function_results[v] ||= {}
-      @derived.each do |fname, block|
-        @function_results[v][fname] = block.call(v)
-      end
-    end
-  end
-
   else
     raise ArgumentError, "Unknown command for function: #{command.inspect}"
   end
