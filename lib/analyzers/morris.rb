@@ -11,11 +11,11 @@ class Morris < Analyzer
     @seed         = seed
     @rng          = seed ? Random.new(seed) : Random.new
 
+    @names  = fc.raw_dimensions.keys
+    @levels = @names.map { |name| normalize_levels(fc.raw_dimensions[name]) }
+
     validate_trajectories!
     validate_step!
-
-    @names  = fc.dimensions.keys
-    @levels = @names.map { |name| normalize_levels(fc.dimensions[name]) }
 
     @struct_class = Struct.new(*@names).tap { |sc| sc.include(FlexOutput) }
 
@@ -111,6 +111,81 @@ class Morris < Analyzer
       }
     end.compact.sort_by { |row| -row[:"influence[#{function}]"] }
   end
+
+private
+
+def build!
+  @trajectories.times do
+    build_trajectory!
+  end
+end
+
+def build_trajectory!
+  current_indices = random_start_indices
+  from_idx = add_point(current_indices)
+  return unless from_idx
+
+  factor_order = (0...@names.size).to_a.shuffle(random: @rng)
+
+  factor_order.each do |factor_idx|
+    next_indices = current_indices.dup
+    next_indices[factor_idx] += @step
+
+    to_idx = add_point(next_indices)
+    next unless to_idx
+
+    @edges << Edge.new(
+      from_idx: from_idx,
+      to_idx: to_idx,
+      factor: @names[factor_idx],
+      step: @step
+    )
+
+    current_indices = next_indices
+    from_idx = to_idx
+  end
+end
+
+def add_point(level_indices)
+  values = level_indices.each_with_index.map do |level_idx, dim_idx|
+    @levels[dim_idx][level_idx]
+  end
+
+  point = @struct_class.new(*values)
+  return nil unless @fc.valid?(point)
+
+  @points << point
+  @points.size - 1
+end
+
+def random_start_indices
+  @levels.map do |factor_levels|
+    max_start = factor_levels.size - 1 - @step
+    raise ArgumentError, "step=#{@step} is too large for factor with #{factor_levels.size} levels" if max_start < 0
+    @rng.rand(0..max_start)
+  end
+end
+
+def normalize_levels(value)
+  value.is_a?(Enumerable) && !value.is_a?(String) ? value.to_a : [value]
+end
+
+def validate_step!
+  unless @step.is_a?(Integer) && @step > 0
+    raise ArgumentError, "step must be a positive integer"
+  end
+
+  min_levels = @levels.map(&:size).min
+  if min_levels <= @step
+    raise ArgumentError, "step=#{@step} is too large for dimensions with #{min_levels} levels"
+  end
+end
+
+def validate_trajectories!
+  unless @trajectories.is_a?(Integer) && @trajectories > 0
+    raise ArgumentError, "trajectories must be a positive integer"
+  end
+end
 
 end
 

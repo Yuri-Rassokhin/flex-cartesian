@@ -12,9 +12,6 @@ s = FlexCartesian.new({
 # Plan is a screening technique that traverses parameter space, usually using smaller subset of its combinations, and investigates its properties
 # In this example, plan investigates the influence of dimensional parameters (count, size, and target) on the given function: ping time.
 
-# Define plan for parameter space: Morris' sensitivity analysis
-s.plan(:morris, trajectories: 10, step: 1, seed: 42)
-
 # Define target function that will be investigted by the plan
 result = {} # raw result of each ping
 s.func(:add, :command) { |v| "ping -c #{v.count} -s #{v.size} #{v.target}" } # ping command
@@ -24,9 +21,16 @@ s.func(:add, :time) { |v| v.raw_ping[/min\/avg\/max\/(?:mdev|stddev) = [^\/]+\/(
 # Evaluate target function `time` on the combinations from parameter space defined by the plan
 s.func(:run, progress: true, title: "Pinging")
 
+# create two analyzers of the computed functions
+m1 = s.analyzer(:morris, trajectories: 10, step: 1, seed: 42)
+m2 = s.analyzer(:morris, trajectories: 20, step: 1)
+
+m1.output(function: :time)
+m2.output(function: :time)
+
 # Once we have `time` function evaluated, we can apply the plan to analyze its properties
 # Morris' method assesses the influence of each dimensional parameter on the target function
 # Additionally, it assesses the nature of such influence - linear or non-linear
 # Optionally, the plan generates recommendations on the next step in the parameter space analysis - if `recommend` is enabled
-s.sensitivity(function: :time, colorize: true, recommend: true)
+puts m1.sensitivity(function: :time)
 

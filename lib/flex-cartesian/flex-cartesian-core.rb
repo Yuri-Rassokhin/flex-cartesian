@@ -1,5 +1,7 @@
 module FlexCartesianCore
 
+  attr_reader :function_results
+
 def initialize(dimensions = nil, path: nil, format: :json, logger: nil, log_level: Logger::WARN)
     @logger = logger || Logger.new($stdout)
     @logger.level = log_level
@@ -127,6 +129,15 @@ end
     end
   end
 
+  def raw_dimensions
+    @dimensions
+  end
+
+  # Test if `data` vector satisfies all space conditions
+  def valid?(data)
+    @conditions.none? { |cond| !cond.call(data) }
+  end
+
 
 
 private
@@ -178,11 +189,6 @@ private
       v.define_singleton_method(name) { block.call(v) }
     end
     v
-  end
-
-  # Test if `data` vector satisfies all space conditions
-  def valid?(data)
-    @conditions.none? { |cond| !cond.call(data) }
   end
 
   def log

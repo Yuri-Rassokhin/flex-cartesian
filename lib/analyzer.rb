@@ -29,7 +29,7 @@ class Analyzer
 
   def output(function:, **opts)
     rows = sensitivity(function: function)
-    Output.table(rows, **opts)
+    @fc.table(rows, **opts)
   end
 
 end
