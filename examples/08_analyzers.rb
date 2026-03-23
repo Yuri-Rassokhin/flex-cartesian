@@ -21,16 +21,17 @@ s.func(:add, :time) { |v| v.raw_ping[/min\/avg\/max\/(?:mdev|stddev) = [^\/]+\/(
 # Evaluate target function `time` on the combinations from parameter space defined by the plan
 s.func(:run, progress: true, title: "Pinging")
 
-# create two analyzers of the computed functions
+# create three analyzers of the target functions
 m1 = s.analyzer(:morris, trajectories: 10, step: 1, seed: 42)
 m2 = s.analyzer(:morris, trajectories: 20, step: 1)
+m3 = s.analyzer(:morris, trajectories: 30, step: 1)
 
-m1.output(function: :time)
-m2.output(function: :time)
+m1.output(function: :time, colorize: true)
+m2.output(function: :time, colorize: true)
+m3.output(function: :time, colorize: true)
 
 # Once we have `time` function evaluated, we can apply the plan to analyze its properties
 # Morris' method assesses the influence of each dimensional parameter on the target function
 # Additionally, it assesses the nature of such influence - linear or non-linear
 # Optionally, the plan generates recommendations on the next step in the parameter space analysis - if `recommend` is enabled
-puts m1.sensitivity(function: :time)
 
