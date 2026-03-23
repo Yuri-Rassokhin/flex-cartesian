@@ -112,6 +112,61 @@ def sensitivity(function:)
   end.compact.sort_by { |row| -row[:"influence[#{function}]"] }
 end
 
+  def categorize(rows, function:)
+    return rows if rows.nil? || rows.empty?
+
+    max_importance = rows.map { |r| r[:"influence[#{function}]"] }.max
+    threshold_high = max_importance * 0.2
+    threshold_low  = max_importance * 0.05
+
+    rows.map do |row|
+      imp   = row[:"influence[#{function}]"]
+      sigma = row[:nonlinearity]
+
+      category =
+        if imp >= threshold_high
+          if sigma > imp
+            "Strong nonlinear influence"
+          else
+            "Strong linear influence"
+          end
+        elsif imp <= threshold_low
+          "Negligible"
+        else
+          "Moderate influence"
+        end
+
+      row.merge(category: category)
+    end
+  end
+
+  def recommend(rows, function:)
+    return rows if rows.nil? || rows.empty?
+
+    rows.map do |row|
+      recommendation =
+        case row[:category]
+        when "Strong nonlinear influence"
+          "Further investigation with full coverage"
+        when "Strong linear influence"
+          "Fix several pivotal values"
+        when "Negligible"
+          "Fix its value to reduce dimensionality"
+        else
+          "Further investigation may be required"
+        end
+
+      row.merge(recommendation: recommendation)
+    end
+  end
+
+  def output(function:, categorize: true, recommend: true, **opts)
+    rows = sensitivity(function: function)
+    rows = self.categorize(rows, function: function) if categorize
+    rows = self.recommend(rows, function: function) if recommend
+    fc.table(rows, **opts)
+  end
+
 private
 
 def vector_key(v)
