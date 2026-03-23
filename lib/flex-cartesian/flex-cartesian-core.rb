@@ -20,7 +20,6 @@ def initialize(dimensions = nil, path: nil, format: :json, logger: nil, log_leve
     @function_results = {}  # key: Struct instance.object_id => { fname => value }
     @function_hidden = Set.new
     import(path, format: format) if path
-    @plan = nil
     deprecations
   end
 
@@ -79,7 +78,7 @@ def func(command = :print, name = nil, hide: false, progress: false, title: "cal
   when :run
     @function_results = {}
     bar = progress ? ProgressBar.create(title: title, total: size, format: '%t [%B] %p%% %e') : nil
-    each_point do |v|
+    cartesian do |v|
       @function_results[v] ||= {}
       @derived.each do |fname, block|
         @function_results[v][fname] = block.call(v)
@@ -90,20 +89,6 @@ def func(command = :print, name = nil, hide: false, progress: false, title: "cal
     raise ArgumentError, "Unknown command for function: #{command.inspect}"
   end
 end
-
-  # Wrapper on top of cartesian iterator
-  # This wrapper decides whether we sweep over entire Cartesian space
-  # or apply a plan to pick selected points only
-  def each_point(&blk)
-    if @plan
-      @plan.each_point do |v|
-        next unless valid?(v)
-        blk.call(decorate_point(v))
-      end
-    else
-      cartesian(&blk)
-    end
-  end
 
 def cartesian(dims = nil, lazy: false)
   dimensions = dims || @dimensions
