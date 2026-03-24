@@ -31,47 +31,8 @@ class Morris < Analyzer
     build!
   end
 
-  def add_point(level_indices)
-    values = level_indices.each_with_index.map do |level_idx, dim_idx|
-      @levels[dim_idx][level_idx]
-    end
-
-    point = @struct_class.new(*values)
-
-    return nil unless @fc.valid?(point)
-
-    @points << point
-    @points.size - 1
-  end
-
-  def build_trajectory!
-    current_indices = random_start_indices
-    from_idx = add_point(current_indices)
-    return unless from_idx
-
-    factor_order = (0...@names.size).to_a.shuffle(random: @rng)
-
-    factor_order.each do |factor_idx|
-      next_indices = current_indices.dup
-      next_indices[factor_idx] += @step
-
-      to_idx = add_point(next_indices)
-      next unless to_idx
-
-      @edges << Edge.new(
-        from_idx: from_idx,
-        to_idx: to_idx,
-        factor: @names[factor_idx],
-        step: @step
-      )
-
-      current_indices = next_indices
-      from_idx = to_idx
-    end
-  end
-
 def sensitivity(function:)
-  raise ArgumentError, "target function must be provided" unless function
+  super
 
   effects = Hash.new { |h, k| h[k] = [] }
 

@@ -8,10 +8,6 @@ class Analyzer
     @name = nil
     @description = nil
     @url = nil
-
-    unless fc.respond_to?(:function_results) && fc.function_results
-      raise ArgumentError, "FlexCartesian has no computed results. Run func(:run) first."
-    end
   end
 
   def card
@@ -32,7 +28,8 @@ class Analyzer
   end
 
   def sensitivity(function:)
-    raise NotImplementedError, "#{self.class} must implement #sensitivity"
+    raise ArgumentError, "target function must be provided" unless function
+    raise "Cannot execute #sensitivity as there are no functions defined in parameter space" if @fc.derived.empty?
   end
 
   def output(function:, **opts)

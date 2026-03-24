@@ -1,6 +1,6 @@
 module FlexCartesianCore
 
-  attr_reader :function_results
+  attr_reader :function_results, :derived
 
 def initialize(dimensions = nil, path: nil, format: :json, logger: nil, log_level: Logger::WARN)
     @logger = logger || Logger.new($stdout)
