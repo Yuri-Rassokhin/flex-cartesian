@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.0 - 2026-03-24
+## Added
+- New stack layer - analyzers
+## Fixed
+- Conditions apply to the parameter space, effective for all higher layers (iterators, functions, utilities, and analyzers)
+- Catalogue of examples extended
+
 ## 1.3.1 - 2025-09-03
 ## Fixed
 - CSV format expects separator to be one of ";" or "," otherwise enforces ";"
