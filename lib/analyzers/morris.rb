@@ -1,10 +1,16 @@
 class Morris < Analyzer
   Edge = Struct.new(:from_idx, :to_idx, :factor, :step, keyword_init: true)
 
-  attr_reader :names, :levels, :trajectories, :step, :seed, :edges
+  attr_reader :names, :levels, :trajectories, :step, :seed, :edges, :name, :description, :url
 
   def initialize(fc, trajectories:, step: 1, seed: nil)
     super(fc)
+
+    @name = "Morris sensitivity analysis"
+    @description = "Morris method explores the parameter space by changing one parameter at a time across multiple trajectories, and quantifies rate and linearity of its influence on the target function"
+    @complexity = "O( dimensions · trajectories )"
+    @category = "Sensitivity analysis"
+    @url = "https://en.wikipedia.org/wiki/Morris_method"
 
     @trajectories = trajectories
     @step         = step
@@ -165,6 +171,16 @@ end
     rows = self.categorize(rows, function: function) if categorize
     rows = self.recommend(rows, function: function) if recommend
     fc.table(rows, **opts)
+  end
+
+  def card
+    {
+      name: @name,
+      description: @description,
+      complexity: @complexity,
+      category: @category,
+      url: @url
+    }.to_json
   end
 
 private

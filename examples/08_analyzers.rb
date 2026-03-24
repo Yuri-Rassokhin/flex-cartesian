@@ -23,12 +23,13 @@ s.func(:run, progress: true, title: "Pinging")
 
 # create three analyzers of the target functions
 m1 = s.analyzer(:morris, trajectories: 10, step: 1, seed: 42)
-m2 = s.analyzer(:morris, trajectories: 20, step: 1)
-m3 = s.analyzer(:morris, trajectories: 30, step: 1)
+m2 = s.analyzer(:morris, trajectories: 20, step: 1, seed: 42)
 
+puts "\nWe apply #{m1.name}. #{m1.description}.\n\n"
+puts "\n#{m1.name}: trajectories = 5, step = 1, seed = 42"
 m1.output(function: :time, colorize: true)
+puts "\n#{m2.name}: trajectories = 20, step = 1, seed = 42"
 m2.output(function: :time, colorize: true)
-m3.output(function: :time, colorize: true)
 
 # Once we have `time` function evaluated, we can apply the plan to analyze its properties
 # Morris' method assesses the influence of each dimensional parameter on the target function

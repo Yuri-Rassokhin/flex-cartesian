@@ -5,9 +5,17 @@ class Analyzer
   def initialize(fc)
     @fc = fc
 
+    @name = nil
+    @description = nil
+    @url = nil
+
     unless fc.respond_to?(:function_results) && fc.function_results
       raise ArgumentError, "FlexCartesian has no computed results. Run func(:run) first."
     end
+  end
+
+  def card
+    raise NotImplementedError, "#{self.class} must implement #card"
   end
 
   def results
