@@ -48,8 +48,21 @@ end
     end
   end
 
-  # Convert first `limit` combinations of parameter space to array, with respect to conditions
-  def to_a(limit: nil)
+  # Convert first `limit` combinations of parameter space to array
+  # or convert vector in parameter space to array
+  # with respect to conditions
+  def to_a(data = nil, limit: nil)
+
+    # Struct is always a single vector
+    if data.is_a?(Struct)
+      return nil unless valid?(data)
+      return data.values
+    end
+
+    # if data isn't nil (and not Struct), it's a bug
+    raise "Incorrect type of `data`" unless data == nil
+
+    # Otherwise, no data given, and we assume it's entire space
     result = []
     cartesian do |v|
       result << v

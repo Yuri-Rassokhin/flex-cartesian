@@ -21,4 +21,6 @@ puts s.to_a(limit: 3).inspect
 s.cartesian { |v| puts s.dimensions(v, dimensions: true, values: true, separator: ' ') }
 # entire space:
 puts s.dimensions(separator: ' ')
+# convert each individual vector of the parameter space to array
+s.cartesian { |v| puts v.to_a.inspect }
 
