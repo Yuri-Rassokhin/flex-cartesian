@@ -1,3 +1,5 @@
+require 'set'
+
 module FlexCartesianUtilities
 
 def dimensions(data = @dimensions, raw: false, separator: ', ', dimensions: true, values: true, lazy: false)
@@ -48,27 +50,36 @@ end
     end
   end
 
+  # checks if a vector or set of vectors is (fully) in parameter space, with respect to conditions
+  # vector can be Struct, Hash, or Array. If it's Array, then order of dimensions is assumed from parameter space
+  def in_space?(v)
+    return false unless vector_consistent(v)
+    return false unless valid?(v.vector_to_structure)
+    true
+  end
+
   # Convert first `limit` combinations of parameter space to array
   # or convert vector in parameter space to array
   # with respect to conditions
   def to_a(data = nil, limit: nil)
 
-    # Struct is always a single vector
-    if data.is_a?(Struct)
-      return nil unless valid?(data)
+    # if no `data` given we assume the data is parameter space
+    if data.empty?
+      result = []
+      cartesian do |v|
+        result << v.to_a
+        break if limit && result.size >= limit
+      end
+      return result
+    end
+
+    # otherwise, it's a single vector
+    if data.is_a?(Struct) or data.is_a(Hash) or data.is_a(Array)
+      return nil unless in_space?(vector_to_struct(data))
       return data.values
+    else
+      raise "Incorrect vector type #{data.class}"
     end
-
-    # if data isn't nil (and not Struct), it's a bug
-    raise "Incorrect type of `data`" unless data == nil
-
-    # Otherwise, no data given, and we assume it's entire space
-    result = []
-    cartesian do |v|
-      result << v
-      break if limit && result.size >= limit
-    end
-    result
   end
 
 end

@@ -102,11 +102,6 @@ end
     @dimensions = data
   end
 
-  def from_yaml(path)
-    data = YAML.safe_load(File.read(path), symbolize_names: true)
-    @dimensions = data
-  end
-
   def fmt_cell(value, colorize: false, header: false, width: nil)
     str = case value
           when String then value

@@ -1,6 +1,6 @@
 module FlexCartesianCore
 
-  attr_reader :function_results, :derived
+  attr_reader :function_results, :derived, :names, :dimensiality
 
 def initialize(dimensions = nil, path: nil, format: :json, logger: nil, log_level: Logger::WARN)
     @logger = logger || Logger.new($stdout)
@@ -15,13 +15,29 @@ def initialize(dimensions = nil, path: nil, format: :json, logger: nil, log_leve
       exit
     end
 
+    # hash of dimensions: name => array of dimensional values
     @dimensions = dimensions
+
+    # array of dimension names
+    @names = dimensions.keys
+
+    # number of dimensions of parameter space
+    @dimensiality = @names.size
+
+    # array of conditions for valid vectors in parameter space
     @conditions = []
+
+    # functions in parameter space
     @derived = {}
+    # ordering of the functions
     @order = { first: nil, last: nil }
     @function_results = {}  # key: Struct instance.object_id => { fname => value }
     @function_hidden = Set.new
+
+    # if space file specified, import the space from it
     import(path, format: format) if path
+
+    # generate warnings on the deprecated things that will be changed/removed/replaced soon
     deprecations
   end
 
@@ -133,9 +149,13 @@ end
     @dimensions
   end
 
-  # Test if `data` vector satisfies all space conditions
-  def valid?(data)
-    @conditions.none? { |cond| !cond.call(data) }
+  # check if `v` is a valid vector in parameter space, with respect to space conditions
+  # vector can be Struct, Hash, or Array. If it's Array, then order of dimensions is assumed from parameter space
+  def valid?(v)
+    raise "Incorrect vector type `#{v.class}`" unless v.is_a?(Enumerable)
+    return false if vector_to_hash(v).size != @dimensiality
+    return false unless @names.to_set == vector_to_hash(v).keys.to_set
+    @conditions.none? { |cond| !cond.call(vector_to_struct(v)) }
   end
 
 
@@ -193,6 +213,44 @@ private
 
   def log
     @logger
+  end
+
+  # convert Struct or Array vector to Hash, keeping order of dimension names as it is in parameter space
+  # Note: conditions are NOT respected
+  def vector_to_hash(v)
+    return v if v.is_a(Hash)
+
+    if v.is_a(Array)
+      @names.zip(v).to_h
+    elsif v.is_a(Struct)
+      Hash.new(*v.values.values_at(*v.keys))
+    else
+      raise "Incorrect vector type `#{v.class}`"
+    end
+  end
+
+  # convert Hash or Array vector to Struct, keeping order of dimension names as it is in parameter space
+  # Note: conditions are NOT respected
+  def vector_to_struct(v)
+    return v if v.is_a(Struct)
+
+    if v.is_a(Array)
+      StructType = Struct.new(*@names)
+      StructType.new(*v.values_at(*@names))
+    elsif v.is_a(Hash)
+      StructType = Struct.new(*v.keys)
+      StructType.new(*v.values.values_at(*v.keys))
+    else
+      raise "Incorrect vector type `#{v.class}`"
+    end
+  end
+
+  # check consistency of the vector internal structure relatively to parameter space
+  def vector_consistent?(v)
+    return false if vector_to_hash(v).size != @dimensiality
+    raise "Incorrect vector type `#{v.class}`" unless v.is_a?(Enumerable)
+    raise "Incorrect vector dimensions #{v.keys.inspect}" unless @names.to_set == vector_to_hash(v).keys.to_set
+    true
   end
 
 end

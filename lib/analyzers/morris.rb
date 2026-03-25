@@ -17,7 +17,6 @@ class Morris < Analyzer
     @seed         = seed
     @rng          = seed ? Random.new(seed) : Random.new
 
-    @names  = fc.raw_dimensions.keys
     @levels = @names.map { |name| normalize_levels(fc.raw_dimensions[name]) }
 
     validate_trajectories!
