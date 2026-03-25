@@ -18,11 +18,19 @@ end
 
 # Dimensiality-agnostic iteration
 s.cartesian { |v| do_something(v) }
+
 # Dimensiality-aware iteration
+s.func(:add, :triple) { |v| v.dim1 * (v.dim3 ? 3: 0) }
+
+s.cartesian { |v| puts v.to_a.inspect }
+
 s.cartesian { |v| puts "#{v.dim1} & #{v.dim2}" if v.dim3 }
+
 s.output
+
 # Show progress bar while iterating, useful for large parameter spaces
-s.progress_each { |v| do_something(v) }
+s.cartesian(progress: true, title: "Testing"){ |v| do_something(v) }
+
 # Iterate in lazy moode without materializing entire Cartesian product in memory, useful for large parameter spaces
 s.cartesian(lazy: true).take(2).each { |v| puts v.to_a.inspect }
 

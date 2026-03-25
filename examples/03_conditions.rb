@@ -31,4 +31,5 @@ s.cond(:unset, index: 0)
 s.cond(:clear)
 # See the size of parameter space restored to default size of the full space
 puts "Restored size of full space: #{s.size}"
+s.output
 

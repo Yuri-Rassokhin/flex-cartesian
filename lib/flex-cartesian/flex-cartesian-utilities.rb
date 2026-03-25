@@ -64,7 +64,7 @@ end
   def to_a(data = nil, limit: nil)
 
     # if no `data` given we assume the data is parameter space
-    if data.empty?
+    if data.nil?
       result = []
       cartesian do |v|
         result << v.to_a

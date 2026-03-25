@@ -1,6 +1,6 @@
 module FlexCartesianCore
 
-  attr_reader :function_results, :derived, :names, :dimensiality
+  attr_reader :function_results, :derived, :names, :dimensiality, :dimensions
 
 def initialize(dimensions = nil, path: nil, format: :json, logger: nil, log_level: Logger::WARN)
     @logger = logger || Logger.new($stdout)
@@ -10,16 +10,25 @@ def initialize(dimensions = nil, path: nil, format: :json, logger: nil, log_leve
       "#{severity}: #{msg}\n"
     end
 
+    # get hash of dimensions: name => array of dimensional values
     if dimensions && path
       puts "Please specify either dimensions or path to dimensions"
       exit
+    elsif dimensions
+      @dimensions = dimensions
+    else # space file specified
+      import(path, format: format)
     end
 
-    # hash of dimensions: name => array of dimensional values
-    @dimensions = dimensions
-
+    # array of arrays of dimension values (not a Cartesian product yet)
+    @values = dimension_values(@dimensions)
+    # total size of Cartesian space (number of vectors, that is, ALL combinations, ignoring conditions)
+    @size = @values.map(&:size).inject(:*)
     # array of dimension names
-    @names = dimensions.keys
+    @names = @dimensions.keys
+
+    # define class for a vector represented as Struct, to be able to access its elements using `.<dimension_name>`
+    @struct = Struct.new(*@names).tap { |sc| sc.include(FlexOutput) }
 
     # number of dimensions of parameter space
     @dimensiality = @names.size
@@ -31,11 +40,11 @@ def initialize(dimensions = nil, path: nil, format: :json, logger: nil, log_leve
     @derived = {}
     # ordering of the functions
     @order = { first: nil, last: nil }
-    @function_results = {}  # key: Struct instance.object_id => { fname => value }
-    @function_hidden = Set.new
 
-    # if space file specified, import the space from it
-    import(path, format: format) if path
+    # Struct instance.object_id => { fname => value }
+    @function_results = {}
+
+    @function_hidden = Set.new
 
     # generate warnings on the deprecated things that will be changed/removed/replaced soon
     deprecations
@@ -95,60 +104,50 @@ def func(command = :print, name = nil, hide: false, progress: false, title: "cal
 
   when :run
     @function_results = {}
-    bar = progress ? ProgressBar.create(title: title, total: size, format: '%t [%B] %p%% %e') : nil
-    cartesian do |v|
-      puts v
+    cartesian(progress: progress, title: title) do |v|
       @function_results[v] ||= {}
       @derived.each do |fname, block|
         @function_results[v][fname] = block.call(v)
       end
-      bar&.increment
     end
   else
     raise ArgumentError, "Unknown command for function: #{command.inspect}"
   end
 end
 
-def cartesian(dims = nil, lazy: false)
+def cartesian(dims = nil, lazy: false, progress: false, title: "Traversing space")
+
+  # process edge cases and initialize data structures
+  return to_enum(:cartesian, dims, lazy: lazy) unless block_given?
   dimensions = dims || @dimensions
   return nil unless dimensions.is_a?(Hash)
 
-  names = dimensions.keys
-  values = dimensions.values.map { |dim| dim.is_a?(Enumerable) ? dim.to_a : [dim] }
+  # create actual cartesian product as iterator of all combinations
+  values = dimension_values(dimensions)
+  enum = Enumerator.product(*values) 
+  space = lazy ? enum.lazy : enum
 
-  return to_enum(:cartesian, dims, lazy: lazy) unless block_given?
-  return if values.any?(&:empty?)
+  # visualize progress bar, if requested
+  bar = progress ? ProgressBar.create(title: title, total: @size, format: '%t [%B] %p%% %e') : nil
 
-  struct_class = Struct.new(*names).tap { |sc| sc.include(FlexOutput) }
+  space.each do |combination|
+    # create current vector as Struct
+    vector = @struct.new(*combination)
+    # skip current vector if it doesn't satisfy space conditions
+    next unless valid?(vector)
 
-  base = values.first.product(*values[1..])
-  enum = lazy ? base.lazy : base
-
-  enum.each do |combo|
-    struct_instance = struct_class.new(*combo)
-
+    # guarantee that functions can refer to one another within cartesian block
     @derived&.each do |name, block|
-      struct_instance.define_singleton_method(name) { block.call(struct_instance) }
+      vector.define_singleton_method(name) { block.call(vector) }
     end
 
-    next unless valid?(struct_instance)
+    # process current vector as Struct
+    yield vector
 
-    yield struct_instance
+    # update progress bar, if it's enabled
+    bar&.increment
   end
 end
-
-  def progress_each(lazy: false, title: "Processing")
-    bar = ProgressBar.create(title: title, total: size, format: '%t [%B] %p%% %e')
-
-    cartesian(@dimensions, lazy: lazy) do |v|
-      yield v
-      bar.increment
-    end
-  end
-
-  def raw_dimensions
-    @dimensions
-  end
 
   # check if `v` is a valid vector in parameter space, with respect to space conditions
   # vector can be Struct, Hash, or Array. If it's Array, then order of dimensions is assumed from parameter space
@@ -162,6 +161,14 @@ end
 
 
 private
+
+  def dimension_values(dimensions)
+    # array of arrays of dimensional values, not a cartesian product yet
+    res = dimensions.values.map { |dim| dim.is_a?(Enumerable) ? dim.to_a : [dim] }
+    # check if any dimension has no values
+    res.each { |dim| raise "dimension cannot be empty: ``" if dim.empty? }
+    res
+  end
 
   def add_function(name, order: nil , &block)
     raise ArgumentError, "Block required" unless block_given?
