@@ -28,6 +28,8 @@ def initialize(dimensions = nil, path: nil, format: :json, logger: nil, log_leve
     @names = @dimensions.keys
 
     # define class for a vector represented as Struct, to be able to access its elements using `.<dimension_name>`
+    # NOTE: this class must be unique - otherwise, Struct objects as Hash keys won't coincide for different Struct classes
+    # even if fields of such structs are identical
     @struct = Struct.new(*@names).tap { |sc| sc.include(FlexOutput) }
 
     # number of dimensions of parameter space
