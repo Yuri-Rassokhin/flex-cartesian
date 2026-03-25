@@ -1,6 +1,6 @@
 module FlexCartesianCore
 
-  attr_reader :function_results, :derived, :names, :dimensiality, :dimensions
+  attr_reader :function_results, :derived, :names, :dimensiality, :dimensions, :struct
 
 def initialize(dimensions = nil, path: nil, format: :json, logger: nil, log_level: Logger::WARN)
     @logger = logger || Logger.new($stdout)
@@ -43,7 +43,7 @@ def initialize(dimensions = nil, path: nil, format: :json, logger: nil, log_leve
     # ordering of the functions
     @order = { first: nil, last: nil }
 
-    # Struct instance.object_id => { fname => value }
+    # Hash: instance of @struct class => { fname => value }
     @function_results = {}
 
     @function_hidden = Set.new

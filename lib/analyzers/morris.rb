@@ -22,8 +22,6 @@ class Morris < Analyzer
     validate_trajectories!
     validate_step!
 
-    @struct_class = Struct.new(*@names).tap { |sc| sc.include(FlexOutput) }
-
     @points = []
     @edges  = []
 
@@ -196,7 +194,7 @@ def add_point(level_indices)
     @levels[dim_idx][level_idx]
   end
 
-  point = @struct_class.new(*values)
+  point = @struct.new(*values)
   return nil unless @fc.valid?(point)
 
   @points << point

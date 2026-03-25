@@ -2,6 +2,35 @@ require 'set'
 
 module FlexCartesianUtilities
 
+# obtain value of the given function on a given vector from parameter space
+# modes:
+# :enforce - recompute function value
+# :reuse - fetch previously computed value or drop error if there isn't one
+# :increment - recompute if there's no precomputed value or reuse if there's one
+def value(v, function:, mode: :increment)
+  v_struct = vector_to(v, :struct)
+  v_hash = vector_to(v, :hash)
+
+  res = @results[v_struct][function]
+
+  case mode
+  when :reuse
+    raise "Value of #{function} function is missing on #{v_hash.inspect} vector" if res.nil?
+    return res
+  when :enforce
+    new_res = @space.derived[function].call(v_struct)
+    @results[v_struct][function] = new_res
+    return new_res
+  when :increment
+    new_res = res.nil? @space.derived[function].call(v_struct) : res
+    @results[v_struct][function] = new_res
+    return new_res
+  else
+    raise "Incorrect function recompute mode: #{mode}"
+  end
+  res
+end
+
 def dimensions(data = @dimensions, raw: false, separator: ', ', dimensions: true, values: true, lazy: false)
   return nil if !dimensions && !values
 

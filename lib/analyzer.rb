@@ -1,10 +1,8 @@
 class Analyzer
 
-  attr_reader :fc
-
-  def initialize(fc)
-    @fc = fc
-
+  def initialize(space)
+    @space = space
+    @struct = @space.struct
     @name = nil
     @description = nil
     @url = nil
@@ -15,16 +13,15 @@ class Analyzer
   end
 
   def results
-    @fc.function_results
+    @space.function_results
   end
 
   def dimensions
-    @fc.dimensions
+    @space.dimensions
   end
 
-  def each_point(&blk)
-    return enum_for(:each_point) unless block_given?
-    @fc.cartesian(&blk)  # already condition-aware
+  def cartesian(&blk)
+    @space.cartesian(&blk)
   end
 
   def sensitivity(function:)
@@ -34,7 +31,7 @@ class Analyzer
 
   def output(function:, **opts)
     rows = sensitivity(function: function)
-    @fc.table(rows, **opts)
+    @space.table(rows, **opts)
   end
 
 end
