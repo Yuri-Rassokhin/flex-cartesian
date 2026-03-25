@@ -54,7 +54,7 @@ end
   # vector can be Struct, Hash, or Array. If it's Array, then order of dimensions is assumed from parameter space
   def in_space?(v)
     return false unless vector_consistent(v)
-    return false unless valid?(v.vector_to_structure)
+    return false unless valid?(v.vector_to_struct)
     true
   end
 

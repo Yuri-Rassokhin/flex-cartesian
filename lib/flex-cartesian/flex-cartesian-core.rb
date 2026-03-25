@@ -97,6 +97,7 @@ def func(command = :print, name = nil, hide: false, progress: false, title: "cal
     @function_results = {}
     bar = progress ? ProgressBar.create(title: title, total: size, format: '%t [%B] %p%% %e') : nil
     cartesian do |v|
+      puts v
       @function_results[v] ||= {}
       @derived.each do |fname, block|
         @function_results[v][fname] = block.call(v)
@@ -218,12 +219,12 @@ private
   # convert Struct or Array vector to Hash, keeping order of dimension names as it is in parameter space
   # Note: conditions are NOT respected
   def vector_to_hash(v)
-    return v if v.is_a(Hash)
+    return v if v.is_a?(Hash)
 
-    if v.is_a(Array)
+    if v.is_a?(Array)
       @names.zip(v).to_h
-    elsif v.is_a(Struct)
-      Hash.new(*v.values.values_at(*v.keys))
+    elsif v.is_a?(Struct)
+      v.members.zip(v.values).to_h
     else
       raise "Incorrect vector type `#{v.class}`"
     end
@@ -232,14 +233,14 @@ private
   # convert Hash or Array vector to Struct, keeping order of dimension names as it is in parameter space
   # Note: conditions are NOT respected
   def vector_to_struct(v)
-    return v if v.is_a(Struct)
+    return v if v.is_a?(Struct)
 
-    if v.is_a(Array)
-      StructType = Struct.new(*@names)
-      StructType.new(*v.values_at(*@names))
-    elsif v.is_a(Hash)
-      StructType = Struct.new(*v.keys)
-      StructType.new(*v.values.values_at(*v.keys))
+    if v.is_a?(Array)
+      struct = Struct.new(*@names)
+      struct.new(*v)
+    elsif v.is_a?(Hash)
+      struct = Struct.new(*v.keys)
+      struct.new(*v.values)
     else
       raise "Incorrect vector type `#{v.class}`"
     end
