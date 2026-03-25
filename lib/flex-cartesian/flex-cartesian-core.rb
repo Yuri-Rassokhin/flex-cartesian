@@ -154,10 +154,12 @@ end
   # check if `v` is a valid vector in parameter space, with respect to space conditions
   # vector can be Struct, Hash, or Array. If it's Array, then order of dimensions is assumed from parameter space
   def valid?(v)
-    raise "Incorrect vector type `#{v.class}`" unless v.is_a?(Enumerable)
-    return false if vector_to_hash(v).size != @dimensiality
-    return false unless @names.to_set == vector_to_hash(v).keys.to_set
-    @conditions.none? { |cond| !cond.call(vector_to_struct(v)) }
+    # check if vector class is recognizable, and names & number of dimensions are aligned with parameter space
+    return false unless vector_consistent?(v)
+    # check if vector elements present among their respective dimensional values
+    return false unless vector_to(v, :hash).each_pair.all? { |dim, v| @dimensions[dim].include?(v) }
+    # check if vector respects conditions
+    @conditions.none? { |cond| !cond.call(vector_to(v, :struct)) }
   end
 
 
@@ -226,8 +228,8 @@ private
   end
 
   # convert Struct or Array vector to Hash, keeping order of dimension names as it is in parameter space
-  # Note: conditions are NOT respected
-  def vector_to_hash(v)
+  # Note: conditions and dimension consistency are NOT respected
+  def vector_to_hash!(v)
     return v if v.is_a?(Hash)
 
     if v.is_a?(Array)
@@ -240,27 +242,40 @@ private
   end
 
   # convert Hash or Array vector to Struct, keeping order of dimension names as it is in parameter space
-  # Note: conditions are NOT respected
-  def vector_to_struct(v)
+  # Note: conditions and dimension consistency are NOT respected
+  def vector_to_struct!(v)
     return v if v.is_a?(Struct)
 
     if v.is_a?(Array)
-      struct = Struct.new(*@names)
-      struct.new(*v)
+      @struct.new(*v)
     elsif v.is_a?(Hash)
-      struct = Struct.new(*v.keys)
-      struct.new(*v.values)
+      @struct.new(*v.values)
     else
       raise "Incorrect vector type `#{v.class}`"
     end
   end
 
   # check consistency of the vector internal structure relatively to parameter space
+  # Note: conditions are NOT checked
   def vector_consistent?(v)
-    return false if vector_to_hash(v).size != @dimensiality
     raise "Incorrect vector type `#{v.class}`" unless v.is_a?(Enumerable)
-    raise "Incorrect vector dimensions #{v.keys.inspect}" unless @names.to_set == vector_to_hash(v).keys.to_set
+    raise "Incorrect dimensiality of vector '#{v.inspect}'" unless vector_to_hash!(v).size == @dimensiality
+    raise "Incorrect vector dimensions #{v.keys.inspect}" unless @names.to_set == vector_to_hash!(v).keys.to_set
     true
+  end
+
+  # convert Struct or Array vector to Hash with all checks
+  def vector_to(v, type)
+    return nil unless vector_consistent?(v)
+
+    case type
+    when :hash
+      vector_to_hash!(v)
+    when :struct
+      vector_to_struct!(v)
+    else
+      raise "Incorrect target type for vector conversion: #{type}"
+    end
   end
 
 end
