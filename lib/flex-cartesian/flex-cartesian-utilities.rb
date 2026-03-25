@@ -2,6 +2,23 @@ require 'set'
 
 module FlexCartesianUtilities
 
+# shifts vector along given dimension by `stride` elements
+# negative stride moves backward, positive stride moves forward
+def vector_shift(v, dimension:, offset: 1)
+  valid?(v)
+
+  vector = vector_to(v, :hash)
+
+  TODO
+  #  current_dimensional_value = vector[dimension]
+  current_position = vector.keys.index[dimension]
+  new_position = vector.keys[current_position + offset]
+
+  dimensional_values = @names[dimension]
+  current_position = vector_to(v, :hash).keys.index[]
+  new_dimensional_value = @names[dimension
+end
+
 # obtain value of the given function on a given vector from parameter space
 # modes:
 # :enforce - recompute function value
@@ -18,11 +35,11 @@ def value(v, function:, mode: :increment)
     raise "Value of #{function} function is missing on #{v_hash.inspect} vector" if res.nil?
     return res
   when :enforce
-    new_res = @space.derived[function].call(v_struct)
+    new_res = @derived[function].call(v_struct)
     @results[v_struct][function] = new_res
     return new_res
   when :increment
-    new_res = res.nil? @space.derived[function].call(v_struct) : res
+    new_res = res.nil? @derived[function].call(v_struct) : res
     @results[v_struct][function] = new_res
     return new_res
   else
@@ -79,14 +96,6 @@ end
     end
   end
 
-  # checks if a vector or set of vectors is (fully) in parameter space, with respect to conditions
-  # vector can be Struct, Hash, or Array. If it's Array, then order of dimensions is assumed from parameter space
-  def in_space?(v)
-    return false unless vector_consistent(v)
-    return false unless valid?(v.vector_to_struct)
-    true
-  end
-
   # Convert first `limit` combinations of parameter space to array
   # or convert vector in parameter space to array
   # with respect to conditions
@@ -103,12 +112,8 @@ end
     end
 
     # otherwise, it's a single vector
-    if data.is_a?(Struct) or data.is_a(Hash) or data.is_a(Array)
-      return nil unless in_space?(vector_to_struct(data))
-      return data.values
-    else
-      raise "Incorrect vector type #{data.class}"
-    end
+    valid?(data)
+    data.values
   end
 
 end

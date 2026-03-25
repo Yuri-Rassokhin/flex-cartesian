@@ -1,5 +1,5 @@
 class Morris < Analyzer
-  Edge = Struct.new(:from_idx, :to_idx, :factor, :step, keyword_init: true)
+  Edge = Struct.new(:from_idx, :to_idx, :factor, :step)
 
   attr_reader :names, :levels, :trajectories, :step, :seed, :edges, :name, :description, :url
 
