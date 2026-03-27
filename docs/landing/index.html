@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FlexCartesian — Explore Systems as Functions of Parameters</title>
+  <meta name="description" content="FlexCartesian is a Ruby framework for modelling and analysing parametric systems through parameter spaces, functions, real-system measurements, and system-level exploration." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <div class="site-shell">
+    <header class="topbar">
+      <a class="brand" href="#top">
+        <span class="brand-mark">FlexCartesian</span>
+        <span class="brand-text">FlexCartesian</span>
+      </a>
+
+      <button class="nav-toggle" aria-label="Open navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav">
+        <a href="#concept">Concept</a>
+        <a href="#workflow">Workflow</a>
+        <a href="#code">Code</a>
+        <a href="#outputs">Outputs</a>
+        <a href="#positioning">Why FlexCartesian</a>
+        <a class="nav-cta" href="https://github.com/yuri-rassokhin/flex-cartesian">GitHub</a>
+        <a class="nav-cta" href="https://rubygems.org/gems/flex-cartesian">RubyGems</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero section">
+        <div class="hero-copy reveal">
+          <h1>
+            Explore real systems<span class="highlight"> as functions of parameters.</span>
+          </h1>
+          <p class="hero-lead">Build a digital twin in four steps: describe parameters, model system behaviour, capture real data, and derive insights. From bottlenecks to best practices — and beyond.</p>
+          <p class="hero-punchline">Any question, answered in one line of code.</p>
+        </div>
+      </section>
+
+      <section id="concept" class="section concept">
+        <div class="section-head reveal">
+          <span class="section-tag">Core idea</span>
+          <h2>From benchmark to insight.</h2>
+          <p>
+            FlexCartesian is not just a parameter sweep utility. It treats a real-world system as a
+            structured object of study: behaviour emerges as functions over a multidimensional parameter space.
+          </p>
+        </div>
+
+        <div class="concept-rail reveal reveal-delay-1">
+          <div class="concept-step">
+            <div class="step-num">01</div>
+            <h3>Define the space</h3>
+            <p>Describe the independent variables that shape system behaviour.</p>
+          </div>
+          <div class="concept-line"></div>
+          <div class="concept-step">
+            <div class="step-num">02</div>
+            <h3>Define the functions</h3>
+            <p>Capture throughput, latency, cost, stability, or any other property you care about.</p>
+          </div>
+          <div class="concept-line"></div>
+          <div class="concept-step">
+            <div class="step-num">03</div>
+            <h3>Measure the real system</h3>
+            <p>Functions can call benchmarks, APIs, services, or live infrastructure.</p>
+          </div>
+          <div class="concept-line"></div>
+          <div class="concept-step">
+            <div class="step-num">04</div>
+            <h3>Study the system</h3>
+            <p>Export, visualise, and analyse the resulting function landscape.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="workflow" class="section workflow">
+        <div class="section-head reveal">
+          <span class="section-tag">Workflow</span>
+          <h2>A systematic way to explore parametric systems.</h2>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card reveal">
+            <div class="feature-icon">◢</div>
+            <h3>Multidimensional spaces</h3>
+            <p>Build parameter spaces with independent dimensions, discrete values, and conditions.</p>
+          </article>
+          <article class="feature-card reveal reveal-delay-1">
+            <div class="feature-icon">ƒ</div>
+            <h3>Function-driven modelling</h3>
+            <p>Express system properties as functions, instead of relying on ad hoc notes or isolated runs.</p>
+          </article>
+          <article class="feature-card reveal reveal-delay-2">
+            <div class="feature-icon">∴</div>
+            <h3>Real measurements</h3>
+            <p>Use FlexCartesian as a modelling shell around actual benchmarks, applications, or infrastructure.</p>
+          </article>
+          <article class="feature-card reveal">
+            <div class="feature-icon">◌</div>
+            <h3>Structured outputs</h3>
+            <p>Export results to CSV, JSON, or YAML for further analysis and visualisation workflows.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="code" class="section code-section">
+        <div class="section-head reveal">
+          <span class="section-tag">Ruby DSL</span>
+          <h2>Readable enough for humans, precise enough for systems.</h2>
+        </div>
+
+        <div class="dual-panel reveal reveal-delay-1">
+          <div class="panel-copy">
+            <p>
+              FlexCartesian gives you a compact way to describe dimensions, functions, and execution logic.
+              It is built for scenarios where you want engineering clarity instead of opaque optimisation pipelines.
+            </p>
+            <ul class="bullet-list">
+              <li>Dimensions and values</li>
+              <li>Conditions and filters</li>
+              <li>Functions bound to live evaluation logic</li>
+              <li>Structured outputs for downstream analysis</li>
+            </ul>
+          </div>
+          <div class="code-card code-large">
+<pre><code><span class="kw">fc</span> = <span class="cls">FlexCartesian</span>.<span class="fn">new</span>
+
+<span class="kw">fc</span>.<span class="fn">dimension</span> <span class="sym">:batch_size</span>, [1, 2, 4, 8]
+<span class="kw">fc</span>.<span class="fn">dimension</span> <span class="sym">:gpu_count</span>,  [1, 2, 4]
+<span class="kw">fc</span>.<span class="fn">dimension</span> <span class="sym">:precision</span>,  [<span class="sym">:fp16</span>, <span class="sym">:bf16</span>]
+
+<span class="kw">fc</span>.<span class="fn">function</span> <span class="sym">:latency_ms</span> <span class="kw">do</span> |params|
+  benchmark_model(params).latency_ms
+<span class="kw">end</span>
+
+<span class="kw">fc</span>.<span class="fn">function</span> <span class="sym">:cost_per_token</span> <span class="kw">do</span> |params|
+  infra_cost(params) / benchmark_model(params).tokens
+<span class="kw">end</span>
+
+<span class="kw">fc</span>.<span class="fn">run</span>
+<span class="kw">fc</span>.<span class="fn">export</span> <span class="str">"results.csv"</span></code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="outputs" class="section outputs">
+        <div class="section-head reveal">
+          <span class="section-tag">Outputs</span>
+          <h2>See behaviour, not just numbers.</h2>
+          <p>
+            The point is not to collect benchmark fragments. It is to reveal system structure.
+          </p>
+        </div>
+
+        <div class="outputs-grid">
+          <article class="output-card reveal">
+            <div class="output-visual output-heat"></div>
+            <h3>Heatmaps</h3>
+            <p>Find productive regions in two-dimensional slices of the space.</p>
+          </article>
+          <article class="output-card reveal reveal-delay-1">
+            <div class="output-visual output-bars"></div>
+            <h3>Sensitivity</h3>
+            <p>Estimate which dimensions actually drive your outcomes.</p>
+          </article>
+          <article class="output-card reveal reveal-delay-2">
+            <div class="output-visual output-cube"></div>
+            <h3>Higher-dimensional intuition</h3>
+            <p>Move from raw runs to interpretable surfaces, trade-offs, and bottlenecks.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="positioning" class="section positioning">
+        <div class="section-head reveal">
+          <span class="section-tag">Positioning</span>
+          <h2>Not another black-box optimiser.</h2>
+        </div>
+
+        <div class="compare-grid reveal reveal-delay-1">
+          <div class="compare-card compare-card-strong">
+            <h3>FlexCartesian</h3>
+            <ul>
+              <li>Models systems as functions over parameter spaces</li>
+              <li>Designed for real benchmarking workflows</li>
+              <li>Supports structured reasoning about behaviour</li>
+              <li>Human-readable Ruby DSL</li>
+            </ul>
+          </div>
+          <div class="compare-card">
+            <h3>Typical parameter tuning</h3>
+            <ul>
+              <li>Fragmented runs and spreadsheets</li>
+              <li>Opaque optimisation steps</li>
+              <li>Little system-level interpretability</li>
+              <li>Weak connection to real architecture decisions</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section cta-section">
+        <div class="cta-panel reveal">
+          <span class="section-tag">Get started</span>
+          <h2>Build a benchmark culture around systems, not anecdotes.</h2>
+          <p>Start with a parameter space. End with insight.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

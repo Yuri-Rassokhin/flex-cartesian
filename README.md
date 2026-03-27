@@ -318,7 +318,7 @@ s.output(colorize: true) # for convenience, show result in terminal
 
 If you run the code, after a while it will generate benchmark results on the screen:
 
-![Ping Benchmark Example](doc/ping_benchmark_example.png)
+![Ping Benchmark Example](docs/ping_benchmark_example.png)
 
 Additionally, CSV version of this result is saved as `./benchmark.csv`
 
