@@ -23,11 +23,11 @@
       </button>
 
       <nav class="nav">
-        <a href="#concept">Concept</a>
-        <a href="#workflow">Workflow</a>
-        <a href="#code">Code</a>
-        <a href="#outputs">Outputs</a>
-        <a href="#positioning">Why FlexCartesian</a>
+        <a href="#concept" class="nav-link">Concept</a>
+        <a href="#workflow" class="nav-link">Workflow</a>
+        <a href="#code" class="nav-link">Code</a>
+        <a href="#outputs" class="nav-link">Outputs</a>
+        <a href="#positioning" class="nav-link">Why FlexCartesian</a>
         <a class="nav-cta" href="https://github.com/yuri-rassokhin/flex-cartesian">GitHub</a>
         <a class="nav-cta" href="https://rubygems.org/gems/flex-cartesian">RubyGems</a>
       </nav>
@@ -224,7 +224,7 @@
         </div>
       </section>
 
-      <section class="section cta-section">
+      <section class="section cta-section"> 
         <div class="cta-panel reveal">
           <h2>Numbers tell the truth.</h2>
           <p>Open-source project available on GitHub.</p>
@@ -235,6 +235,33 @@
   </div>
 
   <script src="assets/js/main.js"></script>
+<script>
+const sections = document.querySelectorAll("section[id]");
+const navLinks = document.querySelectorAll(".nav-link");
+
+const observer = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      const id = entry.target.getAttribute("id");
+      const link = document.querySelector('.nav-link[href="#' + id + '"]');
+
+      if (!link) return;
+
+      if (entry.isIntersecting) {
+        navLinks.forEach((l) => l.classList.remove("active"));
+        link.classList.add("active");
+      }
+    });
+  },
+  {
+    root: null,
+    rootMargin: "-35% 0px -45% 0px",
+    threshold: 0
+  }
+);
+
+sections.forEach((section) => observer.observe(section));
+</script>
 </body>
 </html>
 
