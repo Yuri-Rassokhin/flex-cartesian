@@ -235,23 +235,37 @@
   </div>
 
   <script src="assets/js/main.js"></script>
+
 <script>
 const sections = document.querySelectorAll("section[id]");
 const navLinks = document.querySelectorAll(".nav-link");
 
+function setActiveLink(id) {
+  navLinks.forEach((link) => {
+    link.classList.toggle("active", link.getAttribute("href") === "#" + id);
+  });
+}
+
+navLinks.forEach((link) => {
+  link.addEventListener("click", () => {
+    const targetId = link.getAttribute("href").slice(1);
+    setActiveLink(targetId);
+  });
+});
+
 const observer = new IntersectionObserver(
   (entries) => {
+    let visibleSection = null;
+
     entries.forEach((entry) => {
-      const id = entry.target.getAttribute("id");
-      const link = document.querySelector('.nav-link[href="#' + id + '"]');
-
-      if (!link) return;
-
       if (entry.isIntersecting) {
-        navLinks.forEach((l) => l.classList.remove("active"));
-        link.classList.add("active");
+        visibleSection = entry.target.id;
       }
     });
+
+    if (visibleSection) {
+      setActiveLink(visibleSection);
+    }
   },
   {
     root: null,
@@ -261,7 +275,16 @@ const observer = new IntersectionObserver(
 );
 
 sections.forEach((section) => observer.observe(section));
+
+window.addEventListener("load", () => {
+  const hash = window.location.hash.replace("#", "");
+  if (hash) {
+    setActiveLink(hash);
+  }
+});
 </script>
+
+
 </body>
 </html>
 

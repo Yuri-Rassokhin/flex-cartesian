@@ -57,3 +57,39 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.16 });
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Находим все секции, у которых есть атрибут id (Concept, Workflow и т.д.)
+const sections = document.querySelectorAll('section[id]');
+
+// Исключаем из отслеживания кнопку GitHub (класс .nav-cta), берем только текстовые ссылки
+const navItems = document.querySelectorAll('.nav a:not(.nav-cta)');
+
+// Настройки обсервера: секция считается активной, когда она пересекает центр экрана
+const observerOptions = {
+  root: null,
+  rootMargin: '-20% 0px -60% 0px', 
+  threshold: 0
+};
+
+const scrollSpyObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    // Если секция находится в видимой области
+    if (entry.isIntersecting) {
+      const id = entry.target.getAttribute('id');
+      
+      // Снимаем класс active со всех ссылок...
+      navItems.forEach(link => {
+        link.classList.remove('active');
+        // ...и добавляем только той, href которой совпадает с id секции
+        if (link.getAttribute('href') === `#${id}`) {
+          link.classList.add('active');
+        }
+      });
+    }
+  });
+}, observerOptions);
+
+// Запускаем наблюдение за каждой секцией
+sections.forEach(section => {
+  scrollSpyObserver.observe(section);
+});
