@@ -316,6 +316,38 @@ window.addEventListener("load", () => {
 });
 </script>
 
+<script>
+// Находим нужные элементы
+const navToggle = document.querySelector('.nav-toggle');
+const topbar = document.querySelector('.topbar');
+const mobileNavLinks = document.querySelectorAll('.nav a');
+
+// Функция переключения состояния меню
+function toggleMenu() {
+  // Добавляем/убираем класс nav-open у шапки
+  const isOpen = topbar.classList.toggle('nav-open');
+  
+  // Обновляем атрибут доступности для скринридеров
+  navToggle.setAttribute('aria-expanded', isOpen);
+  
+  // Блокируем скролл страницы, если меню открыто
+  document.body.classList.toggle('no-scroll', isOpen);
+}
+
+// Слушаем клик по кнопке-бургеру
+navToggle.addEventListener('click', toggleMenu);
+
+// Закрываем меню автоматически при клике на любую ссылку
+mobileNavLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    // Если меню открыто — закрываем его
+    if (topbar.classList.contains('nav-open')) {
+      toggleMenu();
+    }
+  });
+});
+</script>
+
 
 </body>
 </html>

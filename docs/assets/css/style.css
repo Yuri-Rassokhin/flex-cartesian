@@ -17,7 +17,11 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { 
+  scroll-behavior: smooth; 
+  scroll-snap-type: y mandatory; /* Включает вертикальное примагничивание */
+}
+
 body {
   margin: 0;
   font-family: Inter, system-ui, sans-serif;
@@ -27,6 +31,11 @@ body {
     radial-gradient(circle at 88% 18%, rgba(157, 125, 255, 0.18), transparent 0 24%),
     linear-gradient(180deg, #091425 0%, #07111f 35%, #08121e 100%);
   min-height: 100vh;
+}
+
+/* Класс для блокировки скролла при открытом меню */
+body.no-scroll {
+  overflow: hidden;
 }
 
 a { color: inherit; text-decoration: none; }
@@ -113,6 +122,8 @@ button { font: inherit; }
   height: 46px;
   border-radius: 14px;
   padding: 0;
+  position: relative;
+  z-index: 50; /* Кнопка должна быть поверх открытого меню */
 }
 .nav-toggle span {
   display: block;
@@ -121,6 +132,19 @@ button { font: inherit; }
   margin: 5px auto;
   background: var(--text);
   border-radius: 999px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform-origin: center;
+}
+
+/* Анимация бургера в крестик при открытом меню */
+.topbar.nav-open .nav-toggle span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.topbar.nav-open .nav-toggle span:nth-child(2) {
+  opacity: 0; /* Прячем среднюю полоску */
+}
+.topbar.nav-open .nav-toggle span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
 }
 
 .nav-link {
@@ -158,7 +182,7 @@ main {
 }
 
 .section {
-/* Фолбэк для старых браузеров */
+  /* Фолбэк для старых браузеров */
   min-height: 100vh; 
   /* Динамическая высота для современных мобильных браузеров */
   min-height: 100dvh;
@@ -168,9 +192,9 @@ main {
   flex-direction: column;
   justify-content: center;
   
-/* Базовые отступы для десктопа (учитывая центрирование) */
+  /* Базовые отступы для десктопа (учитывая центрирование) */
   padding: 80px 0; 
-  scroll-margin-top: 90px; /* QUESTION */
+  scroll-margin-top: 90px; 
   scroll-snap-align: start; /* Секция будет останавливаться ровно у верхнего края */
 }
 
@@ -190,10 +214,6 @@ main {
   min-height: 100vh; 
 }
 
-html {
-  scroll-behavior: smooth;
-  scroll-snap-type: y mandatory; /* Включает вертикальное примагничивание */
-}
 
 .eyebrow,
 .section-tag {
@@ -742,35 +762,49 @@ html {
     padding: 12px 14px;
   }
   .nav-toggle { display: inline-block; }
+  
+  /* Новые стили для полноэкранного меню */
   .nav {
-    position: absolute;
-    top: calc(100% + 10px);
-    right: 0;
+    position: fixed; 
+    top: 0;
     left: 0;
-    display: grid;
-    gap: 10px;
-    padding: 16px;
-    border-radius: 18px;
-    background: rgba(8, 17, 31, 0.96);
-    border: 1px solid var(--line);
-    box-shadow: var(--shadow);
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh; 
+    background: rgba(7, 17, 31, 0.95);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px); 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    z-index: 45; 
     opacity: 0;
     pointer-events: none;
-    transform: translateY(-8px);
-    transition: opacity 0.25s ease, transform 0.25s ease;
+    transform: translateY(-10px) scale(0.98); 
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
+  
+  .nav a {
+    font-size: 1.25rem;
+    padding: 12px 24px;
+    width: 100%;
+    text-align: center;
+  }
+  
   .topbar.nav-open .nav {
     opacity: 1;
     pointer-events: auto;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
+
   .hero { gap: 34px; }
   .section {
     padding: 60px 0;
-    /* Если контента много, он начнет строиться сверху вниз, а не вылезать за края */
     justify-content: flex-start; 
   }
-  /* Даем отступ сверху, чтобы мобильная шапка не прилипала к тексту */
   .section-head {
     margin-top: 40px;
   }
@@ -786,17 +820,14 @@ html {
   .section {
     padding: 40px 0 20px 0;
   }
-  /* Немного уменьшаем межстрочные интервалы и отступы у заголовков, 
-     чтобы сэкономить вертикальное пространство */
   .section-head h2 {
     font-size: clamp(1.8rem, 8vw, 2.4rem);
     margin-top: 10px;
     margin-bottom: 16px;
   }
   .section-head p {
-    line-height: 1.6; /* Делаем текст чуть плотнее */
+    line-height: 1.6; 
   }
-  /* Уменьшаем отступы внутри карточек на мобильных */
   .feature-card,
   .output-card,
   .compare-card { 
@@ -869,7 +900,7 @@ html {
 
 .code-section .feature-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: stretch; /* ключевое */
+  align-items: stretch; 
 }
 
 .code-section .feature-card {
