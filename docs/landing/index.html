@@ -25,7 +25,7 @@
       <nav class="nav">
         <a href="#concept" class="nav-link">Problem</a>
         <a href="#workflow" class="nav-link">Solution</a>
-        <a href="#code" class="nav-link">Code</a>
+        <a href="#code" class="nav-link">How It Works</a>
         <a href="#outputs" class="nav-link">Outputs</a>
         <a href="#positioning" class="nav-link">Why FlexCartesian</a>
         <a class="nav-cta" href="https://github.com/yuri-rassokhin/flex-cartesian">GitHub</a>
@@ -99,14 +99,15 @@ FlexCartesian treats a system not as a set of scattered measurements, but as a h
           </article>
           <article class="feature-card reveal reveal-delay-2">
             <div class="feature-icon">∴</div>
-            <h3>Build digital twin</h3>
-            <p>Behavioural functions obtain live data from real system. Use FlexCartesian as a modelling framework around actual applications, APIs, services, or infrastructure.</p>
+            <h3>Launch digital twin</h3>
+            <p>Behavioural functions obtain live data from real system. Use FlexCartesian as a modelling framework around actual applications, APIs, services, or infrastructure - and let the twin evolve in time, remaining linked to real system.</p>
           </article>
           <article class="feature-card reveal">
             <div class="feature-icon">◌</div>
-            <h3>Get insightful output</h3>
-            <p>Export full behavioural landscape of your system to CSV, JSON, or YAML for further analysis and visualisation.
-               Apply built-in analyzers to identify bottlenecks, trade-offs, and parameter influence without needing to export raw data.
+            <h3>Get insights</h3>
+            <p>Observe full behavioural landscape of your system.
+               Apply built-in and your own analyzers to identify bottlenecks, trade-offs, and parameter influence.
+               Export to CSV, JSON, YAML, or MD for further analysis and visualisation.
             </p>
           </article>
         </div>
@@ -114,51 +115,48 @@ FlexCartesian treats a system not as a set of scattered measurements, but as a h
 
       <section id="code" class="section code-section">
         <div class="section-head reveal">
-          <span class="section-tag">Ruby DSL</span>
-          <h2>Readable enough for humans, precise enough for systems.</h2>
-        </div>
-
-        <div class="dual-panel reveal reveal-delay-1">
-          <div class="panel-copy">
-            <p>
-              FlexCartesian gives you a compact way to describe dimensions, functions, and execution logic.
-              It is built for scenarios where you want engineering clarity instead of opaque optimisation pipelines.
-            </p>
-            <ul class="bullet-list">
-              <li>Dimensions and values</li>
-              <li>Conditions and filters</li>
-              <li>Functions bound to live evaluation logic</li>
-              <li>Structured outputs for downstream analysis</li>
-            </ul>
-          </div>
-          <div class="code-card code-large">
-<pre><code><span class="kw">fc</span> = <span class="cls">FlexCartesian</span>.<span class="fn">new</span>
-
-<span class="kw">fc</span>.<span class="fn">dimension</span> <span class="sym">:batch_size</span>, [1, 2, 4, 8]
-<span class="kw">fc</span>.<span class="fn">dimension</span> <span class="sym">:gpu_count</span>,  [1, 2, 4]
-<span class="kw">fc</span>.<span class="fn">dimension</span> <span class="sym">:precision</span>,  [<span class="sym">:fp16</span>, <span class="sym">:bf16</span>]
-
-<span class="kw">fc</span>.<span class="fn">function</span> <span class="sym">:latency_ms</span> <span class="kw">do</span> |params|
-  benchmark_model(params).latency_ms
-<span class="kw">end</span>
-
-<span class="kw">fc</span>.<span class="fn">function</span> <span class="sym">:cost_per_token</span> <span class="kw">do</span> |params|
-  infra_cost(params) / benchmark_model(params).tokens
-<span class="kw">end</span>
-
-<span class="kw">fc</span>.<span class="fn">run</span>
-<span class="kw">fc</span>.<span class="fn">export</span> <span class="str">"results.csv"</span></code></pre>
-          </div>
-        </div>
+          <h2>Readable for human,<br>precise for insight.</h2>
+          <div>The system is evaluated across the entire parameter space. Each result becomes part of a structured behavioural model — not just an individual measurement.</div>
+        <div class="feature-grid">
+          <article class="feature-card reveal">
+            <h3>Define parameters</h3>
+            <pre><code>
+              require 'flex-cartesian'
+              space = FlexCartesian.new(
+                {count: [2, 4],
+                 size: [32, 64],
+                 target: ["8.8.8.8", "1.1.1.1", "208.67.222.222"]
+                }
+              )
+            </code></pre>
+          </article>
+          <article class="feature-card reveal reveal-delay-1">
+            <h3>Express behavioural functions</h3>
+            <pre><code>
+              result = {}
+              space.func(:add, :command) { |v| "ping -c #{v.count} -s #{v.size} #{v.target}" } # ping command
+              s.func(:add, :raw_ping, hide: true) { |v| result[v.command] ||= `#{v.command} 2>&1` } # capturing ping result
+              s.func(:add, :time) { |v| v.raw_ping[/min\/avg\/max\/(?:mdev|stddev) = [^\/]+\/([^\/]+)/, 1]&.to_f.round(2) } # fetch ping time from result
+            </code></pre>
+          </article>
+          <article class="feature-card reveal reveal-delay-2">
+            <h3>Launch digital twin</h3>
+            <pre><code>
+              s.func(:run, progress: true, title: "Obtaining data")
+            </code></pre>
+          </article>
+          <article class="feature-card reveal">
+            <h3>Get insights</h3>
+            <pre><code>
+              s.output(colorize: true)
+            </code></pre>
+          </article>
       </section>
 
       <section id="outputs" class="section outputs">
         <div class="section-head reveal">
-          <span class="section-tag">Outputs</span>
-          <h2>See behaviour, not just numbers.</h2>
-          <p>
-            The point is not to collect benchmark fragments. It is to reveal system structure.
-          </p>
+          <h2>Wholistic behavioural model,<br>not just numbers.</h2>
+          <p>The point is not to collect fragmented measurements. It is to reveal system structure.</p>
         </div>
 
         <div class="outputs-grid">
@@ -290,4 +288,3 @@ window.addEventListener("load", () => {
 
 </body>
 </html>
-
