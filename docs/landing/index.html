@@ -26,7 +26,7 @@
         <a href="#concept" class="nav-link">Problem</a>
         <a href="#workflow" class="nav-link">Solution</a>
         <a href="#code" class="nav-link">How It Works</a>
-        <a href="#outputs" class="nav-link">Result</a>
+        <a href="#outputs" class="nav-link">Value</a>
         <a href="#positioning" class="nav-link">Why FlexCartesian</a>
         <a class="nav-cta" href="https://github.com/yuri-rassokhin/flex-cartesian">GitHub</a>
         <a class="nav-cta" href="https://rubygems.org/gems/flex-cartesian">RubyGems</a>
@@ -113,50 +113,83 @@ FlexCartesian treats a system not as a set of scattered measurements, but as a h
         </div>
       </section>
 
-      <section id="code" class="section code-section">
-        <div class="section-head reveal">
-          <h2>Readable for human,<br>precise for insight.</h2>
-        </div>
-          <div><p>The system is evaluated across the entire parameter space. Each result becomes part of a structured behavioural model — not just an individual measurement. Everything in high-level declarative style.</p></div>
-        <div class="feature-grid">
-          <article class="feature-card reveal">
-            <h3>Define parameters</h3>
-            <pre><code>
-              require 'flex-cartesian'
-              space = FlexCartesian.new(
-                {count: [2, 4],
-                 size: [32, 64],
-                 target: ["8.8.8.8", "1.1.1.1", "208.67.222.222"]
-                }
-              )
-            </code></pre>
-          </article>
-          <article class="feature-card reveal reveal-delay-1">
-            <h3>Express behavioural functions</h3>
-            <pre><code>
-              result = {}
-              space.func(:add, :command) { |v| "ping -c #{v.count} -s #{v.size} #{v.target}" } # ping command
-              s.func(:add, :raw_ping, hide: true) { |v| result[v.command] ||= `#{v.command} 2>&1` } # capturing ping result
-              s.func(:add, :time) { |v| v.raw_ping[/min\/avg\/max\/(?:mdev|stddev) = [^\/]+\/([^\/]+)/, 1]&.to_f.round(2) } # fetch ping time from result
-            </code></pre>
-          </article>
-          <article class="feature-card reveal reveal-delay-2">
-            <h3>Launch digital twin</h3>
-            <pre><code>
-              s.func(:run, progress: true, title: "Obtaining data")
-            </code></pre>
-          </article>
-          <article class="feature-card reveal">
-            <h3>Get insights</h3>
-            <pre><code>
-              s.output(colorize: true)
-            </code></pre>
-          </article>
-      </section>
+<section id="code" class="section code-section">
+  <div class="section-head reveal">
+    <h2>Readable for human,<br>precise for insight.</h2>
+  </div>
+
+  <div class="section-head reveal reveal-delay-1">
+    <p>
+      The system is evaluated across the entire parameter space. Each result becomes part
+      of a structured behavioural model — not just an individual measurement.
+      Everything in high-level declarative style.
+    </p>
+  </div>
+
+  <div class="feature-grid">
+
+    <article class="feature-card reveal">
+      <h3>Define parameter space</h3>
+      <div class="code-card">
+        <pre><code><span class="kw">require</span> <span class="str">'flex-cartesian'</span>
+
+<span class="kw">space</span> = <span class="cls">FlexCartesian</span>.<span class="fn">new</span>(
+  <span class="sym">count:</span>  [2, 4],
+  <span class="sym">size:</span>   [32, 64],
+  <span class="sym">target:</span> [
+    <span class="str">"8.8.8.8"</span>,
+    <span class="str">"1.1.1.1"</span>,
+    <span class="str">"208.67.222.222"</span>
+  ]
+)</code></pre>
+      </div>
+    </article>
+
+    <article class="feature-card reveal reveal-delay-1">
+      <h3>Express behavioural functions</h3>
+      <div class="code-card code-large">
+        <pre><code><span class="kw">result</span> = {}
+
+<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:command</span>) { |v|
+  <span class="str">"ping -c #{v.count} -s #{v.size} #{v.target}"</span>
+}
+
+<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:raw_ping</span>, <span class="sym">hide:</span> <span class="kw">true</span>) { |v|
+  result[v.command] ||= <span class="str">`#{v.command} 2&gt;&amp;1`</span>
+}
+
+<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:time</span>) { |v|
+  v.raw_ping[/min\/avg\/max\/(?:mdev|stddev) =
+    [^\/]+\/([^\/]+)/, 1]
+    &amp;.<span class="fn">to_f</span>
+    &amp;.<span class="fn">round</span>(2)
+}</code></pre>
+      </div>
+    </article>
+
+    <article class="feature-card reveal reveal-delay-2">
+      <h3>Launch digital twin</h3>
+      <div class="code-card">
+        <pre><code><span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:run</span>,
+  <span class="sym">progress:</span> <span class="kw">true</span>,
+  <span class="sym">title:</span> <span class="str">"Obtaining data"</span>
+)</code></pre>
+      </div>
+    </article>
+
+    <article class="feature-card reveal">
+      <h3>Get insights</h3>
+      <div class="code-card">
+        <pre><code><span class="kw">space</span>.<span class="fn">output</span>(<span class="sym">colorize:</span> <span class="kw">true</span>)</code></pre>
+      </div>
+    </article>
+
+  </div>
+</section>
 
       <section id="outputs" class="section outputs">
         <div class="section-head reveal">
-          <h2>Wholistic behavioural model,<br>not just numbers.</h2>
+          <h2>Complete behavioural model,<br>not just logs.</h2>
           <p>The point is to reveal system structure through its behavioural landscape.
           <ul>
             <li>How performance changes across dimensions.</li>
@@ -195,12 +228,11 @@ FlexCartesian treats a system not as a set of scattered measurements, but as a h
 
       <section id="positioning" class="section positioning">
         <div class="section-head reveal">
-          <h2>Not another black-box optimiser.</h2>
+          <h2>The first holistic approach to system exploration</h2>
         </div>
 
         <div class="compare-grid reveal reveal-delay-1">
           <div class="compare-card compare-card-strong">
-            <h3>The first holistic approach to system exploration</h3>
             <ul>
               <li>Provides high-level human-readable DSL</li>
               <li>Treats systems as first-class parametric spaces</li>
@@ -228,21 +260,11 @@ FlexCartesian treats a system not as a set of scattered measurements, but as a h
               <p>FlexCartesian introduces a conceptual shift: systems are no longer analysed as isolated experiments, but as continuous spaces of possible configurations.</p>
             </div>
           </div>
-          <div class="compare-card">
-            <h3>Typical parameter tuning</h3>
-            <ul>
-              <li>Fragmented runs and spreadsheets</li>
-              <li>Opaque optimisation steps</li>
-              <li>Little system-level interpretability</li>
-              <li>Weak connection to real architecture decisions</li>
-            </ul>
-          </div>
-        </div>
       </section>
 
       <section class="section cta-section"> 
         <div class="cta-panel reveal">
-          <h2>Numbers tell the truth.</h2>
+          <h2>Let's Get Started.</h2>
           <p>Open-source project available on GitHub.</p>
           <p>Actively developed and used in real-world engineering scenarios.</p>
         </div>
