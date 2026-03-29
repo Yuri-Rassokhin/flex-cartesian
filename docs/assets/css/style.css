@@ -158,21 +158,20 @@ main {
 }
 
 .section {
-  /* Задаем минимальную высоту ровно в один экран */
+/* Фолбэк для старых браузеров */
   min-height: 100vh; 
+  /* Динамическая высота для современных мобильных браузеров */
+  min-height: 100dvh;
   
   /* Включаем Flexbox для центрирования контента по вертикали */
   display: flex;
   flex-direction: column;
   justify-content: center;
   
-  /* Устанавливаем отступ при скролле к якорю. 
-     Это нужно, чтобы ваша липкая шапка (.topbar) не перекрывала заголовки */
-  scroll-margin-top: 90px; 
-  
-  padding: 40px 0; 
+/* Базовые отступы для десктопа (учитывая центрирование) */
+  padding: 80px 0; 
+  scroll-margin-top: 90px; /* QUESTION */
   scroll-snap-align: start; /* Секция будет останавливаться ровно у верхнего края */
-
 }
 
 .hero {
@@ -766,7 +765,15 @@ html {
     transform: translateY(0);
   }
   .hero { gap: 34px; }
-  .section { padding: 72px 0; }
+  .section {
+    padding: 60px 0;
+    /* Если контента много, он начнет строиться сверху вниз, а не вылезать за края */
+    justify-content: flex-start; 
+  }
+  /* Даем отступ сверху, чтобы мобильная шапка не прилипала к тексту */
+  .section-head {
+    margin-top: 40px;
+  }
   .scene-tabs { grid-template-columns: repeat(2, 1fr); }
   .scene-window { min-height: 500px; }
   .feature-grid,
@@ -776,6 +783,25 @@ html {
 @media (max-width: 560px) {
   main { width: calc(100% - 20px); }
   .hero h1 { font-size: clamp(2.5rem, 12vw, 4.4rem); }
+  .section {
+    padding: 40px 0 20px 0;
+  }
+  /* Немного уменьшаем межстрочные интервалы и отступы у заголовков, 
+     чтобы сэкономить вертикальное пространство */
+  .section-head h2 {
+    font-size: clamp(1.8rem, 8vw, 2.4rem);
+    margin-top: 10px;
+    margin-bottom: 16px;
+  }
+  .section-head p {
+    line-height: 1.6; /* Делаем текст чуть плотнее */
+  }
+  /* Уменьшаем отступы внутри карточек на мобильных */
+  .feature-card,
+  .output-card,
+  .compare-card { 
+    padding: 18px; 
+  }
   .button { width: 100%; }
   .hero-actions { flex-direction: column; }
   .scene-window { min-height: 580px; }
