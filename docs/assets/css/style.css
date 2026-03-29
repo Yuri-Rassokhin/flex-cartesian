@@ -158,7 +158,21 @@ main {
 }
 
 .section {
-  padding: 96px 0;
+  /* Задаем минимальную высоту ровно в один экран */
+  min-height: 100vh; 
+  
+  /* Включаем Flexbox для центрирования контента по вертикали */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
+  /* Устанавливаем отступ при скролле к якорю. 
+     Это нужно, чтобы ваша липкая шапка (.topbar) не перекрывала заголовки */
+  scroll-margin-top: 90px; 
+  
+  padding: 40px 0; 
+  scroll-snap-align: start; /* Секция будет останавливаться ровно у верхнего края */
+
 }
 
 .hero {
@@ -167,6 +181,19 @@ main {
   align-items: center;
   gap: 52px;
   min-height: calc(100vh - 140px);
+}
+
+.hero.section {
+  /* Возвращаем grid для первой секции */
+  display: grid;
+  
+  /* Немного корректируем высоту, так как сверху нет другой секции */
+  min-height: 100vh; 
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory; /* Включает вертикальное примагничивание */
 }
 
 .eyebrow,
