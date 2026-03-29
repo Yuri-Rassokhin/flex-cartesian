@@ -835,3 +835,12 @@ main {
   margin: 0;
 }
 
+.step-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.step-head h3 {
+  margin: 0;
+}Ğ¿Ñ

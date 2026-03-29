@@ -88,23 +88,31 @@
 FlexCartesian treats a system not as a set of scattered measurements, but as a holistic function that behaves over space with dimenions defined by system parameters. This shift in perspective from blind probes to parameteric analysis allows us to move from fragmented data points to a structured understanding of how the system behaves across different configurations. It enables us to identify patterns, trade-offs, and bottlenecks that would be invisible in isolated runs.</p>
         <div class="feature-grid">
           <article class="feature-card reveal">
-            <div class="feature-icon">◢</div>
+          <div class="step-head">
+          <div class="step-num">01</div>
             <h3>Define parameters</h3>
-            <p>Build parameter space with independent dimensions reflecting degrees of freedom, including conditional constraints.</p>
+          </div>
+          <p>Build parameter space with independent dimensions reflecting degrees of freedom, including conditional constraints.</p>
           </article>
           <article class="feature-card reveal reveal-delay-1">
-            <div class="feature-icon">ƒ</div>
+          <div class="step-head">
+          <div class="step-num">02</div>
             <h3>Express behavioural functions</h3>
+          </div>
             <p>Express system properties as functions, instead of relying on ad hoc notes or isolated runs.</p>
           </article>
           <article class="feature-card reveal reveal-delay-2">
-            <div class="feature-icon">∴</div>
+          <div class="step-head">
+          <div class="step-num">03</div>
             <h3>Launch digital twin</h3>
+          </div>
             <p>Behavioural functions obtain live data from real system. Use FlexCartesian as a modelling framework around actual applications, APIs, services, or infrastructure - and let the twin evolve in time, remaining linked to real system.</p>
           </article>
           <article class="feature-card reveal">
-            <div class="feature-icon">◌</div>
+          <div class="step-head">
+            <div class="step-num">04</div>
             <h3>Get insights</h3>
+          </div>
             <p>Observe full behavioural landscape of your system.
                Apply built-in and your own analyzers to identify bottlenecks, trade-offs, and parameter influence.
                Export to CSV, JSON, YAML, or MD for further analysis and visualisation.
@@ -129,7 +137,10 @@ FlexCartesian treats a system not as a set of scattered measurements, but as a h
   <div class="feature-grid">
 
     <article class="feature-card reveal">
-      <h3>Define parameter space</h3>
+      <div class="step-head">
+        <div class="step-num">01</div>
+        <h3>Define parameter space</h3>
+      </div>      
       <div class="code-card">
         <pre><code><span class="kw">require</span> <span class="str">'flex-cartesian'</span>
 
@@ -146,7 +157,10 @@ FlexCartesian treats a system not as a set of scattered measurements, but as a h
     </article>
 
     <article class="feature-card reveal reveal-delay-1">
+      <div class="step-head">
+        <div class="step-num">02</div>
       <h3>Express behavioural functions</h3>
+      </div>      
       <div class="code-card code-large">
         <pre><code><span class="kw">result</span> = {}
 
@@ -168,7 +182,10 @@ FlexCartesian treats a system not as a set of scattered measurements, but as a h
     </article>
 
     <article class="feature-card reveal reveal-delay-2">
-      <h3>Launch digital twin</h3>
+      <div class="step-head">
+        <div class="step-num">03</div>
+      <h3>Build digital twin</h3>
+      </div>      
       <div class="code-card">
         <pre><code><span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:run</span>,
   <span class="sym">progress:</span> <span class="kw">true</span>,
@@ -178,7 +195,10 @@ FlexCartesian treats a system not as a set of scattered measurements, but as a h
     </article>
 
     <article class="feature-card reveal">
+      <div class="step-head">
+        <div class="step-num">04</div>
       <h3>Get insights</h3>
+      </div>      
       <div class="code-card">
         <pre><code><span class="kw">space</span>.<span class="fn">output</span>(<span class="sym">colorize:</span> <span class="kw">true</span>)</code></pre>
       </div>
