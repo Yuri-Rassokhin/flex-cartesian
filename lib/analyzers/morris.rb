@@ -1,28 +1,21 @@
 class Morris < Analyzer
+
   Edge = Struct.new(:from_idx, :to_idx, :factor, :step)
 
-  attr_reader :trajectories, :step, :seed, :edges, :name, :description, :url
+  attr_reader :trajectories, :step, :seed, :edges
 
   def initialize(fc, trajectories:, step: 1, seed: nil)
     super(fc)
-
-    @name = "Morris sensitivity analysis"
-    @description = "Morris method explores the parameter space by changing one parameter at a time across multiple trajectories, and quantifies rate and linearity of its influence on the target function"
-    @complexity = "O( dimensions · trajectories )"
-    @category = "Sensitivity analysis"
-    @url = "https://en.wikipedia.org/wiki/Morris_method"
 
     @trajectories = trajectories
     @step         = step
     @seed         = seed
     @rng          = seed ? Random.new(seed) : Random.new
-
-    validate_trajectories!
-    validate_step!
-
     @points = []
     @edges  = []
 
+    validate_trajectories!
+    validate_step!
     build!
   end
 
@@ -129,15 +122,13 @@ end
     space.table(rows, **opts)
   end
 
-  def card
-    {
-      name: @name,
-      description: @description,
-      complexity: @complexity,
-      category: @category,
-      url: @url
-    }.to_json
-  end
+def card
+  @name = "Morris sensitivity analysis"
+  @description = "Morris method explores the parameter space by changing one parameter at a time across multiple trajectories, and quantifies rate and linearity of its influence on the target function"
+  @complexity = "O( dimensions · trajectories )"
+  @category = "Sensitivity analysis"
+  @url = "https://en.wikipedia.org/wiki/Morris_method"
+end
 
 private
 

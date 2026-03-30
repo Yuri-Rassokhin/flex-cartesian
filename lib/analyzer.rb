@@ -1,13 +1,12 @@
 class Analyzer
 
   attr_reader :space, :names, :levels
+  attr_reader :name, :description, :url, :complexity, :category
 
   def initialize(space)
     @space = space
     @struct = @space.struct
-    @name = nil
-    @description = nil
-    @url = nil
+    card
   end
 
   def card
