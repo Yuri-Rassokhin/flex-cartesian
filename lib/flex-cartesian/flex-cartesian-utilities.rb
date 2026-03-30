@@ -9,14 +9,14 @@ def vector_shift(v, dimension:, offset: 1)
 
   vector = vector_to(v, :hash)
 
-  TODO
+#  TODO
   #  current_dimensional_value = vector[dimension]
-  current_position = vector.keys.index[dimension]
-  new_position = vector.keys[current_position + offset]
+# current_position = vector.keys.index[dimension]
+# new_position = vector.keys[current_position + offset]
 
-  dimensional_values = @names[dimension]
-  current_position = vector_to(v, :hash).keys.index[]
-  new_dimensional_value = @names[dimension
+# dimensional_values = @names[dimension]
+# current_position = vector_to(v, :hash).keys.index[]
+# new_dimensional_value = @names[dimension
 end
 
 # obtain value of the given function on a given vector from parameter space
@@ -39,7 +39,7 @@ def value(v, function:, mode: :increment)
     @results[v_struct][function] = new_res
     return new_res
   when :increment
-    new_res = res.nil? @derived[function].call(v_struct) : res
+    new_res = res.nil? ? @derived[function].call(v_struct) : res
     @results[v_struct][function] = new_res
     return new_res
   else
@@ -48,33 +48,34 @@ def value(v, function:, mode: :increment)
   res
 end
 
-def dimensions(data = @dimensions, raw: false, separator: ', ', dimensions: true, values: true, lazy: false)
-  return nil if !dimensions && !values
+# NOTE: BAD CONFLICT OF NAME "DIMENSIONS"
+#def dimensions(data = @dimensions, raw: false, separator: ', ', dimensions: true, values: true, lazy: false)
+#  return nil if !dimensions && !values
 
-  unless data.is_a?(Struct) || data.is_a?(Hash)
-    raise ArgumentError, "Incorrect type of dimensions: #{data.class}"
-  end
+#  unless data.is_a?(Struct) || data.is_a?(Hash)
+#    raise ArgumentError, "Incorrect type of dimensions: #{data.class}"
+#  end
 
-  if data.is_a?(Struct)
-    return nil unless valid?(data)
+#  if data.is_a?(Struct)
+#    return nil unless valid?(data)
 
-    return data.each_pair.map { |k, val|
-      (dimensions ? "#{k}" : "") +
-      ((dimensions && values) ? "=" : "") +
-      (values ? "#{val}" : "")
-    }.join(separator)
-  end
+#    return data.each_pair.map { |k, val|
+#      (dimensions ? "#{k}" : "") +
+#      ((dimensions && values) ? "=" : "") +
+#      (values ? "#{val}" : "")
+#    }.join(separator)
+#  end
 
-  enum = Enumerator.new do |y|
-    cartesian(data, lazy: lazy) do |v|
-      next unless valid?(v)
-      y << dimensions(v, raw: raw, separator: separator, dimensions: dimensions, values: values, lazy: lazy)
-    end
-  end
+#  enum = Enumerator.new do |y|
+#    cartesian(data, lazy: lazy) do |v|
+#      next unless valid?(v)
+#      y << dimensions(v, raw: raw, separator: separator, dimensions: dimensions, values: values, lazy: lazy)
+#    end
+#  end
 
-  return enum if lazy
-  enum.to_a.join("\n")
-end
+#  return enum if lazy
+#  enum.to_a.join("\n")
+#end
 
   # Return number of combinations in parameter space, with respect to conditions
   def size

@@ -1,6 +1,6 @@
 module FlexCartesianCore
 
-  attr_reader :function_results, :derived, :names, :dimensiality, :dimensions, :struct
+  attr_reader :function_results, :derived, :names, :dimensiality, :dimensions, :struct, :levels
 
 def initialize(dimensions = nil, path: nil, format: :json, logger: nil, log_level: Logger::WARN)
     @logger = logger || Logger.new($stdout)
@@ -20,10 +20,12 @@ def initialize(dimensions = nil, path: nil, format: :json, logger: nil, log_leve
       import(path, format: format)
     end
 
+    # NOTE: CHECK IF IT IS ACTUALLY NEEDED!!!
+    @dimensions = normalize_dimensions(@dimensions)
     # array of arrays of dimension values (not a Cartesian product yet)
-    @values = dimension_values(@dimensions)
+    @levels = dimension_values(@dimensions)
     # total size of Cartesian space (number of vectors, that is, ALL combinations, ignoring conditions)
-    @size = @values.map(&:size).inject(:*)
+    @size = @levels.map(&:size).inject(:*)
     # array of dimension names
     @names = @dimensions.keys
 
@@ -165,6 +167,13 @@ end
 
 
 private
+
+# convert dimensional values to array, for conformity
+  def normalize_dimensions(dimensions)
+    dimensions.transform_values do |values|
+      values.is_a?(Enumerable) && !values.is_a?(String) ? values.to_a : [values]
+    end
+  end
 
   def dimension_values(dimensions)
     # array of arrays of dimensional values, not a cartesian product yet

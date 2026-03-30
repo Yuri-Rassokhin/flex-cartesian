@@ -1,7 +1,7 @@
 class Morris < Analyzer
   Edge = Struct.new(:from_idx, :to_idx, :factor, :step)
 
-  attr_reader :levels, :trajectories, :step, :seed, :edges, :name, :description, :url
+  attr_reader :trajectories, :step, :seed, :edges, :name, :description, :url
 
   def initialize(fc, trajectories:, step: 1, seed: nil)
     super(fc)
@@ -16,8 +16,6 @@ class Morris < Analyzer
     @step         = step
     @seed         = seed
     @rng          = seed ? Random.new(seed) : Random.new
-
-    @levels = names.map { |name| normalize_levels(fc.dimensions[name]) }
 
     validate_trajectories!
     validate_step!
@@ -128,7 +126,7 @@ end
     rows = sensitivity(function: function)
     rows = self.categorize(rows, function: function) if categorize
     rows = self.recommend(rows, function: function) if recommend
-    fc.table(rows, **opts)
+    space.table(rows, **opts)
   end
 
   def card
@@ -144,7 +142,7 @@ end
 private
 
 def vector_key(v)
-  @names.map { |name| v.send(name) }
+  names.map { |name| v.send(name) }
 end
 
 def indexed_results
@@ -168,7 +166,7 @@ def build_trajectory!
   from_idx = add_point(current_indices)
   return unless from_idx
 
-  factor_order = (0...@names.size).to_a.shuffle(random: @rng)
+  factor_order = (0...names.size).to_a.shuffle(random: @rng)
 
   factor_order.each do |factor_idx|
     next_indices = current_indices.dup
@@ -180,7 +178,7 @@ def build_trajectory!
     @edges << Edge.new(
       from_idx: from_idx,
       to_idx: to_idx,
-      factor: @names[factor_idx],
+      factor: names[factor_idx],
       step: @step
     )
 
@@ -191,26 +189,22 @@ end
 
 def add_point(level_indices)
   values = level_indices.each_with_index.map do |level_idx, dim_idx|
-    @levels[dim_idx][level_idx]
+    levels[dim_idx][level_idx]
   end
 
   point = @struct.new(*values)
-  return nil unless @fc.valid?(point)
+  return nil unless space.valid?(point)
 
   @points << point
   @points.size - 1
 end
 
 def random_start_indices
-  @levels.map do |factor_levels|
+  levels.map do |factor_levels|
     max_start = factor_levels.size - 1 - @step
     raise ArgumentError, "step=#{@step} is too large for factor with #{factor_levels.size} levels" if max_start < 0
     @rng.rand(0..max_start)
   end
-end
-
-def normalize_levels(value)
-  value.is_a?(Enumerable) && !value.is_a?(String) ? value.to_a : [value]
 end
 
 def validate_step!
@@ -218,7 +212,7 @@ def validate_step!
     raise ArgumentError, "step must be a positive integer"
   end
 
-  min_levels = @levels.map(&:size).min
+  min_levels = levels.map(&:size).min
   if min_levels <= @step
     raise ArgumentError, "step=#{@step} is too large for dimensions with #{min_levels} levels"
   end

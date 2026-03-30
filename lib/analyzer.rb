@@ -1,5 +1,7 @@
 class Analyzer
 
+  attr_reader :space, :names, :levels
+
   def initialize(space)
     @space = space
     @struct = @space.struct
@@ -24,13 +26,17 @@ class Analyzer
     @space.names
   end
 
+  def levels
+    @space.levels
+  end
+
   def cartesian(&blk)
     @space.cartesian(&blk)
   end
 
   def sensitivity(function:)
     raise ArgumentError, "target function must be provided" unless function
-    raise "Cannot execute #sensitivity as there are no functions defined in parameter space" if @fc.derived.empty?
+    raise "Cannot execute #sensitivity as there are no functions defined in parameter space" if @space.derived.empty?
   end
 
   def output(function:, **opts)
