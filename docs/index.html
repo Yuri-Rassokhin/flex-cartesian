@@ -114,7 +114,7 @@ FlexCartesian treats a system not as a set of scattered measurements, but as a h
   <div class="code-card code-large">
     <pre><code><span class="kw">require</span> <span class="str">'flex-cartesian'</span>
 
-<span class="kw">space</span> = <span class="cls">FlexCartesian</span>.<span class="fn">new</span>(<span class="sym">count:</span> [2, 4], <span class="sym">size:</span> [32, 64], <span class="sym">target:</span> [ <span class="str">"8.8.8.8"</span>, <span class="str">"1.1.1.1"</span>, <span class="str">"208.67.222.222"</span> ])
+<span class="kw">space</span> = <span class="cls">FlexCartesian</span>.<span class="fn">new</span>({<span class="sym">count:</span> [2, 4], <span class="sym">size:</span> [32, 64], <span class="sym">target:</span> [ <span class="str">"8.8.8.8"</span>, <span class="str">"1.1.1.1"</span>, <span class="str">"208.67.222.222"</span> ]})
 
 <span class="kw">result</span> = {}
 <span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:command</span>) { |v| <span class="str">"ping -c #{v.count} -s #{v.size} #{v.target}"</span> }
