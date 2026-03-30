@@ -1,7 +1,7 @@
 class Morris < Analyzer
   Edge = Struct.new(:from_idx, :to_idx, :factor, :step)
 
-  attr_reader :names, :levels, :trajectories, :step, :seed, :edges, :name, :description, :url
+  attr_reader :levels, :trajectories, :step, :seed, :edges, :name, :description, :url
 
   def initialize(fc, trajectories:, step: 1, seed: nil)
     super(fc)
@@ -17,7 +17,7 @@ class Morris < Analyzer
     @seed         = seed
     @rng          = seed ? Random.new(seed) : Random.new
 
-    @levels = @names.map { |name| normalize_levels(fc.dimensions[name]) }
+    @levels = names.map { |name| normalize_levels(fc.dimensions[name]) }
 
     validate_trajectories!
     validate_step!

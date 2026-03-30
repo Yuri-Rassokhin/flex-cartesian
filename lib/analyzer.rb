@@ -20,6 +20,10 @@ class Analyzer
     @space.dimensions
   end
 
+  def names
+    @space.names
+  end
+
   def cartesian(&blk)
     @space.cartesian(&blk)
   end
