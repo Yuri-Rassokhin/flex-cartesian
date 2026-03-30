@@ -392,14 +392,14 @@ main {
 }
 .code-card pre {
   margin: 0;
-  padding: 22px;
+  padding: 16px;
   overflow-x: auto;
 }
 .code-card code,
 .code-card pre {
   font-family: "JetBrains Mono", monospace;
-  font-size: 0.92rem;
-  line-height: 1.78;
+  font-size: 0.85rem;
+  line-height: 1.5;
 }
 .code-large code,
 .code-large pre { font-size: 0.95rem; }
@@ -869,7 +869,7 @@ main {
 }
 
 .code-section .feature-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   align-items: start;
 }
 
@@ -899,7 +899,7 @@ main {
 }
 
 .code-section .feature-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   align-items: stretch; 
 }
 
@@ -927,4 +927,46 @@ main {
 
 .step-head h3 {
   margin: 0;
+}
+
+.positioning-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+}
+
+.positioning .output-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.positioning .output-card h3 {
+  margin-bottom: 14px;
+}
+
+.positioning .bullet-list {
+  margin: 0;
+}
+
+.positioning .output-card p + p {
+  margin-top: 12px;
+}
+
+.positioning-closing {
+  margin-top: auto;
+  padding-top: 18px;
+  color: var(--text);
+  font-weight: 600;
+}
+
+@media (max-width: 820px) {
+  .positioning-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.outputs-closing {
+  margin-top: 18px;
+  font-weight: 600;
+  color: var(--text);
 }

@@ -110,151 +110,123 @@ FlexCartesian treats a system not as a set of scattered measurements, but as a h
 
   <div class="feature-grid">
 
-    <article class="feature-card reveal">
-      <div class="step-head">
-        <div class="step-num">01</div>
-        <h3>Define parameter space</h3>
-      </div>      
-      <div class="code-card">
-        <pre><code><span class="kw">require</span> <span class="str">'flex-cartesian'</span>
+<article class="feature-card reveal">
+  <div class="code-card code-large">
+    <pre><code><span class="kw">require</span> <span class="str">'flex-cartesian'</span>
 
-<span class="kw">space</span> = <span class="cls">FlexCartesian</span>.<span class="fn">new</span>(
-  <span class="sym">count:</span>  [2, 4],
-  <span class="sym">size:</span>   [32, 64],
-  <span class="sym">target:</span> [
-    <span class="str">"8.8.8.8"</span>,
-    <span class="str">"1.1.1.1"</span>,
-    <span class="str">"208.67.222.222"</span>
-  ]
-)</code></pre>
-      </div>
-    </article>
+<span class="kw">space</span> = <span class="cls">FlexCartesian</span>.<span class="fn">new</span>(<span class="sym">count:</span> [2, 4], <span class="sym">size:</span> [32, 64], <span class="sym">target:</span> [ <span class="str">"8.8.8.8"</span>, <span class="str">"1.1.1.1"</span>, <span class="str">"208.67.222.222"</span> ])
 
-    <article class="feature-card reveal reveal-delay-1">
-      <div class="step-head">
-        <div class="step-num">02</div>
-      <h3>Express behavioural functions</h3>
-      </div>      
-      <div class="code-card code-large">
-        <pre><code><span class="kw">result</span> = {}
+<span class="kw">result</span> = {}
+<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:command</span>) { |v| <span class="str">"ping -c #{v.count} -s #{v.size} #{v.target}"</span> }
+<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:raw_ping</span>, <span class="sym">hide:</span> <span class="kw">true</span>) { |v| result[v.command] ||= <span class="str">`#{v.command} 2&gt;&amp;1`</span> }
+<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:time</span>) { |v| v.raw_ping[/min\/avg\/max\/(?:mdev|stddev) = [^\/]+\/([^\/]+)/, 1]&amp;.<span class="fn">to_f</span>&amp;.<span class="fn">round</span>(2) }
 
-<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:command</span>) { |v|
-  <span class="str">"ping -c #{v.count} -s #{v.size} #{v.target}"</span>
-}
+<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:run</span>, <span class="sym">progress:</span> <span class="kw">true</span>, <span class="sym">title:</span> <span class="str">"Obtaining data"</span> )
 
-<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:raw_ping</span>, <span class="sym">hide:</span> <span class="kw">true</span>) { |v|
-  result[v.command] ||= <span class="str">`#{v.command} 2&gt;&amp;1`</span>
-}
-
-<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:time</span>) { |v|
-  v.raw_ping[/min\/avg\/max\/(?:mdev|stddev) =
-    [^\/]+\/([^\/]+)/, 1]
-    &amp;.<span class="fn">to_f</span>
-    &amp;.<span class="fn">round</span>(2)
-}</code></pre>
-      </div>
-    </article>
-
-    <article class="feature-card reveal reveal-delay-2">
-      <div class="step-head">
-        <div class="step-num">03</div>
-      <h3>Build digital twin</h3>
-      </div>      
-      <div class="code-card">
-        <pre><code><span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:run</span>,
-  <span class="sym">progress:</span> <span class="kw">true</span>,
-  <span class="sym">title:</span> <span class="str">"Obtaining data"</span>
-)</code></pre>
-      </div>
-    </article>
-
-    <article class="feature-card reveal">
-      <div class="step-head">
-        <div class="step-num">04</div>
-      <h3>Get insights</h3>
-      </div>      
-      <div class="code-card">
-        <pre><code><span class="kw">space</span>.<span class="fn">output</span>(<span class="sym">colorize:</span> <span class="kw">true</span>)</code></pre>
-      </div>
-    </article>
+<span class="kw">space</span>.<span class="fn">output</span>(<span class="sym">colorize:</span> <span class="kw">true</span>)</code></pre>
+  </div>
+</article>
 
   </div>
 </section>
 
-      <section id="outputs" class="section outputs">
-        <div class="section-head reveal">
-          <h2>Complete behavioural model,<br>not just logs.</h2>
-          <p>The point is to reveal system structure through its behavioural landscape.
-          <ul>
-            <li>How performance changes across dimensions.</li>
-            <li>Where optimal configurations emerge.</li>
-            <li>Where bottlenecks and limits appear.</li>
-          </ul>
-          </p>
-          <p>This enables:
-            <ul>
-              <li>Systematic optimisation instead of trial-and-error</li>
-              <li>Detection of non-obvious interactions between parameters</li>
-              <li>Reproducible and explainable system behaviour</li>
-            </ul>
-          </p>
-          <p>The system is no longer sampled. It is understood.</p>
-        </div>
+<section id="outputs" class="section outputs">
+  <div class="section-head reveal">
+    <h2>Complete behavioural model,<br>not just logs.</h2>
 
-        <div class="outputs-grid">
-          <article class="output-card reveal">
-            <div class="output-visual output-heat"></div>
-            <h3>Heatmaps</h3>
-            <p>Find productive regions in two-dimensional slices of the space.</p>
-          </article>
-          <article class="output-card reveal reveal-delay-1">
-            <div class="output-visual output-bars"></div>
-            <h3>Sensitivity</h3>
-            <p>Estimate which dimensions actually drive your outcomes.</p>
-          </article>
-          <article class="output-card reveal reveal-delay-2">
-            <div class="output-visual output-cube"></div>
-            <h3>Higher-dimensional intuition</h3>
-            <p>Move from raw runs to interpretable surfaces, trade-offs, and bottlenecks.</p>
-          </article>
-        </div>
-      </section>
+<p>
+  Instead of isolated runs, FlexCartesian builds a continuous behavioural
+  model of the system across its entire parameter space. It reveals how performance evolves across dimensions, where optimal
+  configurations emerge, and where limits, bottlenecks, and trade-offs
+  define the system's behaviour.
+</p>
 
-      <section id="positioning" class="section positioning">
-        <div class="section-head reveal">
-          <h2>The first holistic approach to system exploration</h2>
-        </div>
+<p>
+  This makes optimisation systematic rather than experimental, exposes
+  non-obvious interactions between parameters, and makes system behaviour reproducible and explainable.
+</p>
 
-        <div class="compare-grid reveal reveal-delay-1">
-          <div class="compare-card compare-card-strong">
-            <ul>
-              <li>Provides high-level human-readable DSL</li>
-              <li>Treats systems as first-class parametric spaces</li>
-              <li>Separates system definition from execution</li>
-              <li>Represents systems as functions over parameter space</li>
-              <li>Supports structured reasoning about system behaviour</li>
-              <li>Integrates real-world measurements as the first-class digital twin</li>
-              <li>Extensible analysis framework as a first-class object of the model</li>
-            </ul>
-            <h3>Born in field work</h3>
-              FlexCartesian emerged from real-world AI infrastructure work, where system behaviour depends on multiple interacting parameters (hardware, storage, network, model configuration). Traditional tools failed to provide a unified abstraction to explore such systems.
-            <h3>Applied in critical systems</h3>
-            <ul>
-              <li>Performance modelling across distributed systems</li>
-              <li>AI architecture benchmarking: GPU, storage, and network trade-offs</li>
-              <li>Architecture decision support for enterprise AI deployments</li>
-            </ul>
-            <h3>What this enables</h3>
-              <ul>
-                <li>Discovery of optimal configurations without exhaustive testing</li>
-                <li>Identification of system bottlenecks across dimensions</li>
-                <li>Bridging theoretical modelling with real measurements</li>
-              </ul>
-            <h3>A new way to model systems</h3>
-              <p>FlexCartesian introduces a conceptual shift: systems are no longer analysed as isolated experiments, but as continuous spaces of possible configurations.</p>
-            </div>
-          </div>
-      </section>
+<p>
+  The system is no longer sampled. It is understood.
+</p>
+  </div>
+
+  <div class="outputs-grid">
+    <article class="output-card reveal">
+      <div class="output-visual output-heat"></div>
+      <h3>Heatmaps</h3>
+      <p>Expose productive regions in two-dimensional slices of the space.</p>
+    </article>
+
+    <article class="output-card reveal reveal-delay-1">
+      <div class="output-visual output-bars"></div>
+      <h3>Sensitivity</h3>
+      <p>Identify which parameters actually drive the outcome.</p>
+    </article>
+
+    <article class="output-card reveal reveal-delay-2">
+      <div class="output-visual output-cube"></div>
+      <h3>Higher-dimensional intuition</h3>
+      <p>Move from raw runs to interpretable surfaces, trade-offs, and limits.</p>
+    </article>
+  </div>
+</section>
+
+<section id="positioning" class="section positioning section-screen">
+  <div class="section-head reveal">
+    <h2>The first holistic approach to system exploration.</h2>
+    <p>
+      FlexCartesian provides a new way to model systems: not as isolated experiments, but as holistic functions over comprehensive spaces of possible configurations.</p>
+    </p>
+  </div>
+
+  <div class="outputs-grid positioning-grid">
+
+    <article class="output-card reveal">
+      <h3>What makes it different</h3>
+      <ul class="bullet-list">
+        <li>High-level human-readable DSL</li>
+        <li>Systems as first-class parametric spaces</li>
+        <li>Separation of system definition from execution</li>
+        <li>Functions over parameter space as the core abstraction</li>
+        <li>Structured reasoning about system behaviour</li>
+        <li>Real-world measurements integrated into the model</li>
+      </ul>
+    </article>
+
+    <article class="output-card reveal reveal-delay-1">
+      <h3>Born in field work</h3>
+      <p>
+        FlexCartesian emerged from real-world AI infrastructure work,
+        where behaviour depends on multiple interacting parameters:
+        hardware, storage, network, and model configuration.
+      </p>
+      <p>
+        Traditional tools failed to provide a unified abstraction
+        for exploring such systems as a whole.
+      </p>
+    </article>
+
+    <article class="output-card reveal reveal-delay-2">
+      <h3>Applied in critical systems</h3>
+      <ul class="bullet-list">
+        <li>Performance modelling across distributed systems</li>
+        <li>AI architecture benchmarking: GPU, storage, and network trade-offs</li>
+        <li>Architecture decision support for enterprise AI deployments</li>
+      </ul>
+    </article>
+
+    <article class="output-card reveal">
+      <h3>What this enables</h3>
+      <ul class="bullet-list">
+        <li>Discovery of optimal configurations without exhaustive search</li>
+        <li>Identification of system bottlenecks across parameters</li>
+        <li>Alloy of theoretical modelling with real measurements</li>
+      </ul>
+    </article>
+
+  </div>
+</section>
 
       <section class="section cta-section"> 
         <div class="cta-panel reveal">
