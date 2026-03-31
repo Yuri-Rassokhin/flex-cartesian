@@ -2,11 +2,7 @@ require 'flex-cartesian'
 
 # CREATE PARAMETER SPACE
 
-s = FlexCartesian.new({
-    count: [2, 4],
-    size: [32, 64],
-    target: ["8.8.8.8", "1.1.1.1", "208.67.222.222"]
-  })
+s = FlexCartesian.new( {count: [2, 4], size: [32, 64], target: ["8.8.8.8", "1.1.1.1", "208.67.222.222"] })
 
 # DEFINE PLAN FOR SCREENING OF THE PARAMETER SPACE
 # Plan is a screening technique that traverses parameter space, usually using smaller subset of its combinations, and investigates its properties
