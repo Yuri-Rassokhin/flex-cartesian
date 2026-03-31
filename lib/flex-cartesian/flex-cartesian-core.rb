@@ -178,8 +178,7 @@ end
 def index(source:, uri:, dimensions:)
   @index = {}
   @dimensions ||= {}
-
-  # заранее заводим все измерения
+  # initialize empty dimensions
   dimensions.each do |dim|
     @dimensions[dim.to_sym] ||= []
   end
@@ -189,6 +188,7 @@ def index(source:, uri:, dimensions:)
     require 'csv'
     table = CSV.read(uri, headers: true)
 
+    # TODO: CHECK THAT
     table.each do |row|
       key = dimensions.map do |dim|
         value = row[dim.to_s]
@@ -199,44 +199,46 @@ def index(source:, uri:, dimensions:)
       @index[key] = row
     end
 
-when :xlsx
-  require 'roo'
+  when :xlsx
+    require 'roo'
 
-  @logger.info "Building parameter space from #{uri}"
-  xlsx = Roo::Excelx.new(uri)
-  sheet = xlsx.sheet(0)
-  headers = sheet.row(1).map(&:to_s)
-  (2..sheet.last_row).each do |i|
-    row_values = sheet.row(i)
+    puts "Building parameter space from #{uri}"
+    puts "Reading #{uri}"
+    xlsx = Roo::Excelx.new(uri)
+    sheet = xlsx.sheet(0)
 
-    # пропускаем пустые строки
-    next if row_values.compact.empty?
+    puts "Parsing #{uri}"
+    # each row is a hash of ALL columns from the XSLX
+    data = sheet.parse(headers: true)
+    puts "Iterating over #{uri}"
+    data.each do |row|
+      next if row.empty?
 
-    row = headers.zip(row_values).to_h
-
-    key = dimensions.map do |dim|
-      value = row[dim.to_s]
-
-      # приводим к строке для консистентности с CSV
-      value = value.to_s
-
-      unless @dimensions[dim.to_sym].include?(value)
-        @dimensions[dim.to_sym] << value
+      # index key is an array of dimensional values from the specified dimensions only
+      # this key points to FULL row which is assumed to have values of the future functions
+      puts "current row: #{row.inspect}"
+      key = dimensions.map do |dim|
+        puts "dimension: #{dim.to_s}"
+        value = row[dim.to_s]
+        puts "value: #{value}"
+        if not @dimensions[dim.to_sym].include?(value)
+          @dimensions[dim.to_sym] << value
+        end
+        value
       end
 
-      value
+      puts "key: #{key.inspect}"
+      @index[key] = row
     end
-
-    @index[key] = row
+  else
+    raise "Unknown source type #{source}"
   end
-else
-  raise "Unknown source type #{source}"
-end
-self
+
+  self
 end
 
 # TODO: Dimensions can be omitted - in this case, automatically fetch all dimensions from CSV header
-def data(command, source: nil, uri: nil, vector: nil, target: nil, dimensions: )
+def data(command, vector: nil, target: nil )
   case command
     when :get
       return nil if (vector.empty? or target.empty?)
