@@ -17,14 +17,12 @@ def initialize(dims = nil, path: nil, format: :json, logger: nil, log_level: Log
       @dimensions = dims
     elsif path
       import(path, format: format)
-    elsif
+    else
       # finally, we read entire space from URI
       raise "Missing data source type" if source.empty?
       raise "Missing data URI" if uri.empty?
       raise "Missing data dimensions" if dimensions.empty?
       index(source: source, uri: uri, dimensions: dimensions)
-    else
-      raise "Missing options for the construction of parameter space"
     end
 
     @dimensions = normalize_dimensions(@dimensions)
@@ -188,6 +186,7 @@ def index(source:, uri:, dimensions:)
 
   case source
   when :csv
+    require 'csv'
     table = CSV.read(uri, headers: true)
 
     table.each do |row|
@@ -200,11 +199,41 @@ def index(source:, uri:, dimensions:)
       @index[key] = row
     end
 
-  else
-    raise "Unknown source type #{source}"
-  end
+when :xlsx
+  require 'roo'
 
-  self
+  xlsx = Roo::Excelx.new(uri)
+  sheet = xlsx.sheet(0)
+
+  headers = sheet.row(1).map(&:to_s)
+
+  (2..sheet.last_row).each do |i|
+    row_values = sheet.row(i)
+
+    # пропускаем пустые строки
+    next if row_values.compact.empty?
+
+    row = headers.zip(row_values).to_h
+
+    key = dimensions.map do |dim|
+      value = row[dim.to_s]
+
+      # приводим к строке для консистентности с CSV
+      value = value.to_s
+
+      unless @dimensions[dim.to_sym].include?(value)
+        @dimensions[dim.to_sym] << value
+      end
+
+      value
+    end
+
+    @index[key] = row
+  end
+else
+  raise "Unknown source type #{source}"
+end
+self
 end
 
 # TODO: Dimensions can be omitted - in this case, automatically fetch all dimensions from CSV header

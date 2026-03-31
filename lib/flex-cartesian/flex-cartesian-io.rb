@@ -1,7 +1,5 @@
 module FlexCartesianIO
 
-require 'csv'
-
 def output(separator: " | ", colorize: false, align: true, format: :plain, limit: nil, file: nil)
   sep = if format == :csv
           [";", ","].include?(separator) ? separator : ";"
