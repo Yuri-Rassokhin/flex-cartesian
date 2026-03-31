@@ -17,6 +17,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "colorize", "~> 0.8"
   spec.add_dependency "progressbar", "~> 1.13"
   spec.add_dependency "method_source", "~> 1.0"
+  spec.add_dependency "csv"
 
   spec.required_ruby_version = '>= 3.0'
 

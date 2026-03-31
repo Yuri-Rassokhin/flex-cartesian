@@ -2,7 +2,7 @@ module FlexCartesianCore
 
   attr_reader :function_results, :derived, :names, :dimensiality, :dimensions, :struct, :levels
 
-def initialize(dimensions = nil, path: nil, format: :json, logger: nil, log_level: Logger::WARN)
+def initialize(dims = nil, path: nil, format: :json, logger: nil, log_level: Logger::WARN, source: nil, uri: nil, dimensions: nil)
     @logger = logger || Logger.new($stdout)
     @logger.level = log_level
 
@@ -11,16 +11,22 @@ def initialize(dimensions = nil, path: nil, format: :json, logger: nil, log_leve
     end
 
     # get hash of dimensions: name => array of dimensional values
-    if dimensions && path
-      puts "Please specify either dimensions or path to dimensions"
-      exit
-    elsif dimensions
-      @dimensions = dimensions
-    else # space file specified
+    if dims && path
+      raise "Cannot specify both dimensions and path to dimensions"
+    elsif dims
+      @dimensions = dims
+    elsif path
       import(path, format: format)
+    elsif
+      # finally, we read entire space from URI
+      raise "Missing data source type" if source.empty?
+      raise "Missing data URI" if uri.empty?
+      raise "Missing data dimensions" if dimensions.empty?
+      index(source: source, uri: uri, dimensions: dimensions)
+    else
+      raise "Missing options for the construction of parameter space"
     end
 
-    # NOTE: CHECK IF IT IS ACTUALLY NEEDED!!!
     @dimensions = normalize_dimensions(@dimensions)
     # array of arrays of dimension values (not a Cartesian product yet)
     @levels = dimension_values(@dimensions)
@@ -163,6 +169,54 @@ end
     # check if vector respects conditions
     @conditions.none? { |cond| !cond.call(vector_to(v, :struct)) }
   end
+
+# reads from target column using data source created by `data` method
+def lookup(vector, target)
+  key = v.values.map(&:to_s)
+  index[key] ? index[key][target] : nil
+end
+
+# creates cartesian space and index from URI
+def index(source:, uri:, dimensions:)
+  @index = {}
+  @dimensions ||= {}
+
+  # заранее заводим все измерения
+  dimensions.each do |dim|
+    @dimensions[dim.to_sym] ||= []
+  end
+
+  case source
+  when :csv
+    table = CSV.read(uri, headers: true)
+
+    table.each do |row|
+      key = dimensions.map do |dim|
+        value = row[dim.to_s]
+        @dimensions[dim.to_sym] << value unless @dimensions[dim.to_sym].include?(value)
+        value
+      end
+
+      @index[key] = row
+    end
+
+  else
+    raise "Unknown source type #{source}"
+  end
+
+  self
+end
+
+# TODO: Dimensions can be omitted - in this case, automatically fetch all dimensions from CSV header
+def data(command, source: nil, uri: nil, vector: nil, target: nil, dimensions: )
+  case command
+    when :get
+      return nil if (vector.empty? or target.empty?)
+      lookup(vector, target)
+    else
+      raise "Unknown data command #{command}"
+  end
+end
 
 
 
