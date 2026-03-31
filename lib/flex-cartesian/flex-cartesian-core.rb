@@ -202,11 +202,10 @@ def index(source:, uri:, dimensions:)
 when :xlsx
   require 'roo'
 
+  @logger.info "Building parameter space from #{uri}"
   xlsx = Roo::Excelx.new(uri)
   sheet = xlsx.sheet(0)
-
   headers = sheet.row(1).map(&:to_s)
-
   (2..sheet.last_row).each do |i|
     row_values = sheet.row(i)
 
