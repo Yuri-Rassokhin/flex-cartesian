@@ -93,17 +93,17 @@ end
       category =
         if imp >= threshold_high
           if sigma > imp
-            "Strong nonlinear influence"
+            { strength: "strong", linearity: "nonlinear" }
           else
-            "Strong linear influence"
+            { strength: "strong", linearity: "linear" }
           end
         elsif imp <= threshold_low
-          "Negligible"
+          { strength: "negligible", linearity: "undefined" }
         else
-          "Moderate influence"
+          { strength: "moderate", linearity: "undefined" }
         end
 
-      row.merge(category: category)
+      row.merge( category: category[:strength], linearity: category[:linearity] )
     end
   end
 
@@ -112,17 +112,15 @@ end
 
     rows.map do |row|
       recommendation =
-        case row[:category]
-        when "Strong nonlinear influence"
-          "Further investigation with full coverage"
-        when "Strong linear influence"
-          "Fix several pivotal values"
-        when "Negligible"
-          "Fix its value to reduce dimensionality"
+        if row[:category] == "strong" and row[:linearity] == "linear"
+          "pick a few pivotal values to reduce computations"
+        elsif row[:category] == "strong" and row[:linearity] == "nonlinear"
+          "enhance granularity and coverage not to avoid missing all phase transitions"
+        elsif row[:category] == "negligible"
+          "fix any value to reduce dimensiality"
         else
-          "Further investigation may be required"
+          "further exploration with more aggressive Morris parameters and finer granularity may be required"
         end
-
       row.merge(recommendation: recommendation)
     end
   end
