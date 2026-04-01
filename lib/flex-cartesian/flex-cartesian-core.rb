@@ -1,6 +1,10 @@
 module FlexCartesianCore
 
-  attr_reader :function_results, :derived, :names, :dimensiality, :dimensions, :struct, :levels
+  attr_reader :function_results, :derived, :names, :dimensiality, :dimensions, :struct, :levels, :index_show
+
+def index_show
+  @index
+end
 
 def initialize(dims = nil, path: nil, format: :json, logger: nil, log_level: Logger::WARN, source: nil, uri: nil, dimensions: nil)
     @logger = logger || Logger.new($stdout)
@@ -170,7 +174,7 @@ end
 
 # reads from target column using data source created by `data` method
 def lookup(vector, target)
-  key = vector.values.map(&:to_s)
+  key = vector.values
   @index[key] ? @index[key][target] : nil
 end
 
