@@ -211,6 +211,10 @@ def index(source:, uri:, dimensions:)
     xlsx = Roo::Excelx.new(uri)
     sheet = xlsx.sheet(0)
 
+    # temporary structure that allows us to quickly check if we're adding new or existing dimensional value
+    # such hash is O(1) to the contrast with straightforward .include? which is O(n) and VERY slow on huge tables
+    seen = Hash.new { |h, k| h[k] = {} }
+
     # each row is a hash of ALL columns from the XSLX
     data = sheet.parse(headers: true)
     # skip headers in the first row of XLSX sheet
@@ -222,8 +226,10 @@ def index(source:, uri:, dimensions:)
       # this key points to FULL row which is assumed to have values of the future functions
       key = dimensions.map do |dim|
         value = row[dim.to_s]
-        if not @dimensions[dim.to_sym].include?(value)
-          @dimensions[dim.to_sym] << value
+        dim_sym = dim.to_sym
+        unless seen[dim_sym][value]
+          @dimensions[dim_sym] << value
+          seen[dim_sym][value] = true
         end
         value
       end
