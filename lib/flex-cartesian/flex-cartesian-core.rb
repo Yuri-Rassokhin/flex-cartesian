@@ -14,6 +14,10 @@ def initialize(dims = nil, path: nil, format: :json, logger: nil, log_level: Log
       "#{severity}: #{msg}\n"
     end
 
+    # internal structure that allows us to quickly check if we're adding new or existing dimensional value
+    # such hash is O(1) to the contrast with straightforward .include? which is O(n) and VERY slow on huge tables
+    @dimensions_hash = Hash.new { |h, k| h[k] = {} }
+
     # get hash of dimensions: name => array of dimensional values
     if dims && path
       raise "Cannot specify both dimensions and path to dimensions"
@@ -211,10 +215,6 @@ def index(source:, uri:, dimensions:)
     xlsx = Roo::Excelx.new(uri)
     sheet = xlsx.sheet(0)
 
-    # temporary structure that allows us to quickly check if we're adding new or existing dimensional value
-    # such hash is O(1) to the contrast with straightforward .include? which is O(n) and VERY slow on huge tables
-    seen = Hash.new { |h, k| h[k] = {} }
-
     # each row is a hash of ALL columns from the XSLX
     data = sheet.parse(headers: true)
     # skip headers in the first row of XLSX sheet
@@ -227,9 +227,9 @@ def index(source:, uri:, dimensions:)
       key = dimensions.map do |dim|
         value = row[dim.to_s]
         dim_sym = dim.to_sym
-        unless seen[dim_sym][value]
+        unless @dimensions_hash[dim_sym][value]
           @dimensions[dim_sym] << value
-          seen[dim_sym][value] = true
+          @dimensions_hash[dim_sym][value] = true
         end
         value
       end
