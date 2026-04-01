@@ -1,6 +1,6 @@
 require 'flex-cartesian'
 
-space = FlexCartesian.new(source: :xlsx, uri: "yolo.xlsx", dimensions:
+space = FlexCartesian.new(source: :xlsx, uri: "test-yolo.xlsx", dimensions:
                           [
                            :iterate_iteration,
                            :infra_shape,
@@ -11,7 +11,8 @@ space = FlexCartesian.new(source: :xlsx, uri: "yolo.xlsx", dimensions:
                           ]
         )
 
-space.func(:add, :inference) { |v| data(:get, v, "collect_inference_time") }
+space.func(:add, :inference) { |v| space.data(:get, vector: v, target: "collect_inference_time") }
+space.func(:run)
 
 space.output(format: :markdown, colorize: true)
 

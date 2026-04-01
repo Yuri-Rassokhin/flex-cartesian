@@ -170,8 +170,8 @@ end
 
 # reads from target column using data source created by `data` method
 def lookup(vector, target)
-  key = v.values.map(&:to_s)
-  index[key] ? index[key][target] : nil
+  key = vector.values.map(&:to_s)
+  @index[key] ? @index[key][target] : nil
 end
 
 # creates cartesian space and index from URI
@@ -207,27 +207,22 @@ def index(source:, uri:, dimensions:)
     xlsx = Roo::Excelx.new(uri)
     sheet = xlsx.sheet(0)
 
-    puts "Parsing #{uri}"
     # each row is a hash of ALL columns from the XSLX
     data = sheet.parse(headers: true)
-    puts "Iterating over #{uri}"
+    # skip headers in the first row of XLSX sheet
+    data.shift
     data.each do |row|
-      next if row.empty?
+      next if row.values.all?(&:nil?)
 
       # index key is an array of dimensional values from the specified dimensions only
       # this key points to FULL row which is assumed to have values of the future functions
-      puts "current row: #{row.inspect}"
       key = dimensions.map do |dim|
-        puts "dimension: #{dim.to_s}"
         value = row[dim.to_s]
-        puts "value: #{value}"
         if not @dimensions[dim.to_sym].include?(value)
           @dimensions[dim.to_sym] << value
         end
         value
       end
-
-      puts "key: #{key.inspect}"
       @index[key] = row
     end
   else
@@ -241,7 +236,7 @@ end
 def data(command, vector: nil, target: nil )
   case command
     when :get
-      return nil if (vector.empty? or target.empty?)
+      return nil if (vector.size == 0 or target.nil?)
       lookup(vector, target)
     else
       raise "Unknown data command #{command}"
