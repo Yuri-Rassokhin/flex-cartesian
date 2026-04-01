@@ -42,28 +42,40 @@ def sensitivity(function:)
     effects[edge.factor] << ee
   end
 
-  effects.map do |factor, ees|
+  # Итерируемся по names, чтобы учесть константные параметры, 
+  # для которых не было вычислено ни одного эффекта
+  names.map do |name|
+    factor = name
+    ees = effects[factor]
     n = ees.size
-    next if n == 0
 
-    mean = ees.sum / n.to_f
-    importance = ees.map(&:abs).sum / n.to_f
+    if n == 0
+      {
+        parameter: factor.to_s,
+        "influence[#{function}]": 0.0,
+        nonlinearity: 0.0,
+        probes: 0
+      }
+    else
+      mean = ees.sum / n.to_f
+      importance = ees.map(&:abs).sum / n.to_f
 
-    variance =
-      if n > 1
-        ees.map { |e| (e - mean)**2 }.sum / (n - 1).to_f
-      else
-        0.0
-      end
+      variance =
+        if n > 1
+          ees.map { |e| (e - mean)**2 }.sum / (n - 1).to_f
+        else
+          0.0
+        end
 
-    nonlinearity = Math.sqrt(variance)
+      nonlinearity = Math.sqrt(variance)
 
-    {
-      parameter: factor.to_s,
-      "influence[#{function}]": importance.round(2),
-      nonlinearity: nonlinearity.round(2),
-      probes: n
-    }
+      {
+        parameter: factor.to_s,
+        "influence[#{function}]": importance.round(2),
+        nonlinearity: nonlinearity.round(2),
+        probes: n
+      }
+    end
   end.compact.sort_by { |row| -row[:"influence[#{function}]"] }
 end
 
@@ -157,7 +169,9 @@ def build_trajectory!
   from_idx = add_point(current_indices)
   return unless from_idx
 
-  factor_order = (0...names.size).to_a.shuffle(random: @rng)
+  # take only the parameters that have enough values to take a step
+  active_factors = (0...names.size).select { |i| levels[i].size > @step }
+  factor_order = active_factors.shuffle(random: @rng)
 
   factor_order.each do |factor_idx|
     next_indices = current_indices.dup
@@ -193,19 +207,26 @@ end
 def random_start_indices
   levels.map do |factor_levels|
     max_start = factor_levels.size - 1 - @step
-    raise ArgumentError, "step=#{@step} is too large for factor with #{factor_levels.size} levels" if max_start < 0
-    @rng.rand(0..max_start)
+    
+    if max_start < 0
+      # if there isn't enough dimensional values to make a step, we'll keep this parameter constant
+      # just pick random available value for this parameter
+      @rng.rand(0...factor_levels.size)
+    else
+      @rng.rand(0..max_start)
+    end
   end
 end
 
+# this validation requires at least one dimension to be able to make `step`
 def validate_step!
   unless @step.is_a?(Integer) && @step > 0
     raise ArgumentError, "step must be a positive integer"
   end
 
-  min_levels = levels.map(&:size).min
-  if min_levels <= @step
-    raise ArgumentError, "step=#{@step} is too large for dimensions with #{min_levels} levels"
+  max_levels = levels.map(&:size).max
+  if max_levels <= @step
+    raise ArgumentError, "step=#{@step} is too large for all dimensions. At least one dimension must have more levels than the step."
   end
 end
 
