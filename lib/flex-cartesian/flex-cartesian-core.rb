@@ -40,6 +40,9 @@ def initialize(dims = nil, path: nil, format: :json, logger: nil, log_level: Log
     @size = @levels.map(&:size).inject(:*)
     # array of dimension names
     @names = @dimensions.keys
+    # internal structure: for each dimension, minimal textual width that fits all values in this dimension - required for table output
+    @dimension_widths = @names.zip(dimension_widths).to_h
+    @default_width = 10
 
     # define class for a vector represented as Struct, to be able to access its elements using `.<dimension_name>`
     # NOTE: this class must be unique - otherwise, Struct objects as Hash keys won't coincide for different Struct classes
@@ -57,7 +60,7 @@ def initialize(dims = nil, path: nil, format: :json, logger: nil, log_level: Log
     # ordering of the functions
     @order = { first: nil, last: nil }
 
-    # Hash: instance of @struct class => { fname => value }
+    # Hash: instance of @struct vector => { fname => value }
     @function_results = {}
 
     @function_hidden = Set.new
@@ -168,6 +171,8 @@ end
   # check if `v` is a valid vector in parameter space, with respect to space conditions
   # vector can be Struct, Hash, or Array. If it's Array, then order of dimensions is assumed from parameter space
   def valid?(v)
+    # DEBUG HERE
+    return true
     # check if vector class is recognizable, and names & number of dimensions are aligned with parameter space
     return false unless vector_consistent?(v)
     # check if vector elements present among their respective dimensional values
@@ -196,17 +201,18 @@ def index(source:, uri:, dimensions:)
     require 'csv'
     table = CSV.read(uri, headers: true)
 
-    # TODO: CHECK THAT
     table.each do |row|
       key = dimensions.map do |dim|
         value = row[dim.to_s]
-        @dimensions[dim.to_sym] << value unless @dimensions[dim.to_sym].include?(value)
+        dim_sym = dim.to_sym
+        unless @dimensions_hash[dim_sym][value]
+          @dimensions[dim_sym] << value
+          @dimensions_hash[dim_sym][value] = true
+        end
         value
       end
-
       @index[key] = row
     end
-
   when :xlsx
     require 'roo'
 
@@ -256,6 +262,15 @@ end
 
 
 private
+
+def dimension_widths
+  @dimensions.map do |dim, values|
+    max_width = ([dim.to_s] + values).inject(0) do |max, e|
+      len = e.to_s.length
+      len > max ? len : max
+    end
+  end
+end
 
 # convert dimensional values to array, for conformity
   def normalize_dimensions(dimensions)

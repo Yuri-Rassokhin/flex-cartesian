@@ -1,66 +1,48 @@
 module FlexCartesianIO
 
+def width(string)
+  @dimension_widths[string.to_sym] == nil ? @default_width : @dimension_widths[string.to_sym]
+end
+
 def output(separator: " | ", colorize: false, align: true, format: :plain, limit: nil, file: nil)
+
+  # define column separator
   sep = if format == :csv
           [";", ","].include?(separator) ? separator : ";"
         else
           separator
         end
-  rows = if @function_results && !@function_results.empty?
-           @function_results.keys
-         else
-           result = []
-           cartesian do |v|
-             result << v
-             break if limit && result.size >= limit
-           end
-           result
-         end
 
-  return if rows.empty?
-
+  # compose headers as dimension names + names of visible functions
   visible_func_names = @derived.keys - (@function_hidden || Set.new).to_a
-  headers = rows.first.members.map(&:to_s) + visible_func_names.map(&:to_s)
+  headers = @names.map(&:to_s) + visible_func_names.map(&:to_s)
 
-  widths = align ? headers.to_h { |h|
-    values = rows.map do |r|
-      val = if r.members.map(&:to_s).include?(h)
-              r.send(h)
-            else
-              @function_results&.dig(r, h.to_sym)
-            end
-      fmt_cell(val, colorize: false, header: true).size
-    end
-    [h, [h.size, *values].max]
-  } : {}
-
-  lines = []
-
-  # Header
+  # print header
   case format
   when :markdown
-    lines << "| " + headers.map { |h| h.ljust(widths[h] || h.size) }.join(" | ") + " |"
-    lines << "|-" + headers.map { |h| "-" * (widths[h] || h.size) }.join("-|-") + "-|"
+    print "| "
+    cells = headers.map do |h|
+      cell = h.ljust(width(h))
+      fmt_cell(cell, colorize: colorize, header: true)
+    end
+    puts cells.join(" | ") + " |"
+    puts "|-" + headers.map { |h| "-" * width(h) }.join("-|-") + "-|"
   when :csv
-    lines << headers.join(sep)
+    puts headers.join(sep)
   else
-    lines << headers.map { |h| fmt_cell(h, colorize: colorize, header: true, width: widths[h]) }.join(sep)
+    puts headers.map { |h| fmt_cell(h, colorize: colorize, header: true, width: width(h)) }.join(sep)
   end
 
-  # Rows
-  rows.each do |row|
-    values = row.members.map { |m| row.send(m) } +
-             visible_func_names.map { |fname| @function_results&.dig(row, fname) }
-
-    line = headers.zip(values).map { |(_, val)| fmt_cell(val, colorize: colorize, width: widths[_]) }
-    lines << line.join(sep)
-  end
-
-  # Output to console or file
-  if file
-    File.write(file, lines.join("\n") + "\n")
-  else
-    lines.each { |line| puts line }
+  # print rows
+  cartesian do |vector|
+    values = vector.members.map { |m| vector.send(m) } + visible_func_names.map { |f| @function_results&.dig(vector, f) }
+    line = headers.zip(values).map { |(dim, val)| fmt_cell(val, colorize: colorize, width: width(dim)) }.join(sep)
+    line = "| " + line + " |" if :markdown
+    if file 
+      File.write(file, line + "\n")
+    else
+      puts line
+    end
   end
 end
 
