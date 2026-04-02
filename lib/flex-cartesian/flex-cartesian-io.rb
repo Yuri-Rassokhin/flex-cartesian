@@ -6,6 +6,8 @@ end
 
 def output(separator: " | ", colorize: false, align: true, format: :plain, limit: nil, file: nil)
 
+  out = file ? File.open(file, "w") : STDOUT
+
   # define column separator
   sep = if format == :csv
           [";", ","].include?(separator) ? separator : ";"
@@ -20,17 +22,17 @@ def output(separator: " | ", colorize: false, align: true, format: :plain, limit
   # print header
   case format
   when :markdown
-    print "| "
+    out.print "| "
     cells = headers.map do |h|
       cell = h.ljust(width(h))
       fmt_cell(cell, colorize: colorize, header: true)
     end
-    puts cells.join(" | ") + " |"
-    puts "|-" + headers.map { |h| "-" * width(h) }.join("-|-") + "-|"
+    out.puts cells.join(" | ") + " |"
+    out.puts "|-" + headers.map { |h| "-" * width(h) }.join("-|-") + "-|"
   when :csv
-    puts headers.join(sep)
+    out.puts headers.join(sep)
   else
-    puts headers.map { |h| fmt_cell(h, colorize: colorize, header: true, width: width(h)) }.join(sep)
+    out.puts headers.map { |h| fmt_cell(h, colorize: colorize, header: true, width: width(h)) }.join(sep)
   end
 
   # print rows
@@ -38,12 +40,10 @@ def output(separator: " | ", colorize: false, align: true, format: :plain, limit
     values = vector.members.map { |m| vector.send(m) } + visible_func_names.map { |f| @function_results&.dig(vector, f) }
     line = headers.zip(values).map { |(dim, val)| fmt_cell(val, colorize: colorize, width: width(dim)) }.join(sep)
     line = "| " + line + " |" if :markdown
-    if file 
-      File.write(file, line + "\n")
-    else
-      puts line
-    end
+    out.puts line
   end
+
+  out.close if out.is_a?(File)
 end
 
 def import(path, format: :json)

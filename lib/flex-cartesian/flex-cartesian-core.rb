@@ -64,9 +64,6 @@ def initialize(dims = nil, path: nil, format: :json, logger: nil, log_level: Log
     @function_results = {}
 
     @function_hidden = Set.new
-
-    # generate warnings on the deprecated things that will be changed/removed/replaced soon
-    deprecations
   end
 
   def cond(command = :print, index: nil, &block)
@@ -126,7 +123,9 @@ def func(command = :print, name = nil, hide: false, progress: false, title: "cal
     cartesian(progress: progress, title: title) do |v|
       @function_results[v] ||= {}
       @derived.each do |fname, block|
-        @function_results[v][fname] = block.call(v)
+        value = block.call(v)
+        @function_results[v][fname] = value
+        ensure_dimension_width(fname, value)
       end
     end
   else
@@ -263,12 +262,25 @@ end
 
 private
 
+# create tabular widths for basic dimensions (that is, excluding functions)
 def dimension_widths
   @dimensions.map do |dim, values|
     max_width = ([dim.to_s] + values).inject(0) do |max, e|
       len = e.to_s.length
       len > max ? len : max
     end
+  end
+end
+
+# update tabular width of a dynamic dimension (i.e., function)
+# to be called wherever you expect new dimension or a new dimensional value to appear
+def ensure_dimension_width(name, value = nil)
+  raise "Dimension name is empty" unless name
+
+  if value == nil # adding new dynamic dimension with default width, if not added before
+    @dimension_widths[name] = @default_width unless @dimension_widths[name]
+  elsif value.to_s.size > @dimension_widths[name] # adding new value of a dynamic dimension
+    @dimension_widths[name] = value.to_s.size
   end
 end
 
@@ -313,6 +325,7 @@ end
     else
       raise ArgumentError, "unknown function order '#{order}'"
     end
+  ensure_dimension_width(name)
   end
 
   def remove_function(name)

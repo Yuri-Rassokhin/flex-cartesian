@@ -6,7 +6,6 @@ module FlexCartesianDeprecations
     ]
 
   def deprecations
-    return if ENV['FLEXCARTESIAN_DEPRECATION_SILENT'] == '1'
     WARNINGS.each { |msg| log.warn msg }
   end
 
