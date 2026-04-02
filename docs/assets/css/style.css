@@ -877,7 +877,7 @@ main {
 
   .code-card code,
   .code-card pre {
-    font-size: 0.78rem;
+    font-size: 0.48rem;
     line-height: 1.4;
     white-space: pre-wrap;
     overflow-wrap: anywhere;
@@ -997,3 +997,4 @@ main {
   font-weight: 600;
   color: var(--text);
 }
+
