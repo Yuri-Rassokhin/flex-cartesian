@@ -817,25 +817,31 @@ main {
 @media (max-width: 560px) {
   main { width: calc(100% - 20px); }
   .hero h1 { font-size: clamp(2.5rem, 12vw, 4.4rem); }
+
   .section {
     padding: 40px 0 20px 0;
   }
+
   .section-head h2 {
     font-size: clamp(1.8rem, 8vw, 2.4rem);
     margin-top: 10px;
     margin-bottom: 16px;
   }
+
   .section-head p {
-    line-height: 1.6; 
+    line-height: 1.6;
   }
+
   .feature-card,
   .output-card,
-  .compare-card { 
-    padding: 18px; 
+  .compare-card {
+    padding: 18px;
   }
+
   .button { width: 100%; }
   .hero-actions { flex-direction: column; }
   .scene-window { min-height: 580px; }
+
   .visual-frame,
   .feature-card,
   .output-card,
@@ -843,21 +849,42 @@ main {
   .panel-copy,
   .cta-panel,
   .concept-step,
-  .code-card { border-radius: 20px; }
+  .code-card {
+    border-radius: 20px;
+  }
+
   .measure-flow { flex-direction: column; align-items: stretch; }
+
   .measure-arrow {
     width: 2px;
     height: 24px;
     margin: 0 auto;
     background: linear-gradient(180deg, rgba(108,229,255,0.2), rgba(108,229,255,0.9));
   }
+
   .measure-arrow::after {
     top: auto;
     bottom: -1px;
     right: -4px;
     transform: rotate(135deg);
   }
+
+  /* mobile code fit */
+  .code-card pre {
+    padding: 14px;
+    overflow-x: hidden;
+  }
+
+  .code-card code,
+  .code-card pre {
+    font-size: 0.78rem;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
 }
+
 .hero-punchline {
   margin-top: 14px;
   opacity: 0.9;
