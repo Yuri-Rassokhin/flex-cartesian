@@ -869,16 +869,18 @@ main {
     transform: rotate(135deg);
   }
 
-  /* mobile code fit */
-  .code-card pre {
+  .code-card pre,
+  .code-large pre {
     padding: 14px;
     overflow-x: hidden;
   }
 
   .code-card code,
-  .code-card pre {
-    font-size: 0.48rem;
-    line-height: 1.4;
+  .code-card pre,
+  .code-large code,
+  .code-large pre {
+    font-size: 0.72rem;
+    line-height: 1.35;
     white-space: pre-wrap;
     overflow-wrap: anywhere;
     word-break: break-word;
