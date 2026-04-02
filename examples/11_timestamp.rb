@@ -18,7 +18,7 @@ result = {} # raw result of each ping
 s.func(:add, :command) { |v| "ping -c #{v.count} -s #{v.size} #{v.target}" } # ping command
 s.func(:add, :raw_ping, hide: true) { |v| result[v.command] ||= `#{v.command} 2>&1` } # capturing ping result
 s.func(:add, :ping_time) { |v| v.raw_ping[/min\/avg\/max\/(?:mdev|stddev) = [^\/]+\/([^\/]+)/, 1]&.to_f.round(2) } # fetch ping time from result
-s.func(:add, :time, order: :first) { |v| Time.now }
+s.func(:add, :timestamp, order: :first) { |v| Time.now }
 
 # Evaluate all target functions
 s.func(:run, progress: true, title: "Pinging") # Sweep analysis! Benchmark all possible combinations of parameters
