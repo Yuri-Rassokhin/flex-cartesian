@@ -39,7 +39,7 @@ def output(separator: " | ", colorize: false, align: true, format: :plain, limit
   cartesian do |vector|
     values = vector.members.map { |m| vector.send(m) } + visible_func_names.map { |f| @function_results&.dig(vector, f) }
     line = headers.zip(values).map { |(dim, val)| fmt_cell(val, colorize: colorize, width: width(dim)) }.join(sep)
-    line = "| " + line + " |" if :markdown
+    line = "| " + line + " |" if format == :markdown
     out.puts line
   end
 
