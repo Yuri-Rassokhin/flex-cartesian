@@ -151,8 +151,8 @@ def cartesian(dims = nil, lazy: false, progress: false, title: "Traversing space
   space.each do |combination|
     # create current vector as Struct
     vector = @struct.new(*combination)
-    # skip current vector if it doesn't satisfy space conditions
-    next unless valid?(vector)
+    # skip current vector if it doesn't respect space conditions
+    next unless fit?(vector)
 
     # guarantee that functions can refer to one another within cartesian block
     @derived&.each do |name, block|
@@ -169,16 +169,20 @@ end
 
   # check if `v` is a valid vector in parameter space, with respect to space conditions
   # vector can be Struct, Hash, or Array. If it's Array, then order of dimensions is assumed from parameter space
+  # this check is computationally aggressive and only makes sense for cmanually constructed vector
   def valid?(v)
     # DEBUG HERE
-    return true
     # check if vector class is recognizable, and names & number of dimensions are aligned with parameter space
     return false unless vector_consistent?(v)
     # check if vector elements present among their respective dimensional values
     return false unless vector_to(v, :hash).each_pair.all? { |dim, v| @dimensions[dim].include?(v) }
     # check if vector respects conditions
-    @conditions.none? { |cond| !cond.call(vector_to(v, :struct)) }
+    fit?(v)
   end
+
+def fit?(v)
+  @conditions.none? { |cond| !cond.call(vector_to(v, :struct)) }
+end
 
 # reads from target column using data source created by `data` method
 def lookup(vector, target)
