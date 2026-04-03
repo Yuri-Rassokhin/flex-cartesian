@@ -192,7 +192,7 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding: 150px 80px 0;
+  padding: 20px 80px 0;
   scroll-margin-top: 90px;
   scroll-snap-align: start;
 }
@@ -1041,7 +1041,7 @@ main {
   }
 
   .section {
-    padding: 60px 0;
+    padding: 10px 0;
     justify-content: flex-start;
   }
 
