@@ -15,22 +15,43 @@
     <header class="topbar">
       <a class="brand" href="#top">
 <span class="brand-mark" aria-hidden="true">
-  <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-      <!-- axes -->
-      <path d="M12 48H52" stroke-width="2.2" opacity="0.55"/>
-      <path d="M12 48V16" stroke-width="2.2" opacity="0.55"/>
-      <path d="M12 48L26 56" stroke-width="2.2" opacity="0.4"/>
+  <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none">
+    <g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <!-- cube -->
+      <path d="M18 18H42V42H18Z" stroke-width="2" opacity="0.9"/>
+      <path d="M24 12H48V36H24Z" stroke-width="2" opacity="0.55"/>
+      <path d="M18 18L24 12" stroke-width="2" opacity="0.55"/>
+      <path d="M42 18L48 12" stroke-width="2" opacity="0.55"/>
+      <path d="M42 42L48 36" stroke-width="2" opacity="0.55"/>
+      <path d="M18 42L24 36" stroke-width="2" opacity="0.55"/>
 
-      <!-- wireframe surface -->
-      <path d="M18 40C24 30 31 24 40 24C45 24 49 27 52 32" stroke-width="2.2"/>
-      <path d="M18 34C24 26 31 21 40 21C45 21 49 24 52 28" stroke-width="1.5" opacity="0.75"/>
-      <path d="M18 46C24 35 31 29 40 29C45 29 49 32 52 37" stroke-width="1.5" opacity="0.75"/>
+      <!-- diagonal wavy surface -->
+      <path d="M20 21
+               C24 18, 28 18, 32 21
+               C36 24, 40 24, 44 21"
+            stroke-width="1.7"/>
 
-      <path d="M22 43L22 31" stroke-width="1.2" opacity="0.65"/>
-      <path d="M30 37L30 25" stroke-width="1.2" opacity="0.65"/>
-      <path d="M38 31L38 22" stroke-width="1.2" opacity="0.65"/>
-      <path d="M46 29L46 24" stroke-width="1.2" opacity="0.65"/>
+      <path d="M20 26
+               C24 23, 28 23, 32 26
+               C36 29, 40 29, 44 26"
+            stroke-width="1.4" opacity="0.8"/>
+
+      <path d="M20 31
+               C24 28, 28 28, 32 31
+               C36 34, 40 34, 44 31"
+            stroke-width="1.4" opacity="0.8"/>
+
+      <path d="M20 36
+               C24 33, 28 33, 32 36
+               C36 39, 40 39, 44 36"
+            stroke-width="1.4" opacity="0.8"/>
+
+      <!-- connecting ribs to suggest surface -->
+      <path d="M20 21L20 36" stroke-width="1" opacity="0.45"/>
+      <path d="M26 19L26 34" stroke-width="1" opacity="0.45"/>
+      <path d="M32 21L32 36" stroke-width="1" opacity="0.45"/>
+      <path d="M38 23L38 38" stroke-width="1" opacity="0.45"/>
+      <path d="M44 21L44 36" stroke-width="1" opacity="0.45"/>
     </g>
   </svg>
 </span>

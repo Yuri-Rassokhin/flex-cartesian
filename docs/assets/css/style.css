@@ -75,26 +75,28 @@ button {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   font-weight: 700;
   letter-spacing: 0.01em;
 }
 
 .brand-mark {
-  width: 38px;
-  height: 38px;
-  border-radius: 12px;
-  display: inline-grid;
-  place-items: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
   color: #edf5ff;
-  background: linear-gradient(135deg, rgba(108, 229, 255, 0.28), rgba(157, 125, 255, 0.28));
-  border: 1px solid rgba(255,255,255,0.15);
-  box-shadow: inset 0 0 18px rgba(255,255,255,0.08);
 }
 
 .brand-mark svg {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   display: block;
 }
 
@@ -259,7 +261,7 @@ main {
 
 .hero h1 {
   margin: 18px 0 18px;
-  font-size: clamp(3rem, 5vw, 4.6rem);
+  font-size: clamp(2.25rem, 3.75vw, 3.45rem);
   line-height: 0.95;
   letter-spacing: -0.05em;
   max-width: none;
@@ -1077,6 +1079,13 @@ main {
 }
 
 @media (max-width: 560px) {
+  .hero h1 {
+    font-size: clamp(1.5rem, 7.9vw, 2.55rem);
+    line-height: 0.96;
+    letter-spacing: -0.045em;
+    margin: 10px 0 14px;
+  }
+
   .topbar {
     margin-top: 6px;
     padding: 8px 12px;
@@ -1085,25 +1094,14 @@ main {
   }
 
   .brand {
-    gap: 10px;
+    gap: 8px;
   }
 
-.brand-mark {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  display: inline-grid;
-  place-items: center;
-  color: #edf5ff;
-  background: linear-gradient(135deg, rgba(108, 229, 255, 0.18), rgba(157, 125, 255, 0.18));
-  border: 1px solid rgba(255,255,255,0.12);
-  box-shadow: inset 0 0 12px rgba(255,255,255,0.05);
+.brand-mark svg {
+  width: 24px;
+  height: 24px;
+  display: block;
 }
-
-  .brand-mark svg {
-    width: 15px;
-    height: 15px;
-  }
 
   .brand-text {
     font-size: 0.88rem;
