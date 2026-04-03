@@ -202,16 +202,6 @@ main {
 
 .hero {
   display: grid;
-  grid-template-columns: 1.23fr 0.63fr;
-  align-items: start;
-  gap: 52px;
-  min-height: calc(100vh - 140px);
-  padding-top: 150px;
-}
-
-.hero.section {
-  display: grid;
-  min-height: 100vh;
 }
 
 .eyebrow,
