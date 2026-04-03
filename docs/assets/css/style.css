@@ -622,7 +622,7 @@ main {
 .section-head {
   max-width: 820px;
   margin-top: 0;
-  margin-bottom: 28px;
+  margin-bottom: 8px;
 }
 
 .section-head h2 {
@@ -875,6 +875,12 @@ main {
 .code-section .feature-grid {
   grid-template-columns: 1fr;
   align-items: stretch;
+  margin-top: 0;
+  gap: 0;
+}
+
+.code-section .section-head {
+  margin-bottom: 8px;
 }
 
 .code-section .feature-card {
