@@ -25,6 +25,10 @@ html {
   scroll-snap-type: y mandatory;
 }
 
+.brand-mobile {
+  display: none;
+}
+
 body {
   margin: 0;
   font-family: Inter, system-ui, sans-serif;
@@ -967,40 +971,39 @@ main {
 }
 
 @media (max-width: 820px) {
-  .topbar {
-    width: calc(100% - 20px);
-    margin-top: 10px;
-    padding: 12px 14px;
-    justify-content: space-between;
-  }
+.topbar {
+  display: grid;
+  grid-template-columns: 38px 1fr 38px;
+  align-items: center;
+  justify-content: normal;
+}
 
-  .nav-toggle {
-    display: inline-block;
-  }
+.brand-mobile {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  grid-column: 2;
+  text-align: center;
+  padding: 0;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text);
+}
 
-  .nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    height: 100dvh;
-    background: rgba(7, 17, 31, 0.95);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    padding: 20px;
-    z-index: 45;
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(-10px) scale(0.98);
-    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    flex: 0 0 auto;
-  }
+.nav-toggle {
+  display: inline-block;
+  grid-column: 3;
+  justify-self: end;
+}
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+}
 
   .nav a {
     font-size: 1.25rem;
