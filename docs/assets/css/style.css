@@ -84,15 +84,12 @@ button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: auto;
-  height: auto;
   padding: 0;
   margin: 0;
   border: none !important;
   border-radius: 0;
   background: none !important;
   box-shadow: none !important;
-  color: #edf5ff;
 }
 
 .brand-mark svg {
@@ -265,7 +262,6 @@ main {
   font-size: clamp(2.25rem, 3.75vw, 3.45rem);
   line-height: 0.95;
   letter-spacing: -0.05em;
-  max-width: none;
 }
 
 .hero h1 span {
@@ -1102,10 +1098,7 @@ main {
   }
 
   .hero h1 {
-    font-size: clamp(2.4rem, 9.5vw, 3.6rem);
-    line-height: 0.96;
-    letter-spacing: -0.045em;
-    margin: 10px 0 14px;
+    font-size: clamp(1.8rem, 7vw, 2.6rem);
   }
 
   .nav-toggle {

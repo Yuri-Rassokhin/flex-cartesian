@@ -14,92 +14,71 @@
   <div class="site-shell">
     <header class="topbar">
       <a class="brand" href="#top">
-<span class="brand-mark" aria-hidden="true">
-  <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="fcSurfaceFill" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="#6ce5ff" stop-opacity="0.22"/>
-        <stop offset="100%" stop-color="#9d7dff" stop-opacity="0.16"/>
-      </linearGradient>
-    </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%" style="background: #0f172a; border-radius: 8px;">
+  <defs>
+    <filter id="neon" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.5" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
 
-    <!-- cube -->
-    <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <!-- front face -->
-      <path d="M12 20H42V50H12Z"/>
-      <!-- back/top-right shifted face -->
-      <path d="M26 8H56V38H26Z"/>
-      <!-- connectors -->
-      <path d="M12 20L26 8"/>
-      <path d="M42 20L56 8"/>
-      <path d="M42 50L56 38"/>
-      <path d="M26 50L26 8" opacity="0.9"/>
-    </g>
+  <g stroke="rgba(255, 255, 255, 0.2)" stroke-width="1.5" stroke-dasharray="4 4" fill="none" stroke-linecap="round">
+    <line x1="200" y1="260" x2="50" y2="300" />
+    <line x1="200" y1="260" x2="350" y2="300" />
+    <line x1="200" y1="260" x2="200" y2="120" />
+  </g>
 
-    <!-- surface fill -->
-    <path
-      d="M12 50
-         C16 44, 20 38, 24 28
-         C25.2 24.5, 25.8 19, 26 14
-         C31 18, 36 23, 42 30
-         C46.5 35.2, 51 37.8, 56 38
-         C50 39.5, 45.5 41.5, 42 50
-         C41 42.5, 41 36, 42 30
-         C36 23, 31 18, 26 14
-         C21 24.5, 17 34.5, 12 50 Z"
-      fill="url(#fcSurfaceFill)"
-      stroke="none"
-    />
+  <g stroke="rgba(255, 255, 255, 0.3)" stroke-width="0.5" stroke-linejoin="round" opacity="0.9">
+    
+    <polygon points="200,239 237.5,228 162.5,256" fill="#a78bfa" />
+    <polygon points="237.5,228 200,252 162.5,256" fill="#8b5cf6" />
+    <polygon points="237.5,228 275,203 200,252" fill="#fb923c" />
+    <polygon points="275,203 237.5,227 200,252" fill="#f97316" />
+    <polygon points="275,203 312.5,178 237.5,227" fill="#facc15" />
+    <polygon points="312.5,178 275,209 237.5,227" fill="#eab308" />
+    <polygon points="312.5,178 350,160 275,209" fill="#fef08a" />
+    <polygon points="350,160 312.5,198 275,209" fill="#ffffff" />
 
-    <!-- surface wireframe -->
-    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-      <!-- main boundary curves -->
-      <path
-        d="M12 50
-           C16 44, 20 38, 24 28
-           C25.2 24.5, 25.8 19, 26 14"
-        stroke-width="1.8"
-      />
-      <path
-        d="M26 14
-           C31 18, 36 23, 42 30
-           C46.5 35.2, 51 37.8, 56 38"
-        stroke-width="1.8"
-      />
-      <path
-        d="M42 50
-           C43 42.5, 43.2 36.5, 42 30"
-        stroke-width="1.8"
-      />
+    <polygon points="162.5,256 200,252 125,273" fill="#60a5fa" />
+    <polygon points="200,252 162.5,269 125,273" fill="#3b82f6" />
+    <polygon points="200,252 237.5,227 162.5,269" fill="#c084fc" />
+    <polygon points="237.5,227 200,258 162.5,269" fill="#a855f7" />
+    <polygon points="237.5,227 275,209 200,258" fill="#f59e0b" />
+    <polygon points="275,209 237.5,247 200,258" fill="#d97706" />
+    <polygon points="275,209 312.5,198 237.5,247" fill="#fde047" />
+    <polygon points="312.5,198 275,243 237.5,247" fill="#fcd34d" />
 
-      <!-- inner surface ribs -->
-      <path
-        d="M15 46
-           C18.5 40.5, 21.5 34.5, 24.5 25.5
-           C29.2 20, 34 24, 39.5 29.2
-           C44.2 33.8, 48.8 36.6, 53 37.6"
-        stroke-width="1.1"
-        opacity="0.8"
-      />
-      <path
-        d="M19 39
-           C21.8 33.8, 24 27.5, 25.6 19.2
-           C30 20.8, 35 25, 40.5 30.2
-           C44.8 34.3, 48.5 36.9, 51.8 38"
-        stroke-width="1.0"
-        opacity="0.65"
-      />
-      <path
-        d="M23 31
-           C24.6 26.2, 25.5 20.6, 26 15.2
-           C30.2 19.4, 35 24.4, 40.8 31
-           C41.8 36.8, 42 42.5, 42 48"
-        stroke-width="1.0"
-        opacity="0.65"
-      />
-    </g>
-  </svg>
-</span>
+    <polygon points="125,273 162.5,269 87.5,283" fill="#93c5fd" />
+    <polygon points="162.5,269 125,286 87.5,283" fill="#60a5fa" />
+    <polygon points="162.5,269 200,258 125,286" fill="#818cf8" />
+    <polygon points="200,258 162.5,289 125,286" fill="#6366f1" />
+    <polygon points="200,258 237.5,247 162.5,289" fill="#c084fc" />
+    <polygon points="237.5,247 200,292 162.5,289" fill="#a855f7" />
+    <polygon points="237.5,247 275,243 200,292" fill="#fb923c" />
+    <polygon points="275,243 237.5,288 200,292" fill="#f97316" />
+
+    <polygon points="87.5,283 125,286 50,300" fill="#bfdbfe" />
+    <polygon points="125,286 87.5,303 50,300" fill="#93c5fd" />
+    <polygon points="125,286 162.5,289 87.5,303" fill="#60a5fa" />
+    <polygon points="162.5,289 125,306 87.5,303" fill="#3b82f6" />
+    <polygon points="162.5,289 200,292 125,306" fill="#818cf8" />
+    <polygon points="200,292 162.5,309 125,306" fill="#6366f1" />
+    <polygon points="200,292 237.5,288 162.5,309" fill="#c084fc" />
+    <polygon points="237.5,288 200,319 162.5,309" fill="#a855f7" />
+  </g>
+
+  <g stroke="#38bdf8" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#neon)">
+    
+    <polygon points="200,120 350,160 200,200 50,160" />
+    
+    <line x1="50" y1="300" x2="200" y2="340" />
+    <line x1="350" y1="300" x2="200" y2="340" />
+    
+    <line x1="50" y1="160" x2="50" y2="300" />     <line x1="350" y1="160" x2="350" y2="300" />   <line x1="200" y1="200" x2="200" y2="340" />   </g>
+</svg>
         <span class="brand-text">FlexCartesian</span>
       </a>
 
