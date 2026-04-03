@@ -891,6 +891,8 @@ main {
   margin-top: 14px;
   opacity: 0.9;
 }
+
+
 @media (max-width: 768px) {
   .hero-punchline {
     white-space: normal;
