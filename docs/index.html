@@ -15,14 +15,88 @@
     <header class="topbar">
       <a class="brand" href="#top">
 <span class="brand-mark" aria-hidden="true">
-  <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none">
-    <g stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M16 20L32 12L48 20L48 40L32 48L16 40Z" opacity="0.7"/>
-      <path d="M16 20L32 28L48 20"/>
-      <path d="M32 28V48"/>
-      <path d="M20 32 C24 26, 28 24, 32 28 C36 32, 40 34, 44 30" stroke-width="1.8"/>
-      <path d="M20 36 C24 30, 28 28, 32 32 C36 36, 40 38, 44 34" stroke-width="1.4" opacity="0.8"/>
-      <path d="M20 40 C24 34, 28 32, 32 36 C36 40, 40 42, 44 38" stroke-width="1.2" opacity="0.6"/>
+  <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="fcSurfaceFill" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#6ce5ff" stop-opacity="0.22"/>
+        <stop offset="100%" stop-color="#9d7dff" stop-opacity="0.16"/>
+      </linearGradient>
+    </defs>
+
+    <!-- cube -->
+    <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <!-- front face -->
+      <path d="M12 20H42V50H12Z"/>
+      <!-- back/top-right shifted face -->
+      <path d="M26 8H56V38H26Z"/>
+      <!-- connectors -->
+      <path d="M12 20L26 8"/>
+      <path d="M42 20L56 8"/>
+      <path d="M42 50L56 38"/>
+      <path d="M26 50L26 8" opacity="0.9"/>
+    </g>
+
+    <!-- surface fill -->
+    <path
+      d="M12 50
+         C16 44, 20 38, 24 28
+         C25.2 24.5, 25.8 19, 26 14
+         C31 18, 36 23, 42 30
+         C46.5 35.2, 51 37.8, 56 38
+         C50 39.5, 45.5 41.5, 42 50
+         C41 42.5, 41 36, 42 30
+         C36 23, 31 18, 26 14
+         C21 24.5, 17 34.5, 12 50 Z"
+      fill="url(#fcSurfaceFill)"
+      stroke="none"
+    />
+
+    <!-- surface wireframe -->
+    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <!-- main boundary curves -->
+      <path
+        d="M12 50
+           C16 44, 20 38, 24 28
+           C25.2 24.5, 25.8 19, 26 14"
+        stroke-width="1.8"
+      />
+      <path
+        d="M26 14
+           C31 18, 36 23, 42 30
+           C46.5 35.2, 51 37.8, 56 38"
+        stroke-width="1.8"
+      />
+      <path
+        d="M42 50
+           C43 42.5, 43.2 36.5, 42 30"
+        stroke-width="1.8"
+      />
+
+      <!-- inner surface ribs -->
+      <path
+        d="M15 46
+           C18.5 40.5, 21.5 34.5, 24.5 25.5
+           C29.2 20, 34 24, 39.5 29.2
+           C44.2 33.8, 48.8 36.6, 53 37.6"
+        stroke-width="1.1"
+        opacity="0.8"
+      />
+      <path
+        d="M19 39
+           C21.8 33.8, 24 27.5, 25.6 19.2
+           C30 20.8, 35 25, 40.5 30.2
+           C44.8 34.3, 48.5 36.9, 51.8 38"
+        stroke-width="1.0"
+        opacity="0.65"
+      />
+      <path
+        d="M23 31
+           C24.6 26.2, 25.5 20.6, 26 15.2
+           C30.2 19.4, 35 24.4, 40.8 31
+           C41.8 36.8, 42 42.5, 42 48"
+        stroke-width="1.0"
+        opacity="0.65"
+      />
     </g>
   </svg>
 </span>
