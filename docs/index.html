@@ -13,16 +13,14 @@
 <body>
   <div class="site-shell">
     <header class="topbar">
-      <a class="brand" href="#top">
 
-        <span class="brand-text">FlexCartesian</span>
-      </a>
 
       <button class="nav-toggle" aria-label="Open navigation" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
 
       <nav class="nav">
+        <a href="#top" class="nav-link">FlexCartesian</a>
         <a href="#concept" class="nav-link">Problem</a>
         <a href="#workflow" class="nav-link">Solution</a>
         <a href="#code" class="nav-link">How It Works</a>
@@ -243,7 +241,7 @@ FlexCartesian treats a system not as a set of scattered measurements, but as a h
   <script src="assets/js/main.js"></script>
 
 <script>
-const sections = document.querySelectorAll("section[id]");
+const sections = document.querySelectorAll("section[id], main[id]");
 const navLinks = document.querySelectorAll(".nav-link");
 
 function setActiveLink(id) {
