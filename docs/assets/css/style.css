@@ -64,7 +64,7 @@ button {
   gap: 24px;
   width: min(calc(100% - 32px), var(--max));
   margin: 18px auto 0;
-  padding: 14px 18px;
+  padding: 10px 14px;
   border: 1px solid var(--line);
   border-radius: 18px;
   background: rgba(7, 17, 31, 0.6);
@@ -93,8 +93,8 @@ button {
 }
 
 .brand-mark svg {
-  width: 32px;
-  height: 32px;
+  width: 22px;
+  height: 22px;
   display: block;
 }
 
