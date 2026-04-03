@@ -881,7 +881,10 @@ main {
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 28px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .code-section .feature-card h3 {
@@ -889,9 +892,10 @@ main {
 }
 
 .code-section .code-card {
-  margin-top: 14px;
+  margin-top: 0;
   flex: 1;
   display: flex;
+  width: 100%;
 }
 
 .code-section .code-card pre {
