@@ -622,6 +622,8 @@ main {
 .section-head {
   margin-top: 0;
   margin-bottom: 8px;
+  max-width: 120ch;
+  text-align: left;
 }
 
 .section-head h2 {
