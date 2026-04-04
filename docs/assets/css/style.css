@@ -16,6 +16,21 @@
   --max: 1200px;
 }
 
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 32px;
+  z-index: 39;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(108, 229, 255, 0.16), transparent 0 28%),
+    radial-gradient(circle at 88% 18%, rgba(157, 125, 255, 0.18), transparent 0 24%),
+    linear-gradient(180deg, #091425 0%, #07111f 35%, #08121e 100%);
+}
+
 * {
   box-sizing: border-box;
 }
