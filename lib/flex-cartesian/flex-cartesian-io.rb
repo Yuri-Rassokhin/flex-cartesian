@@ -1,39 +1,58 @@
 module FlexCartesianIO
 
-def width(string)
-  @dimension_widths[string.to_sym] == nil ? @default_width : @dimension_widths[string.to_sym]
+# unified wrapper method for output
+def output(rows = nil, **opts)
+  if rows == nil
+    cartesian_output(**opts)
+  else
+    table_output(rows, **opts)
 end
 
-def output(separator: " | ", colorize: false, align: true, format: :plain, limit: nil, file: nil)
+  # internal method
+  def separator(sep)
+    result = if format == :csv
+            [";", ","].include?(sep) ? sep : ";"
+          else
+            sep
+          end
+  end
 
+  # internal method for printing headers
+  def output_headers(headers:, format:, widths:, stream:)
+    case format
+    when :markdown
+      stream.print "| "
+      cells = headers.map do |h|
+        cell = h.ljust(widths[h])
+        fmt_cell(cell, colorize: colorize, header: true)
+      end
+      stream.puts cells.join(" | ") + " |"
+      stream.puts "|-" + headers.map { |h| "-" * widths[h] }.join("-|-") + "-|"
+    when :csv
+      stream.puts headers.join(sep)
+    else
+      stream.puts headers.map { |h| fmt_cell(h, colorize: colorize, header: true, width: widths[h]) }.join(sep)
+    end
+  end
+
+# internal method for output from space
+def cartesian_output(separator: " | ", colorize: false, align: true, format: :plain, limit: nil, file: nil)
+
+  # output stream
   out = file ? File.open(file, "w") : STDOUT
 
-  # define column separator
-  sep = if format == :csv
-          [";", ","].include?(separator) ? separator : ";"
-        else
-          separator
-        end
+  # column separator
+  sep = separator(separator)
 
-  # compose headers as dimension names + names of visible functions
+  # table headers
   visible_func_names = @derived.keys - (@function_hidden || Set.new).to_a
   headers = @names.map(&:to_s) + visible_func_names.map(&:to_s)
 
-  # print header
-  case format
-  when :markdown
-    out.print "| "
-    cells = headers.map do |h|
-      cell = h.ljust(width(h))
-      fmt_cell(cell, colorize: colorize, header: true)
-    end
-    out.puts cells.join(" | ") + " |"
-    out.puts "|-" + headers.map { |h| "-" * width(h) }.join("-|-") + "-|"
-  when :csv
-    out.puts headers.join(sep)
-  else
-    out.puts headers.map { |h| fmt_cell(h, colorize: colorize, header: true, width: width(h)) }.join(sep)
-  end
+  # column widths
+  widths = headers.map { |h| @dimension_widths[h.to_sym] == nil ? @default_width : @dimension_widths[h.to_sym] }
+
+  # print headers
+  output_headers(headers: headers, format: format, stream: out)
 
   # print rows
   cartesian do |vector|
@@ -84,6 +103,7 @@ end
     @dimensions = data
   end
 
+  # internal method
   def fmt_cell(value, colorize: false, header: false, width: nil)
     str = case value
           when String then value
@@ -100,14 +120,11 @@ end
     end
   end
 
-def table(rows, separator: " | ", colorize: false, align: true, format: :plain, file: nil)
+# THIS NEEDS TO BE MERGED INTO standard output method
+def table_output(rows, separator: " | ", colorize: false, align: true, format: :plain, file: nil)
   return if rows.nil? || rows.empty?
 
-  sep = if format == :csv
-          [";", ","].include?(separator) ? separator : ";"
-        else
-          separator
-        end
+  sep = separator(separator)
 
   headers = rows.first.keys.map(&:to_s)
 

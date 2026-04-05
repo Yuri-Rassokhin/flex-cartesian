@@ -2,6 +2,25 @@ require 'set'
 
 module FlexCartesianUtilities
 
+  # TODO: .index is O(N), better optimize it using intermediate Hash
+  # vector commands
+  def vector(command:, v, dimension: nil)
+    case command
+    when :index
+      unless dimension
+        @names.map { |dim| vector(command, v, dim) }
+      else
+        levels = @dimensions[opts[:dimension]]
+        raise "Incorrect dimension name" unless levels
+        levels.index(v.dimension)
+      else
+    when :shift
+#      TODO
+    else
+      raise "Incorrect vector command #{command}"
+    end
+  end
+
 # shifts vector along given dimension by `stride` elements
 # negative stride moves backward, positive stride moves forward
 def vector_shift(v, dimension:, offset: 1)
