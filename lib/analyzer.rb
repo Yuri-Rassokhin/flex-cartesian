@@ -33,14 +33,12 @@ class Analyzer
     @space.cartesian(&blk)
   end
 
-  def sensitivity(function:)
-    raise ArgumentError, "target function must be provided" unless function
-    raise "Cannot execute #sensitivity as there are no functions defined in parameter space" if @space.derived.empty?
+  def output
+    raise "Method must be implemented in a child class"
   end
-
-  def output(function:, **opts)
-    rows = sensitivity(function: function)
-    @space.table(rows, **opts)
-  end
+#  def sensitivity(function:, **opts)
+#    rows = sensitivity(function: function)
+#    @space.output(rows, **opts)
+#  end
 
 end

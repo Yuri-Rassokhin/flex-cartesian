@@ -26,7 +26,9 @@ s.cartesian { |v| puts v.to_a.inspect }
 
 s.cartesian { |v| puts "#{v.dim1} & #{v.dim2}" if v.dim3 }
 
-s.output
+s.func(:run)
+
+s.output(format: :markdown, colorize: true)
 
 # Show progress bar while iterating, useful for large parameter spaces
 s.cartesian(progress: true, title: "Testing"){ |v| do_something(v) }

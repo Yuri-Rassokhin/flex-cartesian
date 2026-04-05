@@ -15,17 +15,17 @@ s.func(:add, :raw_ping, hide: true) { |v| result[v.command] ||= `#{v.command} 2>
 s.func(:add, :time) { |v| v.raw_ping[/min\/avg\/max\/(?:mdev|stddev) = [^\/]+\/([^\/]+)/, 1]&.to_f.round(2) } # fetch ping time from the result
 
 # Evaluate target function `time` on the combinations from parameter space defined by the plan
-s.func(:run, progress: true, title: "Pinging")
+s.func(:run, progress: true, title: "Obtaining data")
 
 # create three analyzers of the target functions
-m1 = s.analyzer(:morris, trajectories: 10, step: 1, seed: 42)
-m2 = s.analyzer(:morris, trajectories: 20, step: 1, seed: 42)
+a = s.analyzer(:morris, trajectories: 10, step: 1, seed: 42)
 
-puts "\nWe apply #{m1.name}. #{m1.description}.\n\n"
-puts "\n#{m1.name}: trajectories = 5, step = 1, seed = 42"
-m1.output(function: :time, colorize: true)
-puts "\n#{m2.name}: trajectories = 20, step = 1, seed = 42"
-m2.output(function: :time, colorize: true)
+puts
+
+puts "We apply #{a.name}. #{a.description}."
+
+puts "#{a.name}: trajectories = 5, step = 1, seed = 42"
+a.output(function: :time, colorize: true, format: :markdown)
 
 # Once we have `time` function evaluated, we can apply the plan to analyze its properties
 # Morris' method assesses the influence of each dimensional parameter on the target function

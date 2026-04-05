@@ -4,7 +4,7 @@ module FlexCartesianUtilities
 
   # TODO: .index is O(N), better optimize it using intermediate Hash
   # vector commands
-  def vector(command:, v, dimension: nil)
+  def vector(command:, vector: v, dimension: nil)
     case command
     when :index
       unless dimension
@@ -13,7 +13,7 @@ module FlexCartesianUtilities
         levels = @dimensions[opts[:dimension]]
         raise "Incorrect dimension name" unless levels
         levels.index(v.dimension)
-      else
+      end
     when :shift
 #      TODO
     else

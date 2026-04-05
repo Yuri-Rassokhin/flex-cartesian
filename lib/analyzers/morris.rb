@@ -20,8 +20,6 @@ class Morris < Analyzer
   end
 
 def sensitivity(function:)
-  super
-
   effects = Hash.new { |h, k| h[k] = [] }
 
   @edges.each do |edge|
@@ -126,10 +124,12 @@ end
   end
 
   def output(function:, categorize: true, recommend: true, **opts)
+    raise ArgumentError, "target function must be provided" unless function
+    raise "Cannot execute #sensitivity as there are no functions defined in parameter space" if @space.derived.empty?
     rows = sensitivity(function: function)
     rows = self.categorize(rows, function: function) if categorize
     rows = self.recommend(rows, function: function) if recommend
-    space.table(rows, **opts)
+    @space.output(rows, **opts)
   end
 
 def card

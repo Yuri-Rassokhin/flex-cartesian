@@ -1,6 +1,6 @@
 module FlexCartesianCore
 
-  attr_reader :function_results, :derived, :names, :dimensiality, :dimensions, :struct, :levels, :index_show
+  attr_reader :function_results, :derived, :names, :dimensiality, :dimensions, :struct, :levels, :index_show, :log
 
 def index_show
   @index
