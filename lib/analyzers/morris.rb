@@ -77,51 +77,80 @@ def sensitivity(function:)
   end.compact.sort_by { |row| -row[:"influence[#{function}]"] }
 end
 
-  def categorize(rows, function:)
-    return rows if rows.nil? || rows.empty?
+def categorize(rows, function:)
+  return rows if rows.nil? || rows.empty?
 
-    max_importance = rows.map { |r| r[:"influence[#{function}]"] }.max
-    threshold_high = max_importance * 0.2
-    threshold_low  = max_importance * 0.05
+  # 1. Вычисляем общий размах целевой функции (Y_max - Y_min)
+  # Собираем все результаты для данной функции из кэша
+  all_y_values = indexed_results.values.map { |r| r[function] }.compact
+  
+  y_range = if all_y_values.empty?
+              1.0 # Защита от деления на ноль, если данных нет
+            else
+              max_y = all_y_values.max
+              min_y = all_y_values.min
+              range = max_y - min_y
+              range.zero? ? 1.0 : range # Защита, если функция вернула константу
+            end
 
-    rows.map do |row|
-      imp   = row[:"influence[#{function}]"]
-      sigma = row[:nonlinearity]
+  rows.map do |row|
+    imp   = row[:"influence[#{function}]"]
+    sigma = row[:nonlinearity]
 
-      category =
-        if imp >= threshold_high
-          if sigma > imp
-            { strength: "strong", linearity: "nonlinear" }
-          else
-            { strength: "strong", linearity: "linear" }
-          end
-        elsif imp <= threshold_low
-          { strength: "negligible", linearity: "undefined" }
+    # Категоризация силы влияния (доля от размаха функции)
+    influence_ratio = imp / y_range.to_f
+    strength =
+      if influence_ratio >= 0.10      # Влияет более чем на 10% размаха
+        "strong"
+      elsif influence_ratio >= 0.02   # Влияет от 2% до 10%
+        "moderate"
+      else                            # Менее 2%
+        "negligible"
+      end
+
+    # Категоризация линейности (отношение сигмы к мю)
+    linearity = "undefined"
+    
+    # Считать линейность имеет смысл только для значимых параметров
+    if strength != "negligible" && imp > 0
+      ratio = sigma / imp
+      linearity =
+        if ratio < 0.5
+          "linear"
+        elsif ratio <= 1.0
+          "non-linear"
         else
-          { strength: "moderate", linearity: "undefined" }
+          "highly non-linear"
         end
-
-      row.merge( category: category[:strength], linearity: category[:linearity] )
     end
-  end
 
-  def recommend(rows, function:)
-    return rows if rows.nil? || rows.empty?
-
-    rows.map do |row|
-      recommendation =
-        if row[:category] == "strong" and row[:linearity] == "linear"
-          "pick a few pivotal values to reduce computations"
-        elsif row[:category] == "strong" and row[:linearity] == "nonlinear"
-          "enhance granularity and coverage to explore all phase transitions"
-        elsif row[:category] == "negligible"
-          "fix any value to reduce dimensiality"
-        else
-          "further exploration with more aggressive Morris parameters and finer granularity may be required"
-        end
-      row.merge(recommendation: recommendation)
-    end
+    row.merge(category: strength, linearity: linearity)
   end
+end
+
+def recommend(rows, function:)
+  return rows if rows.nil? || rows.empty?
+
+  rows.map do |row|
+    recommendation =
+      case [row[:category], row[:linearity]]
+      when ["strong", "linear"]
+        "direct and predictable impact; prime candidate for gradient-based optimization"
+      when ["strong", "highly non-linear"]
+        "critical parameter with complex interactions; prioritize for variance-based analysis (e.g. Sobol)"
+      when ["strong", "non-linear"]
+        "important parameter; ensure sufficient grid density around expected operating zones"
+      when ["moderate", "linear"], ["moderate", "non-linear"], ["moderate", "highly non-linear"]
+        "secondary priority; fine-tune only after optimizing 'strong' parameters"
+      when ["negligible", "undefined"]
+        "fix at default or cheapest value to reduce dimensionality"
+      else
+        "review parameter configuration"
+      end
+    
+    row.merge(recommendation: recommendation)
+  end
+end
 
   def output(function:, categorize: true, recommend: true, **opts)
     raise ArgumentError, "target function must be provided" unless function
