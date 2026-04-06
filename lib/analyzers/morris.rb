@@ -113,7 +113,7 @@ end
         if row[:category] == "strong" and row[:linearity] == "linear"
           "pick a few pivotal values to reduce computations"
         elsif row[:category] == "strong" and row[:linearity] == "nonlinear"
-          "enhance granularity and coverage not to avoid missing all phase transitions"
+          "enhance granularity and coverage to explore all phase transitions"
         elsif row[:category] == "negligible"
           "fix any value to reduce dimensiality"
         else
@@ -142,97 +142,120 @@ end
 
 private
 
-def vector_key(v)
-  names.map { |name| v.send(name) }
-end
+  # Метод для динамического расчета шага в индексах для конкретного параметра
+  def index_step_for(dim_idx)
+    levels_count = levels[dim_idx].size
+    # Если параметр константный (одно значение) - шаг равен 0
+    return 0 if levels_count <= 1
 
-def indexed_results
-  @indexed_results ||= begin
-    h = {}
-    results.each do |point, row|
-      h[vector_key(point)] = row
-    end
-    h
-  end
-end
+    # Количество доступных интервалов (прыжков)
+    intervals = levels_count - 1
 
-def build!
-  @trajectories.times do
-    build_trajectory!
-  end
-end
+    # Считаем количество индексов для шага на основе процента (@step)
+    calculated_step = (intervals * @step).round
 
-def build_trajectory!
-  current_indices = random_start_indices
-  from_idx = add_point(current_indices)
-  return unless from_idx
-
-  # take only the parameters that have enough values to take a step
-  active_factors = (0...names.size).select { |i| levels[i].size > @step }
-  factor_order = active_factors.shuffle(random: @rng)
-
-  factor_order.each do |factor_idx|
-    next_indices = current_indices.dup
-    next_indices[factor_idx] += @step
-
-    to_idx = add_point(next_indices)
-    next unless to_idx
-
-    @edges << Edge.new(
-      from_idx: from_idx,
-      to_idx: to_idx,
-      factor: names[factor_idx],
-      step: @step
-    )
-
-    current_indices = next_indices
-    from_idx = to_idx
-  end
-end
-
-def add_point(level_indices)
-  values = level_indices.each_with_index.map do |level_idx, dim_idx|
-    levels[dim_idx][level_idx]
+    # Шаг должен быть минимум 1 (иначе стоим на месте),
+    # но не больше максимального количества интервалов
+    [[calculated_step, 1].max, intervals].min
   end
 
-  point = @struct.new(*values)
-  return nil unless space.valid?(point)
+  def vector_key(v)
+    names.map { |name| v.send(name) }
+  end
 
-  @points << point
-  @points.size - 1
-end
-
-def random_start_indices
-  levels.map do |factor_levels|
-    max_start = factor_levels.size - 1 - @step
-    
-    if max_start < 0
-      # if there isn't enough dimensional values to make a step, we'll keep this parameter constant
-      # just pick random available value for this parameter
-      @rng.rand(0...factor_levels.size)
-    else
-      @rng.rand(0..max_start)
+  def indexed_results
+    @indexed_results ||= begin
+      h = {}
+      results.each do |point, row|
+        h[vector_key(point)] = row
+      end
+      h
     end
   end
-end
 
-# this validation requires at least one dimension to be able to make `step`
-def validate_step!
-  unless @step.is_a?(Integer) && @step > 0
-    raise ArgumentError, "step must be a positive integer"
+  def build!
+    @trajectories.times do
+      build_trajectory!
+    end
   end
 
-  max_levels = levels.map(&:size).max
-  if max_levels <= @step
-    raise ArgumentError, "step=#{@step} is too large for all dimensions. At least one dimension must have more levels than the step."
+  def build_trajectory!
+    current_indices = random_start_indices
+    from_idx = add_point(current_indices)
+    return unless from_idx
+
+    # Берем только те параметры, у которых достаточно значений для шага (хотя бы 2 значения)
+    active_factors = (0...names.size).select { |i| index_step_for(i) > 0 }
+    factor_order = active_factors.shuffle(random: @rng)
+
+    factor_order.each do |factor_idx|
+      next_indices = current_indices.dup
+
+      # Получаем индивидуальный дискретный шаг для текущего фактора
+      step_size = index_step_for(factor_idx)
+      next_indices[factor_idx] += step_size
+
+      to_idx = add_point(next_indices)
+      next unless to_idx
+
+      # СЧИТАЕМ ОТНОСИТЕЛЬНУЮ ДЕЛЬТУ: какая доля от всего диапазона была пройдена.
+      # Именно это значение пойдет в знаменатель при расчете элементарного эффекта.
+      intervals = levels[factor_idx].size - 1
+      relative_delta = step_size.to_f / intervals
+
+      @edges << Edge.new(
+        from_idx: from_idx,
+        to_idx: to_idx,
+        factor: names[factor_idx],
+        step: relative_delta # Сохраняем % сдвига, а не индексы
+      )
+
+      current_indices = next_indices
+      from_idx = to_idx
+    end
   end
+
+  def add_point(level_indices)
+    values = level_indices.each_with_index.map do |level_idx, dim_idx|
+      levels[dim_idx][level_idx]
+    end
+
+    point = @struct.new(*values)
+    return nil unless space.valid?(point)
+
+    @points << point
+    @points.size - 1
+  end
+
+  def random_start_indices
+    levels.each_with_index.map do |factor_levels, dim_idx|
+      step_size = index_step_for(dim_idx)
+      max_start = factor_levels.size - 1 - step_size
+
+      if max_start < 0 || step_size == 0
+        # Если не можем сделать шаг (или параметр константа) -
+        # берем случайное доступное значение
+        @rng.rand(0...factor_levels.size)
+      else
+        @rng.rand(0..max_start)
+      end
+    end
+  end
+
+  def validate_step!
+    # Теперь step - это процент (например, 0.1 для 10%)
+    unless @step.is_a?(Numeric) && @step > 0 && @step <= 1
+      raise ArgumentError, "step must be a relative float between 0.0 and 1.0 (e.g., 0.1 for 10%)"
+    end
+  end
+
+  def validate_trajectories!
+    unless @trajectories.is_a?(Integer) && @trajectories > 0
+      raise ArgumentError, "trajectories must be a positive integer"
+    end
+  end
+
 end
 
-def validate_trajectories!
-  unless @trajectories.is_a?(Integer) && @trajectories > 0
-    raise ArgumentError, "trajectories must be a positive integer"
-  end
-end
 
-end
 
