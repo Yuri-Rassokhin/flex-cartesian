@@ -11,33 +11,36 @@ end
 
   # internal method
   def separator(sep, format:)
-    result = if format == :csv
-            [";", ","].include?(sep) ? sep : ";"
-          else
-            sep
-          end
+    case format
+    when :csv
+      [";", ","].include?(sep) ? sep : ";"
+    when :markdown
+      "|"
+    else
+      sep
+    end
   end
 
   # internal method for printing headers
   def output_headers(headers:, format:, widths:, stream:, colorize:, separator:)
     case format
     when :markdown
-      stream.print "| "
+      stream.print separator
       cells = headers.map.with_index do |h,i|
         cell = h.ljust(widths[i])
         fmt_cell(cell, colorize: colorize, header: true)
       end
-      stream.puts cells.join(" | ") + " |"
-      stream.puts "|-" + headers.map.with_index { |h,i| "-" * widths[i] }.join("-|-") + "-|"
+      stream.puts cells.join(separator) + separator
+      stream.puts separator + headers.map.with_index { |h,i| "-" * widths[i] }.join(separator) + separator
     when :csv
-      stream.puts headers.join(separator)
+      stream.puts headers.map.with_index { |h,i| fmt_cell(h, colorize: colorize, header: true, width: widths[i]) }.join(separator) + separator
     else
-      stream.puts headers.map.with_index { |h,i| fmt_cell(h, colorize: colorize, header: true, width: widths[i]) }.join(separator)
+      stream.puts separator + headers.map.with_index { |h,i| fmt_cell(h, colorize: colorize, header: true, width: widths[i]) }.join(separator) + separator
     end
   end
 
 # internal method for output from space
-def cartesian_output(separator: " | ", colorize: false, align: true, format: :plain, limit: nil, file: nil)
+def cartesian_output(separator: "|", colorize: true, format: :plain, limit: nil, file: nil)
 
   # output stream
   out = file ? File.open(file, "w") : STDOUT
@@ -122,7 +125,7 @@ end
   end
 
 # THIS NEEDS TO BE MERGED INTO standard output method
-def table_output(rows, separator: " | ", colorize: false, align: true, format: :plain, file: nil)
+def table_output(rows, separator: "|", colorize: true, format: :plain, file: nil)
   return if rows.nil? || rows.empty?
 
   # output stream
@@ -135,31 +138,24 @@ def table_output(rows, separator: " | ", colorize: false, align: true, format: :
   headers = rows.first.keys.map(&:to_s)
 
   # column widths
-  widths = if align
-    headers.to_h do |h|
-      values = rows.map { |row| fmt_cell(row[h.to_sym], colorize: colorize, header: true).size }
-      [h, [h.size, *values].max]
-    end
-  else
-    {}
-  end
+  widths = headers.to_h do |h|
+            values = rows.map { |row| row[h.to_sym].to_s.size }
+            [h, [h.size, *values].max]
+          end
 
   # print headers
-  output_headers(headers: headers, format: format, widths: widths.values, stream: out, colorize: colorize, separator: separator)
-
-#  case format
-#  when :markdown
-#    out.puts "| " + headers.map { |h| h.ljust(widths[h] || h.size) }.join(" | ") + " |"
-#    out.puts "|-" + headers.map { |h| "-" * (widths[h] || h.size) }.join("-|-") + "-|"
-#  when :csv
-#    out.puts headers.join(sep)
-#  else
-#    out.puts headers.map { |h| fmt_cell(h, colorize: colorize, header: true, width: widths[h]) }.join(sep)
-#  end
+  output_headers(headers: headers, format: format, widths: widths.values, stream: out, colorize: colorize, separator: sep)
 
   rows.each do |row|
     line = headers.map { |h| fmt_cell(row[h.to_sym], colorize: colorize, width: widths[h]) }
-    out.puts line.join(sep)
+    case format
+    when :plain
+      out.puts sep + line.join(sep) + sep
+    when :markdown
+      out.puts sep + line.join(sep) + sep
+    when :csv
+      out.puts line.join(sep) + sep
+    end
   end
 
   out.close if out.is_a?(File)
@@ -168,16 +164,16 @@ end
 end
 
 module FlexOutput
-  def cartesian_output(separator: " | ", colorize: false, align: true)
+  def cartesian_output(separator: "|", colorize: true)
     return puts "(empty struct)" unless respond_to?(:members) && respond_to?(:values)
 
     values_list = members.zip(values.map { |v| v.inspect })
 
-    widths = align ? values_list.map { |k, v| [k.to_s.size, v.size].max } : []
+    widths = values_list.map { |k, v| [k.to_s.size, v.size].max }
 
     line = values_list.each_with_index.map do |(_, val), i|
       str = val.to_s
-      str = str.ljust(widths[i]) if align
+      str = str.ljust(widths[i])
       colorize ? str.colorize(:cyan) : str
     end
 

@@ -70,7 +70,7 @@ def sensitivity(function:)
       {
         parameter: factor.to_s,
         "influence[#{function}]": importance.round(2),
-        nonlinearity: nonlinearity.round(2),
+        deviation: nonlinearity.round(2),
         probes: n
       }
     end
@@ -95,7 +95,7 @@ def categorize(rows, function:)
 
   rows.map do |row|
     imp   = row[:"influence[#{function}]"]
-    sigma = row[:nonlinearity]
+    sigma = row[:deviation]
 
     # Категоризация силы влияния (доля от размаха функции)
     influence_ratio = imp / y_range.to_f

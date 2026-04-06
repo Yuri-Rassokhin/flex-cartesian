@@ -219,8 +219,6 @@ def index(source:, uri:, dimensions:)
   when :xlsx
     require 'roo'
 
-    puts "Building parameter space from #{uri}"
-    puts "Reading #{uri}"
     xlsx = Roo::Excelx.new(uri)
     sheet = xlsx.sheet(0)
 
