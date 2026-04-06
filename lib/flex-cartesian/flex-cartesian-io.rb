@@ -22,20 +22,20 @@ end
   end
 
   # internal method for printing headers
-  def output_headers(headers:, format:, widths:, stream:, colorize:, separator:)
+  def output_headers(headers:, format:, widths:, stream:, colorize:, separator:, file:)
     case format
     when :markdown
       stream.print separator
       cells = headers.map.with_index do |h,i|
         cell = h.ljust(widths[i])
-        fmt_cell(cell, colorize: colorize, header: true)
+        fmt_cell(cell, file: file, colorize: colorize, header: true)
       end
       stream.puts cells.join(separator) + separator
       stream.puts separator + headers.map.with_index { |h,i| "-" * widths[i] }.join(separator) + separator
     when :csv
-      stream.puts headers.map.with_index { |h,i| fmt_cell(h, colorize: colorize, header: true, width: widths[i]) }.join(separator) + separator
+      stream.puts headers.map.with_index { |h,i| fmt_cell(h, file: file, colorize: colorize, header: true, width: widths[i]) }.join(separator) + separator
     else
-      stream.puts separator + headers.map.with_index { |h,i| fmt_cell(h, colorize: colorize, header: true, width: widths[i]) }.join(separator) + separator
+      stream.puts separator + headers.map.with_index { |h,i| fmt_cell(h, file: file, colorize: colorize, header: true, width: widths[i]) }.join(separator) + separator
     end
   end
 
@@ -56,14 +56,20 @@ def cartesian_output(separator: "|", colorize: true, format: :plain, limit: nil,
   widths = headers.map { |h| @dimension_widths[h.to_sym] == nil ? @default_width : @dimension_widths[h.to_sym] }
 
   # print headers
-  output_headers(headers: headers, format: format, widths: widths, stream: out, colorize: colorize, separator: separator)
+  output_headers(file: file, headers: headers, format: format, widths: widths, stream: out, colorize: colorize, separator: sep)
 
   # print rows
   cartesian do |vector|
     values = vector.members.map { |m| vector.send(m) } + visible_func_names.map { |f| @function_results&.dig(vector, f) }
-    line = headers.zip(values).map.with_index { |(dim, val), i| fmt_cell(val, colorize: colorize, width: widths[i]) }.join(sep)
-    line = "| " + line + " |" if format == :markdown
-    out.puts line
+    line = headers.zip(values).map.with_index { |(dim, val), i| fmt_cell(val, file: file, colorize: colorize, width: widths[i]) }.join(sep)
+    case format
+    when :plain
+      out.puts sep + line + sep
+    when :markdown
+      out.puts sep + line + sep
+    when :csv
+      out.puts line + sep
+    end
   end
 
   out.close if out.is_a?(File)
@@ -108,12 +114,15 @@ end
   end
 
   # internal method
-  def fmt_cell(value, colorize: false, header: false, width: nil)
+  def fmt_cell(value, file:, colorize: false, header: false, width: nil)
     str = case value
           when String then value
           else value.inspect
           end
     str = str.ljust(width) if width
+
+    # output to file must NOT be colorized to avoid special characters in file
+    return str if file
 
     if not colorize
       str
@@ -144,17 +153,17 @@ def table_output(rows, separator: "|", colorize: true, format: :plain, file: nil
           end
 
   # print headers
-  output_headers(headers: headers, format: format, widths: widths.values, stream: out, colorize: colorize, separator: sep)
+  output_headers(file: file, headers: headers, format: format, widths: widths.values, stream: out, colorize: colorize, separator: sep)
 
   rows.each do |row|
-    line = headers.map { |h| fmt_cell(row[h.to_sym], colorize: colorize, width: widths[h]) }
+    line = headers.map { |h| fmt_cell(row[h.to_sym], file: file, colorize: colorize, width: widths[h]) }.join(sep)
     case format
     when :plain
-      out.puts sep + line.join(sep) + sep
+      out.puts sep + line + sep
     when :markdown
-      out.puts sep + line.join(sep) + sep
+      out.puts sep + line + sep
     when :csv
-      out.puts line.join(sep) + sep
+      out.puts line + sep
     end
   end
 
