@@ -51,7 +51,7 @@ def sensitivity(function:)
       {
         parameter: factor.to_s,
         "influence[#{function}]": 0.0,
-        nonlinearity: 0.0,
+        deviation: 0.0,
         probes: 0
       }
     else
@@ -65,12 +65,12 @@ def sensitivity(function:)
           0.0
         end
 
-      nonlinearity = Math.sqrt(variance)
+      deviation = Math.sqrt(variance)
 
       {
         parameter: factor.to_s,
         "influence[#{function}]": importance.round(2),
-        deviation: nonlinearity.round(2),
+        deviation: deviation.round(2),
         probes: n
       }
     end
