@@ -1,114 +1,37 @@
 # FlexCartesian
 
-**Ruby implementation of flexible and human-friendly operations on Cartesian products**  
+**This is a tool for parameter space analysis.**
 
-## Features
+## What Value Does It Create?
 
-✅ Named dimensions with arbitrary keys
+**FlexCartesian finds the best operating mode for your system.**
+You define input parameters and target metrics of your system, and this tool does the rest.
 
-✅ Enumerate over Cartesian space with a single block argument  
+## What is It For?
 
-✅ Actions on Cartesian are decoupled from dimensionality: `s.cartesian { |v| do_something(v) }`
+FlexCartesian is your choice if you deal with a system that behaves as a function of multiple parameters and you want to explore its behaviour.
+This paradigm is known as `paramater space analysis`.
 
-✅ Conditions for Cartesian space: `s.cond(:set) { |v| v.dim1 > v.dim2 } }`
+For instance, this tool is extremely useful for -
 
-✅ Calculation over named dimensions: `s.cartesian { |v| puts "#{v.dim1} and #{v.dim2}" }`
+1. **Performance analysis.** Systematically evaluate your application across all viable combinations of parameters (`threads`, `batch_size`, `backend`, etc.) and capture target functions (`throughput`, `latency`, `memory`).
+2. **Heatmap analysis.** Build complete picture of the performance of your application, spot the most productive combinations of parameters, trade-off combinations, and disclose scalability.
+3. **Sensitivity analysis.** Evaluate influence of the parameters on your application, including linear VS non-linear influence and strong VS negligible impact.
 
-✅ Functions on Cartesian space: `s.func(:add, :my_sum) { |v| v.dim1 + v.dim2 }`
+FlexCartesian has been developed in an actual field work, including large-scale Enterprise and AI architectures. Some of its often use cases include -
 
-✅ Lazy and eager evaluation
-
-✅ Progress bars for large Cartesian spaces
-
-✅ Export of Cartesian space to Markdown or CSV
-
-✅ Import of Cartesian space from JSON or YAML
-
-✅ Export of Cartesian space to Markdown or CSV
-
-✅ Structured and colorized terminal output  
-
-## Use Cases
-
-`FlexCartesian` is especially useful in the following scenarios.
-
-### 1. Sweep Analysis of Performance
-
-Systematically evaluate an application or algorithm across all combinations of parameters:
-
-- Parameters: `threads`, `batch_size`, `backend`, etc
-- Metrics: `throughput`, `latency`, `memory`
-- Output: CSV or Markdown tables
-
-### 2. Hyperparameter Tuning for ML Models
-
-Iterate over all combinations of hyperparameters:
-
-- Examples: `learning_rate`, `max_depth`, `subsample`, `n_estimators`
-- With constraints (e.g., `max_depth < 10 if learning_rate > 0.1`)
-- With computed evaluation metrics like `accuracy`, `AUC`, etc
-
-### 3. Infrastructure and System Configuration
-
-Generate all valid infrastructure configurations:
-
-```ruby
-region:   ["us-west", "eu-central"]
-tier:     ["basic", "pro"]
-replicas: [1, 3, 5]
-```
-
-With conditions like "basic tier cannot have more than one replica:
-```ruby
-s.cond(:set) { |v| (v.tier == "basic" ? v.replicas == 1 : true) }
-```
-
-### 4. Mass Testing of CLI Commands
-Generate and benchmark all valid CLI calls:
-
-```bash
-myapp --threads=4 --batch=32 --backend=torch
-```
-
-Capture runtime, output, errors, etc.
-
-### 5. Input Generation for UI/API Testing
-Automatically cover input parameter spaces for:
-
-- HTTP methods: ["GET", "POST"]
-- User roles: ["guest", "user", "admin"]
-- Language settings: ["en", "fr", "de"]
-
-### 6. Scientific and Engineering Simulations
-Generate multidimensional experimental spaces for:
-
-- Physics simulations
-- Bioinformatics parameter sweeps
-- Network behavior modeling, etc
-
-### 7. Structured Reporting and Visualization
-Output Cartesian data as:
-
-- Markdown (for GitHub rendering)
-- CSV (for Excel, Google Sheets, and more advanced BI tools)
-- Plain text (for CLI previews)
-
-### 8. Test Case Generation
-Use it to drive automated test inputs for:
-
-- RSpec shared examples
-- Minitest table-driven tests
-- PyTest parameterization
+* **Tuning of AI/ML models.** If you need to find a sweet-spot for your AI workload, you would want to explore all combinations of parameters and hyperparameters (`learning_rate`, `max_depth`, `subsample`, `n_estimators`) with constraints (`max_depth < 10`, `learning_rate > 0.1`) and identify productive areas of your target metrics like `accuracy`, `AUC`, etc.
+* **Infrastructure Tuning.** If you have IT infrastructure with variable options (region: ["us-west", "eu-central"], tier: ["basic", "pro"], replicas: [1, 3, 5]), then this tool scans all viable configurations to spot the optimal one. This includes practical constraints, such as "basic tier cannot have more than one replica", and so forth.
+* **Generating API and CLI tests.** If you want to generate and benchmark all valid CLI calls (myapp --threads=X --batch=Y --backend=Z) or API calls (method: ["GET", "POST"], role: ["guest", "user", "admin"], language: ["en", "fr", "de"]) and capture runtime messages, output, and errors, this tool does the things for you.
+* **Scientific and Engineering Simulations.** Generate multidimensional experimental spaces for physics simulations, bioinformatics parameter sweeps, network behavior modeling, and so forth.
+* **Test Case Generation.** Use this tool to drive automated test inputs for: RSpec shared examples, Minitest table-driven tests, PyTest parameterization, etc.
+* **Structured Reporting and Visualization.** Whenever you need to structure myriads of probes as a good-looking report, FlexCartesian does this for you in many formats: plain text, Markdown, CSV, interactive HTML visualization, etc.
 
 ## Installation
 
 ```bash
-bundle install
-gem build flex-cartesian.gemspec
-gem install flex-cartesian-*.gem
+gem install flex-cartesian
 ```
-
-
 
 ## Usage
 
