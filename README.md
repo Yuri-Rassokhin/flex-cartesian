@@ -7,7 +7,7 @@ FlexCartesian finds the best operating mode for your system. You define input pa
 ## What is It For?
 
 FlexCartesian is your choice if you deal with a system that behaves as a function of multiple parameters and you want to explore its behaviour.
-This paradigm is known as `paramater space analysis`.
+This paradigm is known as `paramater space analysis`, and it involves systematically exploring the range of possible input values (parameters) in a system to understand their effect on outputs, aiming to optimize performance or understand system behavior. It maps how different parameter combinations affect results, ideally using visualization to identify optimal configurations.
 
 For instance, this tool is extremely useful for -
 
