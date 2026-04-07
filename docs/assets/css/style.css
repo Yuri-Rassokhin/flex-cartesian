@@ -804,6 +804,8 @@ main {
 
 .output-card {
   min-width: 0; /* ИСПРАВЛЕНО: НЕ ДАЕТ ТАБЛИЦЕ РАСПИРАТЬ КАРТОЧКУ В GRID */
+  display: flex;
+  flex-direction: column;  
 }
 
 .feature-card,
@@ -855,10 +857,14 @@ main {
 
 .output-visual {
   height: 180px;
-  margin-bottom: 18px;
   border-radius: 18px;
   border: 1px solid var(--line);
   background: rgba(7, 17, 31, 0.65);
+  
+  /* Новые свойства для переноса графики вниз: */
+  order: 99;         /* Отправляем блок в самый конец карточки */
+  margin-top: 24px;  /* Добавляем отступ сверху (от текста) */
+  margin-bottom: 0;  /* Убираем старый отступ снизу */
 }
 
 .output-heat {
