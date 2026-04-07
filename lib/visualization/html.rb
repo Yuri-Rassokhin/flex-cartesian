@@ -8,11 +8,9 @@ def visualize(format: :html, x:, y:, function:, output: nil)
   raise "X-asis of visialization cannot be empty" unless x
   raise "Function of visialization cannot be empty" unless function
 
-  output = STDOUT unless output
-
   case format
   when :html
-    generate_html(x, y, function, output)
+    generate_html(x: x.to_s, y: y.to_s, function: function.to_s, output: output)
   else
     raise "Incorrect visualize format #{format}"
   end
@@ -20,9 +18,10 @@ end
 
 def generate_html(x:, y: nil, function:, output:)
   # TODO: eliminate the need for temp file
-  csv_file = @space.output(format: :csv, file: Tempfile.new())
-  table = CSV.read(csv_file, headers: true, col_sep: ";")
-  csv_file.unlink
+  temp_file = Tempfile.new
+  output(format: :csv, file: temp_file)
+  table = CSV.read(temp_file, headers: true, col_sep: ";")
+  temp_file.unlink
 
   headers = table.headers.map { |h| h&.strip }
 
@@ -55,16 +54,16 @@ def generate_html(x:, y: nil, function:, output:)
 
   z_matrix = Array.new(y_values.size) { Array.new(x_values.size, nil) }
 
-  normalized_rows.each do |row|
-    x = numeric_or_string(row[x])
-    y = numeric_or_string(row[y])
-    z = numeric_or_string(row[function])
+normalized_rows.each do |row|
+    val_x = numeric_or_string(row[x])
+    val_y = numeric_or_string(row[y])
+    val_z = numeric_or_string(row[function])
 
-    next if x.nil? || y.nil? || z.nil?
+    next if val_x.nil? || val_y.nil? || val_z.nil?
 
-    yi = y_index[y]
-    xi = x_index[x]
-    z_matrix[yi][xi] = z
+    yi = y_index[val_y]
+    xi = x_index[val_x]
+    z_matrix[yi][xi] = val_z
   end
 
   html = <<~HTML
@@ -115,7 +114,7 @@ def generate_html(x:, y: nil, function:, output:)
     </html>
   HTML
 
-  File.write(output, html)
+  File.write(output ? output : STDOUT, html)
   output
 end
 
