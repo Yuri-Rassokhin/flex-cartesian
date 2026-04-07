@@ -16,6 +16,67 @@
   --max: 1200px;
 }
 
+/* Контейнер для горизонтального скролла внутри плитки */
+.sensitivity-table-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+/* Стили самой таблицы */
+.sensitivity-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.75rem; /* Уменьшенный шрифт для карточки */
+  color: #111827;
+}
+
+.sensitivity-table th, 
+.sensitivity-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  white-space: nowrap; /* Запрещаем перенос строк, чтобы таблица была ровной */
+}
+
+.sensitivity-table th {
+  background-color: #f3f4f6;
+  font-weight: 600;
+  color: #4b5563;
+  position: sticky;
+  top: 0; /* Фиксируем заголовок при вертикальном скролле */
+}
+
+.sensitivity-table tr:last-child td {
+  border-bottom: none;
+}
+
+.sensitivity-table tr:hover {
+  background-color: #f8fafc;
+}
+
+/* Моноширинный шрифт для названий параметров */
+.sensitivity-table .mono {
+  font-family: 'JetBrains Mono', monospace;
+  color: #2563eb;
+}
+
+/* Бейджики категорий */
+.sensitivity-table .badge {
+  display: inline-block;
+  padding: 0.2em 0.5em;
+  font-size: 0.65rem;
+  font-weight: 600;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sensitivity-table .badge-strong { background: #fee2e2; color: #991b1b; }
+.sensitivity-table .badge-moderate { background: #fef3c7; color: #92400e; }
+.sensitivity-table .badge-negligible { background: #f3f4f6; color: #374151; }
+
 .output-visual.output-heat {
   position: relative;
   overflow: hidden;

@@ -130,11 +130,65 @@
   <p>Expose productive regions in two-dimensional slices of the space.</p>
 </article>
 
-    <article class="output-card reveal reveal-delay-1">
-      <div class="output-visual output-bars"></div>
-      <h3>Sensitivity</h3>
-      <p>Identify which parameters actually drive the outcome.</p>
-    </article>
+<article class="output-card reveal reveal-delay-1">
+  <div class="output-visual output-bars" style="padding: 0; background: #fff;">
+    <div class="sensitivity-table-wrapper">
+      <table class="sensitivity-table">
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Influence</th>
+            <th>Deviation</th>
+            <th>Probes</th>
+            <th>Category</th>
+            <th>Linearity</th>
+            <th>Recommendation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">iterate_requests</td>
+            <td>15.69</td>
+            <td>23.47</td>
+            <td>1000</td>
+            <td><span class="badge badge-strong">strong</span></td>
+            <td>highly non-linear</td>
+            <td>critical parameter; prioritize for variance-based analysis</td>
+          </tr>
+          <tr>
+            <td class="mono">iterate_processes</td>
+            <td>11.51</td>
+            <td>22.13</td>
+            <td>1000</td>
+            <td><span class="badge badge-strong">strong</span></td>
+            <td>highly non-linear</td>
+            <td>critical parameter; prioritize for variance-based analysis</td>
+          </tr>
+          <tr>
+            <td class="mono">iterate_iteration</td>
+            <td>2.28</td>
+            <td>5.8</td>
+            <td>1000</td>
+            <td><span class="badge badge-moderate">moderate</span></td>
+            <td>highly non-linear</td>
+            <td>secondary priority; fine-tune only after 'strong' parameters</td>
+          </tr>
+          <tr>
+            <td class="mono">infra_shape</td>
+            <td>0.0</td>
+            <td>0.0</td>
+            <td>0</td>
+            <td><span class="badge badge-negligible">negligible</span></td>
+            <td>undefined</td>
+            <td>fix at default or cheapest value to reduce dimensionality</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3>Sensitivity</h3>
+  <p>Identify which parameters actually drive the outcome.</p>
+</article>
 
     <article class="output-card reveal reveal-delay-2">
       <div class="output-visual output-cube"></div>
