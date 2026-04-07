@@ -784,7 +784,9 @@ main {
 }
 
 .outputs-grid {
-  grid-template-columns: repeat(2, 1fr); /* ИСПРАВЛЕНО НА 2 КОЛОНКИ ДЛЯ РОВНЫХ ПЛИТОК */
+  grid-template-columns: 1fr; /* Строго одна колонка */
+  width: 60%;                 /* Ширина 60% от секции */
+  margin: 0 auto;             /* Центрируем блок по горизонтали */
 }
 
 .compare-grid {
@@ -1065,8 +1067,9 @@ main {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .outputs-grid {
-    grid-template-columns: 1fr 1fr;
+.outputs-grid {
+    grid-template-columns: 1fr; /* Подтверждаем одну колонку */
+    width: 100%;                /* На маленьких экранах занимаем все 100% */
   }
 
   .hero {
