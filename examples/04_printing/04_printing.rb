@@ -8,12 +8,8 @@ example = {
 }
 s = FlexCartesian.new(example)
 
-# PRINT PARAMETER SPACE
-
 # Print parameter space and all functions evaluated
 s.output
-# Same as above, as Markdown
 s.output(format: :markdown)
-# Same as above, as CSV
 s.output(format: :csv)
 

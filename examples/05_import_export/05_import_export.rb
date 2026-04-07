@@ -8,10 +8,7 @@ example = {
 }
 s = FlexCartesian.new(example)
 
-# IMPORT TO AND EXPORT FROM PARAMETER SPACE
-
-# Export dimensions of the parameter space to JSON file (same method for YAML)
 s.export('example.json', format: :json)
-# Import dimensions of the parameter space from JSON file (same method for YAML)
 s.import('example.json').output
+s.output
 
