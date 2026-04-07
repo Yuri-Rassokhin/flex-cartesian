@@ -16,6 +16,26 @@
   --max: 1200px;
 }
 
+.output-visual.output-heat {
+  position: relative;
+  overflow: hidden;
+  /* Задайте высоту, подходящую под дизайн карточки, например: */
+  min-height: 300px; 
+  padding: 0; 
+}
+
+.output-visual.output-heat iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  /* Отключаем события мыши, если хотите, чтобы это была просто картинка. 
+     Удалите эту строку, если пользователь ДОЛЖЕН взаимодействовать с графиком (крутить, наводить мышь) */
+  /* pointer-events: none; */ 
+}
+
 body::before {
   content: "";
   position: fixed;
