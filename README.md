@@ -1,11 +1,8 @@
-# FlexCartesian
-
-**This is a tool for parameter space analysis.**
+# FlexCartesian is a tool for parameter space analysis.
 
 ## What Value Does It Create?
 
-**FlexCartesian finds the best operating mode for your system.**
-You define input parameters and target metrics of your system, and this tool does the rest.
+FlexCartesian finds the best operating mode for your system. You define input parameters and target metrics of your system, and this tool does the rest.
 
 ## What is It For?
 
