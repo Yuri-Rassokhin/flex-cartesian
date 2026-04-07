@@ -1,376 +1,1200 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FlexCartesian — Explore Systems as Functions of Parameters</title>
-  <meta name="description" content="FlexCartesian is a Ruby framework for modelling and analysing parametric systems through parameter spaces, functions, real-system measurements, and system-level exploration." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css" />
-</head>
-<body>
-  <div class="site-shell">
-    <header class="topbar">
-      <a class="brand brand-mobile" href="#top">FlexCartesian</a>
-
-      <button class="nav-toggle" aria-label="Open navigation" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-
-      <nav class="nav">
-        <a href="#top" class="nav-link">FlexCartesian</a>
-        <a href="#concept" class="nav-link">Problem</a>
-        <a href="#workflow" class="nav-link">Solution</a>
-        <a href="#code" class="nav-link">How It Works</a>
-        <a href="#outputs" class="nav-link">Value</a>
-        <a href="#positioning" class="nav-link">Why FlexCartesian</a>
-        <a class="nav-cta" href="https://github.com/yuri-rassokhin/flex-cartesian">GitHub</a>
-        <a class="nav-cta" href="https://rubygems.org/gems/flex-cartesian">RubyGems</a>
-      </nav>
-    </header>
-
-    <main>
-      <section id="top" class="hero section">
-        <div class="section-head hero-copy reveal">
-          <h1>Explore<span class="highlight"> real systems as functions of parameters.</span></h1>
-          <p class="hero-lead">Build a holistic digital twin in four steps: describe parameters, model system behaviour, capture real data, and derive insights. From bottlenecks to best practices — and beyond. Any question, answered in one line of code.</p>
-        </div>
-      </section>
-
-      <section id="concept" class="section concept">
-        <div class="section-head reveal">
-          <h2>Taming fragmented knowledge.</h2>
-          <p>Real systems are defined by multiple independent parameters. Each configuration is just one observation in a much larger space. Yet exploration is typically performed through isolated runs: ad-hoc benchmarks, biased experiments, manual comparisons, and fragmented logs. These observations are never integrated into a coherent model. What we get is not understanding — but a collection of disconnected observations. The system is never seen as a whole — rather built upon assumptions.</p>
-        </div>
-      </section>
-
-      <section id="workflow" class="section workflow">
-        <div class="section-head reveal">
-          <h2>From scattered probes to exploration.</h2>
-          <p>What if we stopped running experiments… and started exploring the system itself? FlexCartesian treats a system not as a set of scattered measurements, but as a holistic function that behaves over space with dimenions defined by system parameters. This shift in perspective from blind probes to parameteric analysis allows us to move from fragmented data points to a structured understanding of how the system behaves across different configurations. It enables us to identify patterns, trade-offs, and bottlenecks that would be invisible in isolated runs.</p>
-        </div>
-        <div class="feature-grid">
-          <article class="feature-card reveal">
-          <div class="step-head">
-          <div class="step-num">01</div>
-            <h3>Define parameters</h3>
-          </div>
-          <p>Build parameter space with independent dimensions reflecting degrees of freedom, including conditional constraints.</p>
-          </article>
-          <article class="feature-card reveal reveal-delay-1">
-          <div class="step-head">
-          <div class="step-num">02</div>
-            <h3>Express behavioural functions</h3>
-          </div>
-            <p>Express system properties as functions, instead of relying on ad hoc notes or isolated runs.</p>
-          </article>
-          <article class="feature-card reveal reveal-delay-2">
-          <div class="step-head">
-          <div class="step-num">03</div>
-            <h3>Launch digital twin</h3>
-          </div>
-            <p>Behavioural functions obtain live data from real system. Use FlexCartesian as a modelling framework around actual applications, APIs, services, or infrastructure - and let the twin evolve in time, remaining linked to real system.</p>
-          </article>
-          <article class="feature-card reveal">
-          <div class="step-head">
-            <div class="step-num">04</div>
-            <h3>Get insights</h3>
-          </div>
-            <p>Observe full behavioural landscape of your system. Apply built-in and your own analyzers to identify bottlenecks, trade-offs, and parameter influence. Export to CSV, JSON, YAML, or MD for further analysis and visualisation.</p>
-          </article>
-        </div>
-      </section>
-
-<section id="code" class="section code-section">
-  <div class="section-head reveal">
-    <h2>Concise for human, precise for insight.</h2>
-  </div>
-  <div class="section-head reveal reveal-delay-1">
-    <p>The system is evaluated across the entire parameter space. Each result becomes part of a structured behavioural model — not just an individual measurement. Everything in high-level declarative style.</p>
-  </div>
-
-  <div class="feature-grid">
-
-<article class="feature-card reveal">
-  <div class="code-card code-large">
-    <pre><code><span class="kw">require</span> <span class="str">'flex-cartesian'</span>
-
-<span class="kw">space</span> = <span class="cls">FlexCartesian</span>.<span class="fn">new</span>({<span class="sym">count:</span>[2, 4], <span class="sym">size:</span>[32, 64], <span class="sym">target:</span>[<span class="str">"8.8.8.8"</span>, <span class="str">"1.1.1.1"</span>, <span class="str">"208.67.222.222"</span>]})
-
-<span class="kw">result</span> = {}<br>
-<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:command</span>) { |v| <span class="str">"ping -c #{v.count} -s #{v.size} #{v.target}"</span> }
-<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:raw</span>, <span class="sym">hide:</span> <span class="kw">true</span>) { |v| result[v.command] ||= <span class="str">`#{v.command} 2&gt;&amp;1`</span> }
-<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:time</span>) { |v| v.raw[/min\/avg\/max\/(?:mdev|stddev) = [^\/]+\/([^\/]+)/, 1]&amp;.<span class="fn">to_f</span>&amp;.<span class="fn">round</span>(2) }
-
-<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:run</span>, <span class="sym">progress:</span> <span class="kw">true</span>, <span class="sym">title:</span> <span class="str">"Obtaining data"</span>)
-
-<span class="kw">space</span>.<span class="fn">output</span>(<span class="sym">colorize:</span> <span class="kw">true</span>)</code></pre>
-  </div>
-</article>
-
-  </div>
-</section>
-
-<section id="outputs" class="section outputs">
-  <div class="section-head reveal">
-    <h2>Complete behavioural model.</h2>
-    <p>Instead of isolated runs, FlexCartesian builds a continuous behavioural model of the system across its entire parameter space. It reveals how performance evolves across dimensions, where optimal configurations emerge, and where limits, bottlenecks, and trade-offs define the system's behaviour.</p>
-    <p>This makes optimisation systematic rather than experimental, exposes non-obvious interactions between parameters, and makes system behaviour reproducible and explainable. The system is no longer sampled. It is understood.</p>
-  </div>
-
-  <div class="outputs-grid">
-<article class="output-card reveal">
-  <div class="output-visual output-heat">
-    <iframe src="assets/viz/viz.html" title="FlexCartesian Heatmap" loading="lazy"></iframe>
-  </div>
-  <h3>Heatmaps</h3>
-  <p>Expose productive regions in parameter space.</p>
-</article>
-
-<article class="output-card reveal reveal-delay-1">
-  <div class="output-visual output-bars" style="padding: 0; background: #fff;">
-    <div class="sensitivity-table-wrapper">
-      <table class="sensitivity-table">
-        <thead>
-          <tr>
-            <th>Parameter</th>
-            <th>Influence</th>
-            <th>Deviation</th>
-            <th>Probes</th>
-            <th>Category</th>
-            <th>Linearity</th>
-            <th>Recommendation</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="mono">iterate_requests</td>
-            <td>15.69</td>
-            <td>23.47</td>
-            <td>1000</td>
-            <td><span class="badge badge-strong">strong</span></td>
-            <td>highly non-linear</td>
-            <td>critical parameter; prioritize for variance-based analysis</td>
-          </tr>
-          <tr>
-            <td class="mono">iterate_processes</td>
-            <td>11.51</td>
-            <td>22.13</td>
-            <td>1000</td>
-            <td><span class="badge badge-strong">strong</span></td>
-            <td>highly non-linear</td>
-            <td>critical parameter; prioritize for variance-based analysis</td>
-          </tr>
-          <tr>
-            <td class="mono">iterate_iteration</td>
-            <td>2.28</td>
-            <td>5.8</td>
-            <td>1000</td>
-            <td><span class="badge badge-moderate">moderate</span></td>
-            <td>highly non-linear</td>
-            <td>secondary priority; fine-tune only after 'strong' parameters</td>
-          </tr>
-          <tr>
-            <td class="mono">infra_shape</td>
-            <td>0.0</td>
-            <td>0.0</td>
-            <td>0</td>
-            <td><span class="badge badge-negligible">negligible</span></td>
-            <td>undefined</td>
-            <td>fix at default or cheapest value to reduce dimensionality</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <h3>Sensitivity</h3>
-  <p>Identify which parameters actually drive the outcome.</p>
-</article>
-
-<article class="output-card reveal reveal-delay-2">
-  <div class="output-visual" style="padding: 0; background: #fff;">
-    <div class="sensitivity-table-wrapper">
-      <table class="sensitivity-table">
-        <thead>
-          <tr>
-            <th>iterate_iteration</th>
-            <th>infra_shape</th>
-            <th>iterate_requests</th>
-            <th>iterate_processes</th>
-            <th>inference</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td class="mono">vm.standard.a1.flex</td>
-            <td>1</td>
-            <td>1</td>
-            <td class="mono">0.276375369</td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td class="mono">vm.standard.a1.flex</td>
-            <td>1</td>
-            <td>2</td>
-            <td class="mono">0.279915767</td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td class="mono">vm.standard.a1.flex</td>
-            <td>1</td>
-            <td>4</td>
-            <td class="mono">0.276986867</td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td class="mono">vm.standard.a1.flex</td>
-            <td>1</td>
-            <td>8</td>
-            <td class="mono">0.272358715</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <h3>Digital Twin</h3>
-  <p>The model dynamically evolves with real system.</p>
-</article>
-
-  </div>
-</section>
-
-<section id="positioning" class="section positioning section-screen">
-  <div class="section-head reveal">
-    <h2>Genuinely holistic system exploration.</h2>
-    <p>FlexCartesian provides a new way to model systems: not as isolated experiments, but as holistic functions over comprehensive spaces of possible configurations.</p>
-  </div>
-
-  <div class="outputs-grid positioning-grid">
-
-    <article class="output-card reveal">
-      <h3>What makes it different</h3>
-      <ul class="bullet-list">
-        <li>High-level human-readable DSL</li>
-        <li>Systems as first-class parametric spaces</li>
-        <li>Separation of system definition from execution</li>
-        <li>Functions over parameter space as the core abstraction</li>
-        <li>Structured reasoning about system behaviour</li>
-        <li>Real-world measurements integrated into the model</li>
-      </ul>
-    </article>
-
-    <article class="output-card reveal reveal-delay-1">
-      <h3>Born in field work</h3>
-      <p>FlexCartesian emerged from real-world AI infrastructure work, where behaviour depends on multiple interacting parameters: hardware, storage, network, and model configuration.</p>
-      <p>Traditional tools failed to provide a unified abstraction for exploring such systems as a whole.</p>
-    </article>
-
-    <article class="output-card reveal reveal-delay-2">
-      <h3>Applied in critical systems</h3>
-      <ul class="bullet-list">
-        <li>Performance modelling across distributed systems</li>
-        <li>AI architecture benchmarking: GPU, storage, and network trade-offs</li>
-        <li>Architecture decision support for enterprise AI deployments</li>
-      </ul>
-    </article>
-
-    <article class="output-card reveal">
-      <h3>What this enables</h3>
-      <ul class="bullet-list">
-        <li>Discovery of optimal configurations without exhaustive search</li>
-        <li>Identification of system bottlenecks across parameters</li>
-        <li>Alloy of theoretical modelling with real measurements</li>
-      </ul>
-    </article>
-
-  </div>
-</section>
-
-    </main>
-  </div>
-
-  <script src="assets/js/main.js"></script>
-
-<script>
-const sections = document.querySelectorAll("section[id]");
-const navLinks = document.querySelectorAll(".nav-link");
-
-function setActiveLink(id) {
-  navLinks.forEach((link) => {
-    link.classList.toggle("active", link.getAttribute("href") === "#" + id);
-  });
+:root {
+  --bg: #07111f;
+  --bg-elev: rgba(14, 28, 49, 0.72);
+  --bg-elev-strong: rgba(11, 24, 42, 0.95);
+  --line: rgba(180, 214, 255, 0.12);
+  --line-strong: rgba(180, 214, 255, 0.2);
+  --text: #edf5ff;
+  --muted: #9fb2c9;
+  --accent: #6ce5ff;
+  --accent-2: #9d7dff;
+  --accent-3: #7cffbb;
+  --hot: #ffd86a;
+  --hotter: #ff8c66;
+  --shadow: 0 20px 80px rgba(0, 0, 0, 0.35);
+  --radius: 24px;
+  --max: 1200px;
 }
 
-navLinks.forEach((link) => {
-  link.addEventListener("click", () => {
-    const targetId = link.getAttribute("href").slice(1);
-    setActiveLink(targetId);
-  });
-});
-
-const observer = new IntersectionObserver(
-  (entries) => {
-    const visible = entries
-      .filter(entry => entry.isIntersecting)
-      .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-
-    if (visible.length > 0) {
-      setActiveLink(visible[0].target.id);
-    }
-  },
-  {
-    root: null,
-    rootMargin: "-35% 0px -45% 0px",
-    threshold: [0, 0.15, 0.3, 0.5, 0.7, 1]
-  }
-);
-
-sections.forEach((section) => observer.observe(section));
-
-window.addEventListener("load", () => {
-  const hash = window.location.hash.replace("#", "");
-  if (hash) {
-    setActiveLink(hash);
-  }
-});
-</script>
-
-<script>
-// Находим нужные элементы
-const navToggle = document.querySelector('.nav-toggle');
-const topbar = document.querySelector('.topbar');
-const mobileNavLinks = document.querySelectorAll('.nav a');
-
-// Функция переключения состояния меню
-function toggleMenu() {
-  // Добавляем/убираем класс nav-open у шапки
-  const isOpen = topbar.classList.toggle('nav-open');
-  
-  // Обновляем атрибут доступности для скринридеров
-  navToggle.setAttribute('aria-expanded', isOpen);
-  
-  // Блокируем скролл страницы, если меню открыто
-  document.body.classList.toggle('no-scroll', isOpen);
+/* Контейнер для горизонтального скролла внутри плитки */
+.sensitivity-table-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* Плавный скролл на мобильных */
 }
 
-// Слушаем клик по кнопке-бургеру
-navToggle.addEventListener('click', toggleMenu);
+/* Стили самой таблицы */
+.sensitivity-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.75rem; /* Уменьшенный шрифт для карточки */
+  color: #111827;
+}
 
-// Закрываем меню автоматически при клике на любую ссылку
-mobileNavLinks.forEach(link => {
-  link.addEventListener('click', () => {
-    // Если меню открыто — закрываем его
-    if (topbar.classList.contains('nav-open')) {
-      toggleMenu();
-    }
-  });
-});
-</script>
+.sensitivity-table th, 
+.sensitivity-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  white-space: nowrap; /* Запрещаем перенос строк, чтобы таблица была ровной */
+  background: transparent !important; /* Убиваем паразитный фон колонок */
+}
 
+.sensitivity-table th {
+  background-color: #f3f4f6 !important; /* Светлый фон для заголовка */
+  font-weight: 600;
+  color: #4b5563;
+  position: sticky;
+  top: 0; /* Фиксируем заголовок при вертикальном скролле */
+  z-index: 10;
+}
 
-</body>
-</html>
+.sensitivity-table tr:last-child td {
+  border-bottom: none;
+}
 
+.sensitivity-table tr:hover td {
+  background-color: rgba(248, 250, 252, 0.05) !important; /* Полупрозрачный фон для темной темы */
+}
+
+/* Моноширинный шрифт для названий параметров */
+.sensitivity-table .mono {
+  font-family: 'JetBrains Mono', monospace;
+  color: #2563eb;
+}
+
+/* Бейджики категорий */
+.sensitivity-table .badge {
+  display: inline-block;
+  padding: 0.2em 0.5em;
+  font-size: 0.65rem;
+  font-weight: 600;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sensitivity-table .badge-strong { background: #fee2e2; color: #991b1b; }
+.sensitivity-table .badge-moderate { background: #fef3c7; color: #92400e; }
+.sensitivity-table .badge-negligible { background: #f3f4f6; color: #374151; }
+
+.output-visual.output-heat {
+  position: relative;
+  overflow: hidden;
+  min-height: 300px; 
+  padding: 0; 
+}
+
+.output-visual.output-heat iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 32px;
+  z-index: 39;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(108, 229, 255, 0.16), transparent 0 28%),
+    radial-gradient(circle at 88% 18%, rgba(157, 125, 255, 0.18), transparent 0 24%),
+    linear-gradient(180deg, #091425 0%, #07111f 35%, #08121e 100%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y proximity;
+}
+
+.brand-mobile {
+  display: none;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 10% 10%, rgba(108, 229, 255, 0.16), transparent 0 28%),
+    radial-gradient(circle at 88% 18%, rgba(157, 125, 255, 0.18), transparent 0 24%),
+    linear-gradient(180deg, #091425 0%, #07111f 35%, #08121e 100%);
+  min-height: 100vh;
+}
+
+body.no-scroll {
+  overflow: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+}
+
+.site-shell {
+  position: relative;
+  overflow: clip;
+}
+
+.topbar {
+  position: fixed;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: min(calc(100% - 32px), var(--max));
+  margin: 18px auto 0;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(7, 17, 31, 0.6);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+.nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  border: 1px solid transparent;
+  background: transparent;
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.nav a:hover {
+  color: var(--text);
+  transform: translateY(-1px);
+}
+
+.nav a.active {
+  color: var(--accent);
+  text-shadow: 0 0 12px rgba(108, 229, 255, 0.4);
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  border: 1px solid transparent;
+  background: transparent;
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.nav-link.active {
+  color: var(--text);
+  border: 1px solid rgba(180, 214, 255, 0.34);
+  background: rgba(180, 214, 255, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+  backdrop-filter: blur(12px);
+  text-shadow: none;
+}
+
+.nav-cta {
+  color: var(--text) !important;
+  border: 1px solid rgba(108,229,255,0.35) !important;
+  background: rgba(108,229,255,0.08) !important;
+}
+
+.nav-toggle {
+  display: none;
+  background: transparent;
+  border: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  padding: 0;
+  position: relative;
+  z-index: 50;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  margin: 5px auto;
+  background: var(--text);
+  border-radius: 999px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform-origin: center;
+}
+
+.topbar.nav-open .nav-toggle span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.topbar.nav-open .nav-toggle span:nth-child(2) {
+  opacity: 0;
+}
+
+.topbar.nav-open .nav-toggle span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+main {
+  width: min(calc(100% - 32px), var(--max));
+  margin: 0 auto;
+  padding-top: 90px;
+  padding-bottom: 56px;
+}
+
+.section {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 15px 80px 0;
+  scroll-margin-top: 90px;
+  scroll-snap-align: start;
+}
+
+.hero {
+  display: grid;
+}
+
+.eyebrow,
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: #c9ddf7;
+  background: rgba(255,255,255,0.03);
+  font-size: 0.88rem;
+}
+
+.eyebrow-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  box-shadow: 0 0 22px rgba(108, 229, 255, 0.8);
+}
+
+.hero h1 {
+  margin: 18px 0 18px;
+  font-size: clamp(2.25rem, 3.75vw, 3.45rem);
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+}
+
+.hero h1 span {
+  background: linear-gradient(90deg, #f0f8ff 0%, var(--accent) 45%, #c8bcff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-lead {
+  max-width: none;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.hero-title {
+  max-width: none;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 30px 0 28px;
+}
+
+.hero-punchline {
+  margin-top: 14px;
+  opacity: 0.9;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 18px;
+  min-width: 154px;
+  border-radius: 16px;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+}
+
+.button-primary {
+  color: #04101c;
+  background: linear-gradient(135deg, #9ff0ff 0%, #7de7ff 40%, #a2b8ff 100%);
+  box-shadow: 0 20px 40px rgba(108, 229, 255, 0.24);
+}
+
+.button-secondary {
+  border: 1px solid var(--line-strong);
+  background: rgba(255,255,255,0.03);
+}
+
+.hero-points {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+  color: #cbddf3;
+}
+
+.hero-points li {
+  position: relative;
+  padding-left: 18px;
+}
+
+.hero-points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.65em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 16px rgba(108,229,255,0.75);
+}
+
+.hero-visual {
+  position: relative;
+}
+
+.visual-frame {
+  position: relative;
+  padding: 22px;
+  border-radius: 30px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(180deg, rgba(18, 30, 49, 0.9), rgba(9, 18, 33, 0.86));
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.frame-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  pointer-events: none;
+}
+
+.frame-glow-a {
+  width: 260px;
+  height: 260px;
+  background: rgba(108,229,255,0.12);
+  top: -80px;
+  right: -40px;
+}
+
+.frame-glow-b {
+  width: 240px;
+  height: 240px;
+  background: rgba(157,125,255,0.14);
+  bottom: -100px;
+  left: -50px;
+}
+
+.scene-tabs {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.scene-tab {
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.03);
+  color: var(--muted);
+  padding: 10px 8px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.scene-tab.active {
+  color: var(--text);
+  background: rgba(108,229,255,0.09);
+  border-color: rgba(108,229,255,0.28);
+}
+
+.scene-window {
+  position: relative;
+  min-height: 430px;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateY(18px) scale(0.985);
+  pointer-events: none;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.scene.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.mini-caption {
+  color: #dbeaff;
+  margin: 4px 0 14px;
+  font-weight: 600;
+}
+
+.code-card {
+  position: relative;
+  z-index: 1;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(5, 13, 24, 0.78);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+  overflow: hidden;
+}
+
+.code-card pre {
+  margin: 0;
+  padding: 16px;
+  overflow-x: auto;
+}
+
+.code-card code,
+.code-card pre {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.code-large code,
+.code-large pre {
+  font-size: 0.95rem;
+}
+
+.kw { color: #7de7ff; }
+.fn { color: #dfb8ff; }
+.sym { color: #ffd86a; }
+.str { color: #9ff5b8; }
+.cls { color: #ffffff; }
+
+.line {
+  display: block;
+}
+
+.line.dim {
+  opacity: 0;
+  transform: translateX(-8px);
+  animation: lineIn 0.55s ease forwards;
+}
+
+.scene.active .line:nth-child(1) { animation-delay: 0.1s; }
+.scene.active .line:nth-child(2) { animation-delay: 0.22s; }
+.scene.active .line:nth-child(3) { animation-delay: 0.34s; }
+.scene.active .line:nth-child(4) { animation-delay: 0.46s; }
+.scene.active .line:nth-child(5) { animation-delay: 0.58s; }
+.scene.active .line:nth-child(6) { animation-delay: 0.7s; }
+.scene.active .line:nth-child(7) { animation-delay: 0.82s; }
+
+@keyframes lineIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.param-grid,
+.function-pills {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.param-grid span,
+.function-pills span {
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.03);
+  color: #d7e6fb;
+}
+
+.measurement-panel {
+  display: grid;
+  gap: 18px;
+}
+
+.measure-flow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.measure-node {
+  flex: 1 1 140px;
+  min-width: 140px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255,255,255,0.03);
+  text-align: center;
+  font-weight: 600;
+}
+
+.measure-node-accent {
+  background: linear-gradient(135deg, rgba(108,229,255,0.12), rgba(157,125,255,0.12));
+  border-color: rgba(108,229,255,0.24);
+}
+
+.measure-arrow {
+  width: 48px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(108,229,255,0.2), rgba(108,229,255,0.9));
+  position: relative;
+}
+
+.measure-arrow::after {
+  content: "";
+  position: absolute;
+  right: -2px;
+  top: -3px;
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid var(--accent);
+  border-right: 2px solid var(--accent);
+  transform: rotate(45deg);
+}
+
+.metric-stream {
+  display: grid;
+  gap: 12px;
+}
+
+.metric-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--line);
+}
+
+.metric-row span {
+  color: var(--muted);
+  font-family: "JetBrains Mono", monospace;
+}
+
+.metric-row strong {
+  font-size: 1.1rem;
+}
+
+.analysis-grid {
+  display: grid;
+  grid-template-columns: 1fr 0.95fr;
+  gap: 18px;
+  align-items: stretch;
+}
+
+.heatmap-card,
+.analysis-list {
+  padding: 18px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.03);
+}
+
+.heatmap {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.heatmap span {
+  aspect-ratio: 1;
+  border-radius: 12px;
+  background: rgba(108,229,255,0.12);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.heatmap span.hot { background: rgba(255,216,106,0.78); }
+.heatmap span.hotter { background: rgba(255,140,102,0.88); }
+
+.heatmap-label {
+  margin-top: 14px;
+  color: var(--muted);
+}
+
+.analysis-list {
+  display: grid;
+  align-content: center;
+  gap: 14px;
+  font-weight: 600;
+}
+
+.analysis-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 16px rgba(108,229,255,0.7);
+}
+
+.scene-progress {
+  margin-top: 16px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  overflow: hidden;
+}
+
+.scene-progress span {
+  display: block;
+  width: 25%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transition: transform 0.5s ease;
+}
+
+.section-head {
+  margin-top: 0;
+  margin-bottom: 8px;
+  max-width: 120ch;
+  text-align: left;
+}
+
+.section-head h2 {
+  font-size: clamp(2rem, 4vw, 3.3rem);
+  line-height: 1.03;
+  letter-spacing: -0.04em;
+  margin: 18px 0 12px;
+}
+
+.section-head p {
+  color: var(--muted);
+  line-height: 1.8;
+  font-size: 1.05rem;
+}
+
+.concept-rail {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  gap: 18px;
+  align-items: center;
+}
+
+.concept-step {
+  padding: 24px;
+  border-radius: 24px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.03);
+  min-height: 210px;
+}
+
+.step-num {
+  font-family: "JetBrains Mono", monospace;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.concept-step h3 {
+  margin: 0 0 12px;
+  font-size: 1.15rem;
+}
+
+.concept-step p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.concept-line {
+  width: 36px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(108,229,255,0.18), rgba(108,229,255,0.8));
+}
+
+.feature-grid,
+.outputs-grid,
+.compare-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.feature-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.outputs-grid {
+  grid-template-columns: 1fr; /* Строго одна колонка */
+  width: 60%;                 /* Ширина 60% от секции */
+  margin: 0 auto;             /* Центрируем блок по горизонтали */
+}
+
+.compare-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.feature-card,
+.output-card,
+.compare-card,
+.cta-panel,
+.dual-panel,
+.panel-copy {
+  border-radius: 24px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.03);
+}
+
+.output-card {
+  min-width: 0; /* ИСПРАВЛЕНО: НЕ ДАЕТ ТАБЛИЦЕ РАСПИРАТЬ КАРТОЧКУ В GRID */
+  display: flex;
+  flex-direction: column;  
+}
+
+.feature-card,
+.output-card,
+.compare-card {
+  padding: 24px;
+}
+
+.feature-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 18px;
+  background: linear-gradient(135deg, rgba(108,229,255,0.16), rgba(157,125,255,0.2));
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.feature-card h3,
+.output-card h3,
+.compare-card h3 {
+  margin: 0 0 10px;
+}
+
+.feature-card p,
+.output-card p,
+.compare-card li {
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.dual-panel {
+  display: grid;
+  grid-template-columns: 0.88fr 1.12fr;
+  gap: 18px;
+  padding: 18px;
+}
+
+.panel-copy {
+  padding: 24px;
+}
+
+.bullet-list {
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.9;
+}
+
+.output-visual {
+  height: 180px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: rgba(7, 17, 31, 0.65);
+  
+  /* Новые свойства для переноса графики вниз: */
+  order: 99;         /* Отправляем блок в самый конец карточки */
+  margin-top: 24px;  /* Добавляем отступ сверху (от текста) */
+  margin-bottom: 0;  /* Убираем старый отступ снизу */
+}
+
+.output-heat {
+  background:
+    linear-gradient(135deg, rgba(108,229,255,0.12), transparent 35%),
+    radial-gradient(circle at 70% 40%, rgba(255,140,102,0.65), transparent 0 18%),
+    radial-gradient(circle at 56% 52%, rgba(255,216,106,0.8), transparent 0 14%),
+    linear-gradient(180deg, rgba(5, 13, 24, 0.95), rgba(10, 20, 35, 0.92));
+}
+
+.output-bars {
+  position: relative;
+  overflow: hidden;
+}
+
+.output-cube {
+  position: relative;
+  overflow: hidden;
+}
+
+.output-cube::before,
+.output-cube::after {
+  content: "";
+  position: absolute;
+  inset: 30px auto auto 30px;
+  width: 92px;
+  height: 92px;
+  border: 1px solid rgba(108,229,255,0.42);
+  transform: rotate(0deg);
+}
+
+.output-cube::after {
+  inset: 54px auto auto 56px;
+  border-color: rgba(157,125,255,0.42);
+}
+
+.compare-grid {
+  grid-template-columns: 1.2fr 0.8fr;
+}
+
+.compare-card ul {
+  margin: 0;
+  padding-left: 18px;
+  line-height: 1.8;
+}
+
+.compare-card-strong {
+  background: linear-gradient(180deg, rgba(108,229,255,0.08), rgba(157,125,255,0.06));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+.cta-section {
+  padding-top: 60px;
+}
+
+.cta-panel {
+  padding: 38px;
+  text-align: center;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(108,229,255,0.14), transparent 0 30%),
+    radial-gradient(circle at 80% 100%, rgba(157,125,255,0.12), transparent 0 32%),
+    rgba(255,255,255,0.03);
+}
+
+.cta-panel h2 {
+  margin: 18px auto 10px;
+  max-width: 820px;
+  font-size: clamp(2rem, 4vw, 3.1rem);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.cta-panel p {
+  margin: 0 auto;
+  max-width: 620px;
+  color: var(--muted);
+}
+
+.cta-panel .hero-actions {
+  justify-content: center;
+  margin-bottom: 0;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+
+.step-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.step-head h3 {
+  margin: 0;
+}
+
+.code-section .feature-grid {
+  grid-template-columns: 1fr;
+  align-items: stretch;
+  margin-top: 0;
+  gap: 0;
+}
+
+.code-section .section-head {
+  margin-bottom: 8px;
+}
+
+.code-section .feature-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.code-section .feature-card h3 {
+  margin-bottom: 14px;
+}
+
+.code-section .code-card {
+  margin-top: 0;
+  flex: 1;
+  display: flex;
+  width: 100%;
+}
+
+.code-section .code-card pre {
+  flex: 1;
+  margin: 0;
+  min-height: 0;
+}
+
+.positioning-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+}
+
+.positioning .output-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.positioning .output-card h3 {
+  margin-bottom: 14px;
+}
+
+.positioning .bullet-list {
+  margin: 0;
+}
+
+.positioning .output-card p + p {
+  margin-top: 12px;
+}
+
+.positioning-closing {
+  margin-top: auto;
+  padding-top: 18px;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.outputs-closing {
+  margin-top: 18px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+@media (max-width: 1080px) {
+  .hero,
+  .dual-panel,
+  .feature-grid,
+  .outputs-grid,
+  .concept-rail,
+  .analysis-grid,
+  .compare-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .concept-line {
+    display: none;
+  }
+
+  .feature-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+.outputs-grid {
+    grid-template-columns: 1fr; /* Подтверждаем одну колонку */
+    width: 100%;                /* На маленьких экранах занимаем все 100% */
+  }
+
+  .hero {
+    min-height: auto;
+    padding-top: 44px;
+  }
+}
+
+@media (max-width: 820px) {
+  .topbar {
+    width: calc(100% - 20px);
+    margin-top: 10px;
+    padding: 12px 14px;
+    display: grid;
+    grid-template-columns: 40px 1fr 40px;
+    align-items: center;
+  }
+
+  .brand-mobile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    grid-column: 2;
+    text-align: center;
+    padding: 0;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text);
+  }
+  .nav-toggle {
+    display: inline-block;
+    grid-column: 3;
+    justify-self: end;
+  }
+
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    background: rgba(7, 17, 31, 0.95);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    z-index: 45;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px) scale(0.98);
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    flex: 0 0 auto;
+  }
+
+  .nav a {
+    font-size: 1.25rem;
+    padding: 12px 24px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .topbar.nav-open .nav {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+  }
+
+  .hero {
+    gap: 34px;
+  }
+
+  .section {
+    padding: 10px 0;
+    justify-content: flex-start;
+  }
+
+  .section-head {
+    margin-top: 0;
+  }
+
+  .scene-tabs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .scene-window {
+    min-height: 500px;
+  }
+
+  .feature-grid,
+  .outputs-grid,
+  .positioning-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-punchline {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 560px) {
+  .topbar {
+    margin-top: 6px;
+    padding: 8px 12px;
+    min-height: 58px;
+    border-radius: 16px;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.8rem, 7vw, 2.6rem);
+  }
+
+  .nav-toggle {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+  }
+
+  .nav-toggle span {
+    width: 20px;
+    height: 2px;
+    margin: 4px auto;
+  }
+}
