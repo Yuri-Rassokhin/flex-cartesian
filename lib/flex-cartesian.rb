@@ -12,6 +12,7 @@ require_relative 'flex-cartesian/flex-cartesian-io'
 require_relative 'flex-cartesian/flex-cartesian-utilities'
 require_relative 'flex-cartesian/flex-cartesian-analyzer'
 require_relative 'flex-cartesian/flex-cartesian-deprecations'
+require_relative 'visualization/html'
 
 
 
@@ -22,6 +23,7 @@ class FlexCartesian
   include FlexCartesianUtilities
   include FlexCartesianAnalyzer
   include FlexCartesianDeprecations
+  include FlexCartesianVisualization
 
 end
 

@@ -1,21 +1,41 @@
+module FlexCartesianVisualization
+
 require "csv"
 require "json"
+require 'tempfile'
 
-def generate_surface_html(csv_file, x_column, y_column, z_column, output_file: "surface.html")
+def visualize(format: :html, x:, y:, function:, output: nil)
+  raise "X-asis of visialization cannot be empty" unless x
+  raise "Function of visialization cannot be empty" unless function
+
+  output = STDOUT unless output
+
+  case format
+  when :html
+    generate_html(x, y, function, output)
+  else
+    raise "Incorrect visualize format #{format}"
+  end
+end
+
+def generate_html(x:, y: nil, function:, output:)
+  # TODO: eliminate the need for temp file
+  csv_file = @space.output(format: :csv, file: Tempfile.new())
   table = CSV.read(csv_file, headers: true, col_sep: ";")
+  csv_file.unlink
 
   headers = table.headers.map { |h| h&.strip }
 
-  unless headers.include?(x_column)
-    raise ArgumentError, "Column '#{x_column}' not found in CSV. Available columns: #{headers.inspect}"
+  unless headers.include?(x)
+    raise ArgumentError, "Column '#{x}' not found in CSV. Available columns: #{headers.inspect}"
   end
 
-  unless headers.include?(y_column)
-    raise ArgumentError, "Column '#{y_column}' not found in CSV. Available columns: #{headers.inspect}"
+  unless headers.include?(y)
+    raise ArgumentError, "Column '#{y}' not found in CSV. Available columns: #{headers.inspect}"
   end
 
-  unless headers.include?(z_column)
-    raise ArgumentError, "Column '#{z_column}' not found in CSV. Available columns: #{headers.inspect}"
+  unless headers.include?(function)
+    raise ArgumentError, "Column '#{function}' not found in CSV. Available columns: #{headers.inspect}"
   end
 
   normalized_rows = table.map do |row|
@@ -27,8 +47,8 @@ def generate_surface_html(csv_file, x_column, y_column, z_column, output_file: "
     h
   end
 
-  x_values = normalized_rows.map { |r| numeric_or_string(r[x_column]) }.compact.uniq.sort_by { |v| sortable_key(v) }
-  y_values = normalized_rows.map { |r| numeric_or_string(r[y_column]) }.compact.uniq.sort_by { |v| sortable_key(v) }
+  x_values = normalized_rows.map { |r| numeric_or_string(r[x]) }.compact.uniq.sort_by { |v| sortable_key(v) }
+  y_values = normalized_rows.map { |r| numeric_or_string(r[y]) }.compact.uniq.sort_by { |v| sortable_key(v) }
 
   x_index = x_values.each_with_index.to_h
   y_index = y_values.each_with_index.to_h
@@ -36,9 +56,9 @@ def generate_surface_html(csv_file, x_column, y_column, z_column, output_file: "
   z_matrix = Array.new(y_values.size) { Array.new(x_values.size, nil) }
 
   normalized_rows.each do |row|
-    x = numeric_or_string(row[x_column])
-    y = numeric_or_string(row[y_column])
-    z = numeric_or_string(row[z_column])
+    x = numeric_or_string(row[x])
+    y = numeric_or_string(row[y])
+    z = numeric_or_string(row[function])
 
     next if x.nil? || y.nil? || z.nil?
 
@@ -80,11 +100,11 @@ def generate_surface_html(csv_file, x_column, y_column, z_column, output_file: "
         }];
 
         const layout = {
-          title: #{JSON.generate("#{z_column} as a function of #{x_column} and #{y_column}")},
+          title: #{JSON.generate("#{function} as a function of #{x} and #{y}")},
           scene: {
-            xaxis: { title: #{JSON.generate(x_column)} },
-            yaxis: { title: #{JSON.generate(y_column)} },
-            zaxis: { title: #{JSON.generate(z_column)} }
+            xaxis: { title: #{JSON.generate(x)} },
+            yaxis: { title: #{JSON.generate(y)} },
+            zaxis: { title: #{JSON.generate(function)} }
           },
           margin: { l: 0, r: 0, b: 0, t: 50 }
         };
@@ -95,8 +115,8 @@ def generate_surface_html(csv_file, x_column, y_column, z_column, output_file: "
     </html>
   HTML
 
-  File.write(output_file, html)
-  output_file
+  File.write(output, html)
+  output
 end
 
 def numeric_or_string(value)
@@ -118,10 +138,5 @@ def sortable_key(value)
   value.is_a?(Numeric) ? [0, value] : [1, value.to_s]
 end
 
-generate_surface_html(
-  "yolo-arm-a1.csv",
-  "iterate_processes",
-  "iterate_requests",
-  "inference",
-  output_file: "yolo-arm-a1.html"
-)
+end
+
