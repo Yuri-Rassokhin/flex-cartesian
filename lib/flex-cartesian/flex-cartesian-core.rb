@@ -184,6 +184,13 @@ def fit?(v)
   @conditions.none? { |cond| !cond.call(vector_to(v, :struct)) }
 end
 
+def function(vector, function, substitute: 0)
+  unless (@function_results[vector] and @function_results[vector][function])
+    return substitute
+  end
+  @function_results[vector][function]
+end
+
 # reads from target column using data source created by `data` method
 def lookup(vector, target)
   key = vector.values
