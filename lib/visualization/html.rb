@@ -4,19 +4,19 @@ require "csv"
 require "json"
 require 'tempfile'
 
-def visualize(format: :html, x:, y:, function:, output: nil)
+def visualize(format: :html, x:, y:, function:, output: nil, show_legend: true, show_z_title: true)
   raise "X-asis of visialization cannot be empty" unless x
   raise "Function of visialization cannot be empty" unless function
 
   case format
   when :html
-    generate_html(x: x.to_s, y: y.to_s, function: function.to_s, output: output)
+    generate_html(x: x.to_s, y: y.to_s, function: function.to_s, output: output, show_legend: show_legend, show_z_title: show_z_title)
   else
     raise "Incorrect visualize format #{format}"
   end
 end
 
-def generate_html(x:, y: nil, function:, output:)
+def generate_html(x:, y: nil, function:, output:, show_legend:, show_z_title:)
   # TODO: eliminate the need for temp file
   temp_file = Tempfile.new
   output(format: :csv, file: temp_file)
@@ -95,15 +95,17 @@ normalized_rows.each do |row|
           x: #{JSON.generate(x_values)},
           y: #{JSON.generate(y_values)},
           z: #{JSON.generate(z_matrix)},
-          connectgaps: false
+          connectgaps: false,
+          showscale: #{show_legend ? 'true' : 'false'}
         }];
 
         const layout = {
-          title: #{JSON.generate("#{function} as a function of #{x} and #{y}")},
+          title: #{JSON.generate("#{function} = f(#{x}, #{y})")},
           scene: {
             xaxis: { title: #{JSON.generate(x)} },
             yaxis: { title: #{JSON.generate(y)} },
-            zaxis: { title: #{JSON.generate(function)} }
+            zaxis: { title: #{JSON.generate(function)} },
+            zaxis: #{show_z_title ? "{ title: #{JSON.generate(function)} }" : "{}"}
           },
           margin: { l: 0, r: 0, b: 0, t: 50 }
         };
