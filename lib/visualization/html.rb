@@ -4,19 +4,19 @@ require "csv"
 require "json"
 require 'tempfile'
 
-def visualize(format: :html, x:, y:, function:, output: nil, show_legend: true, show_z_title: true, show_grid: true)
+def visualize(format: :html, x:, y:, function:, output: nil, show_legend: true, show_z_title: true, show_grid: true, equal_axes: false)
   raise "X-asis of visialization cannot be empty" unless x
   raise "Function of visialization cannot be empty" unless function
 
   case format
   when :html
-    generate_html(x: x.to_s, y: y.to_s, function: function.to_s, output: output, show_legend: show_legend, show_z_title: show_z_title, show_grid: show_grid)
+    generate_html(x: x.to_s, y: y.to_s, function: function.to_s, output: output, show_legend: show_legend, show_z_title: show_z_title, show_grid: show_grid, equal_axes: equal_axes)
   else
     raise "Incorrect visualize format #{format}"
   end
 end
 
-def generate_html(x:, y: nil, function:, output:, show_legend:, show_z_title:, show_grid:)
+def generate_html(x:, y: nil, function:, output:, show_legend:, show_z_title:, show_grid:, equal_axes:)
   # TODO: eliminate the need for temp file
   temp_file = Tempfile.new
   output(format: :csv, file: temp_file)
@@ -69,6 +69,8 @@ normalized_rows.each do |row|
   zaxis_title_js = show_z_title ? "title: #{JSON.generate(function)}," : "title: '',"
   grid_flag = show_grid ? 'true' : 'false'
 
+  aspect_mode_js = equal_axes ? "aspectmode: 'cube'," : "aspectmode: 'auto',"
+
   html = <<~HTML
     <!DOCTYPE html>
     <html>
@@ -120,6 +122,7 @@ normalized_rows.each do |row|
         const layout = {
           title: #{JSON.generate("#{function} (#{x}, #{y})")},
           scene: {
+          #{aspect_mode_js}
             xaxis: {
               title: #{JSON.generate(x)},
               showgrid: #{grid_flag},
