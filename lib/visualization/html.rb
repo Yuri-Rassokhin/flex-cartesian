@@ -4,19 +4,19 @@ require "csv"
 require "json"
 require 'tempfile'
 
-def visualize(format: :html, x:, y:, function:, output: nil, show_legend: true, show_z_title: true)
+def visualize(format: :html, x:, y:, function:, output: nil, show_legend: true, show_z_title: true, show_grid: true)
   raise "X-asis of visialization cannot be empty" unless x
   raise "Function of visialization cannot be empty" unless function
 
   case format
   when :html
-    generate_html(x: x.to_s, y: y.to_s, function: function.to_s, output: output, show_legend: show_legend, show_z_title: show_z_title)
+    generate_html(x: x.to_s, y: y.to_s, function: function.to_s, output: output, show_legend: show_legend, show_z_title: show_z_title, show_grid: show_grid)
   else
     raise "Incorrect visualize format #{format}"
   end
 end
 
-def generate_html(x:, y: nil, function:, output:, show_legend:, show_z_title:)
+def generate_html(x:, y: nil, function:, output:, show_legend:, show_z_title:, show_grid:)
   # TODO: eliminate the need for temp file
   temp_file = Tempfile.new
   output(format: :csv, file: temp_file)
@@ -66,6 +66,9 @@ normalized_rows.each do |row|
     z_matrix[yi][xi] = val_z
   end
 
+  zaxis_title_js = show_z_title ? "title: #{JSON.generate(function)}," : ""
+  grid_flag = show_grid ? 'true' : 'false'
+
   html = <<~HTML
     <!DOCTYPE html>
     <html>
@@ -96,16 +99,29 @@ normalized_rows.each do |row|
           y: #{JSON.generate(y_values)},
           z: #{JSON.generate(z_matrix)},
           connectgaps: false,
-          showscale: #{show_legend ? 'true' : 'false'}
+          showscale: #{show_legend ? 'true' : 'false'},
+          // Задаем светло-голубую цветовую шкалу (от бледного к более насыщенному)
+          colorscale: [[0, '#E1F5FE'], [1, '#03A9F4']]
         }];
 
         const layout = {
-          title: #{JSON.generate("#{function} = f(#{x}, #{y})")},
+          title: #{JSON.generate("#{function} as a function of #{x} and #{y}")},
           scene: {
-            xaxis: { title: #{JSON.generate(x)} },
-            yaxis: { title: #{JSON.generate(y)} },
-            zaxis: { title: #{JSON.generate(function)} },
-            zaxis: #{show_z_title ? "{ title: #{JSON.generate(function)} }" : "{}"}
+            xaxis: {
+              title: #{JSON.generate(x)},
+              showgrid: #{grid_flag},
+              zeroline: #{grid_flag}
+            },
+            yaxis: {
+              title: #{JSON.generate(y)},
+              showgrid: #{grid_flag},
+              zeroline: #{grid_flag}
+            },
+            zaxis: {
+              #{zaxis_title_js}
+              showgrid: #{grid_flag},
+              zeroline: #{grid_flag}
+            }
           },
           margin: { l: 0, r: 0, b: 0, t: 50 }
         };
