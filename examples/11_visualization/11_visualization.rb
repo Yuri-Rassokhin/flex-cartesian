@@ -6,7 +6,6 @@ space = FlexCartesian.new(source: :xlsx, uri: source, dimensions: [:iteration, :
 
 space.func(:add, :inference) { |v| space.data(:get, vector: v, target: "collect_inference_time") }
 space.func(:run)
-#space.cond(:set) { |v| space.function(v, :inference) <= 10 }
 
 space.visualize(
   format: :html,

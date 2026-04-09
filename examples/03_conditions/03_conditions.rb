@@ -8,15 +8,6 @@ example = {
 }
 s = FlexCartesian.new(example)
 
-
-
-# CONDITIONS IN CARTESIAN SPACE
-
-# Condition is a logical constraint for allowed combinations of parameter space
-# It returns true for allowed combinations of parameter space, and false for disallowed combinations
-# Condition filters parameter space, so only combinations that satisfy the condition are included in the output, function evaluation, and in the size of Cartesian space
-# You can have multiple conditions, and they will be combined with logical AND, so only combinations that satisfy ALL conditions will be included in the output and in the size of parameter space
-
 # Add condition that allows only combinations where value in the 1st dimension is odd
 s.cond(:set) { |v| v.dim1.odd? }
 # Print the conditions in the parameter space
@@ -31,5 +22,8 @@ s.cond(:unset, index: 0)
 s.cond(:clear)
 # See the size of parameter space restored to default size of the full space
 puts "Restored size of full space: #{s.size}"
+# Set condition based on function result - highly useful for isosurfaces and such
+space.func(:add, :example) { |v| v.dim1 + dim3 ? 2 : 3 }
+space.cond(:set) { |v| space.function(v, :example) <= 3 }
 s.output
 
