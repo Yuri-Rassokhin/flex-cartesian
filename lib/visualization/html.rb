@@ -4,19 +4,19 @@ require "csv"
 require "json"
 require 'tempfile'
 
-def visualize(format: :html, x:, y:, function:, output: nil, show_legend: true, show_z_title: true, show_grid: true, equal_axes: false, start_at_zero: true)
+def visualize(format: :html, x:, y:, function:, output: nil, show_legend: true, show_z_title: true, show_grid: true, equal_axes: false, start_at_zero: true, show_plot_title: true)
   raise "X-asis of visialization cannot be empty" unless x
   raise "Function of visialization cannot be empty" unless function
 
   case format
   when :html
-    generate_html(x: x.to_s, y: y.to_s, function: function.to_s, output: output, show_legend: show_legend, show_z_title: show_z_title, show_grid: show_grid, equal_axes: equal_axes, start_at_zero: start_at_zero)
+    generate_html(x: x.to_s, y: y.to_s, function: function.to_s, output: output, show_legend: show_legend, show_z_title: show_z_title, show_grid: show_grid, equal_axes: equal_axes, start_at_zero: start_at_zero, show_plot_title: show_plot_title)
   else
     raise "Incorrect visualize format #{format}"
   end
 end
 
-def generate_html(x:, y: nil, function:, output:, show_legend:, show_z_title:, show_grid:, equal_axes:, start_at_zero:)
+def generate_html(x:, y: nil, function:, output:, show_legend:, show_z_title:, show_grid:, equal_axes:, start_at_zero:, show_plot_title:)
   # TODO: eliminate the need for temp file
   temp_file = Tempfile.new
   output(format: :csv, file: temp_file)
@@ -73,6 +73,9 @@ normalized_rows.each do |row|
 
   range_mode_js = start_at_zero ? "rangemode: 'tozero'," : ""
 
+  plot_title = show_plot_title ? "title: #{JSON.generate("#{function} (#{x}, #{y})")}," : "title: '',"
+
+
   html = <<~HTML
     <!DOCTYPE html>
     <html>
@@ -122,7 +125,7 @@ normalized_rows.each do |row|
         }];
 
         const layout = {
-          title: #{JSON.generate("#{function} (#{x}, #{y})")},
+          #{plot_title}
           scene: {
           #{aspect_mode_js}
             xaxis: {

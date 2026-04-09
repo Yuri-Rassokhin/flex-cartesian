@@ -14,8 +14,9 @@ space.visualize(
   function: :inference,
   output: "./examples/11_visualization/viz.html",
   show_legend: false,
-  show_z_title: false,
+  show_z_title: true,
   show_grid: true,
   equal_axes: true,
-  start_at_zero: true
+  start_at_zero: true,
+  show_plot_title: false
 )
