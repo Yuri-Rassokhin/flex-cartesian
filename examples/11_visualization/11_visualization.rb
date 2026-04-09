@@ -4,5 +4,6 @@ space = FlexCartesian.new(source: :xlsx, uri: "./examples/11_visualization/yolo-
 
 space.func(:add, :inference) { |v| space.data(:get, vector: v, target: "collect_inference_time") }
 space.func(:run)
+space.cond(:set) { |v| v.iterate_processes <= 10 }
 
-space.visualize(format: :html, x: :iterate_requests, y: :iterate_processes, function: :inference, output: "./examples/11_visualization/viz.html", show_legend: false, show_z_title: false, show_grid: true, equal_axes: true)
+space.visualize(format: :html, x: :iterate_requests, y: :iterate_processes, function: :inference, output: "./examples/11_visualization/viz.html", show_legend: false, show_z_title: false, show_grid: true, equal_axes: true, start_at_zero: true)
