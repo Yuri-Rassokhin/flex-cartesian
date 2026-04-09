@@ -16,21 +16,21 @@
   --max: 1200px;
 }
 
-/* Контейнер для горизонтального скролла внутри плитки */
+/* ÐšÐ¾Ð½Ñ‚ÐµÐ¹Ð½ÐµÑ€ Ð´Ð»Ñ Ð³Ð¾Ñ€Ð¸Ð·Ð¾Ð½Ñ‚Ð°Ð»ÑŒÐ½Ð¾Ð³Ð¾ ÑÐºÑ€Ð¾Ð»Ð»Ð° Ð²Ð½ÑƒÑ‚Ñ€Ð¸ Ð¿Ð»Ð¸Ñ‚ÐºÐ¸ */
 .sensitivity-table-wrapper {
   width: 100%;
   height: 100%;
   overflow-x: auto;
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch; /* Плавный скролл на мобильных */
+  -webkit-overflow-scrolling: touch; /* ÐŸÐ»Ð°Ð²Ð½Ñ‹Ð¹ ÑÐºÑ€Ð¾Ð»Ð» Ð½Ð° Ð¼Ð¾Ð±Ð¸Ð»ÑŒÐ½Ñ‹Ñ… */
 }
 
-/* Стили самой таблицы */
+/* Ð¡Ñ‚Ð¸Ð»Ð¸ ÑÐ°Ð¼Ð¾Ð¹ Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ñ‹ */
 .sensitivity-table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  font-size: 0.75rem; /* Уменьшенный шрифт для карточки */
+  font-size: 0.75rem; /* Ð£Ð¼ÐµÐ½ÑŒÑˆÐµÐ½Ð½Ñ‹Ð¹ ÑˆÑ€Ð¸Ñ„Ñ‚ Ð´Ð»Ñ ÐºÐ°Ñ€Ñ‚Ð¾Ñ‡ÐºÐ¸ */
   color: #111827;
 }
 
@@ -38,16 +38,16 @@
 .sensitivity-table td {
   padding: 8px 12px;
   border-bottom: 1px solid #e5e7eb;
-  white-space: nowrap; /* Запрещаем перенос строк, чтобы таблица была ровной */
-  background: transparent !important; /* Убиваем паразитный фон колонок */
+  white-space: nowrap; /* Ð—Ð°Ð¿Ñ€ÐµÑ‰Ð°ÐµÐ¼ Ð¿ÐµÑ€ÐµÐ½Ð¾Ñ ÑÑ‚Ñ€Ð¾Ðº, Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ð° Ð±Ñ‹Ð»Ð° Ñ€Ð¾Ð²Ð½Ð¾Ð¹ */
+  background: transparent !important; /* Ð£Ð±Ð¸Ð²Ð°ÐµÐ¼ Ð¿Ð°Ñ€Ð°Ð·Ð¸Ñ‚Ð½Ñ‹Ð¹ Ñ„Ð¾Ð½ ÐºÐ¾Ð»Ð¾Ð½Ð¾Ðº */
 }
 
 .sensitivity-table th {
-  background-color: #f3f4f6 !important; /* Светлый фон для заголовка */
+  background-color: #f3f4f6 !important; /* Ð¡Ð²ÐµÑ‚Ð»Ñ‹Ð¹ Ñ„Ð¾Ð½ Ð´Ð»Ñ Ð·Ð°Ð³Ð¾Ð»Ð¾Ð²ÐºÐ° */
   font-weight: 600;
   color: #4b5563;
   position: sticky;
-  top: 0; /* Фиксируем заголовок при вертикальном скролле */
+  top: 0; /* Ð¤Ð¸ÐºÑÐ¸Ñ€ÑƒÐµÐ¼ Ð·Ð°Ð³Ð¾Ð»Ð¾Ð²Ð¾Ðº Ð¿Ñ€Ð¸ Ð²ÐµÑ€Ñ‚Ð¸ÐºÐ°Ð»ÑŒÐ½Ð¾Ð¼ ÑÐºÑ€Ð¾Ð»Ð»Ðµ */
   z-index: 10;
 }
 
@@ -56,16 +56,16 @@
 }
 
 .sensitivity-table tr:hover td {
-  background-color: rgba(248, 250, 252, 0.05) !important; /* Полупрозрачный фон для темной темы */
+  background-color: rgba(248, 250, 252, 0.05) !important; /* ÐŸÐ¾Ð»ÑƒÐ¿Ñ€Ð¾Ð·Ñ€Ð°Ñ‡Ð½Ñ‹Ð¹ Ñ„Ð¾Ð½ Ð´Ð»Ñ Ñ‚ÐµÐ¼Ð½Ð¾Ð¹ Ñ‚ÐµÐ¼Ñ‹ */
 }
 
-/* Моноширинный шрифт для названий параметров */
+/* ÐœÐ¾Ð½Ð¾ÑˆÐ¸Ñ€Ð¸Ð½Ð½Ñ‹Ð¹ ÑˆÑ€Ð¸Ñ„Ñ‚ Ð´Ð»Ñ Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ð¹ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð¾Ð² */
 .sensitivity-table .mono {
   font-family: 'JetBrains Mono', monospace;
   color: #2563eb;
 }
 
-/* Бейджики категорий */
+/* Ð‘ÐµÐ¹Ð´Ð¶Ð¸ÐºÐ¸ ÐºÐ°Ñ‚ÐµÐ³Ð¾Ñ€Ð¸Ð¹ */
 .sensitivity-table .badge {
   display: inline-block;
   padding: 0.2em 0.5em;
@@ -80,20 +80,66 @@
 .sensitivity-table .badge-moderate { background: #fef3c7; color: #92400e; }
 .sensitivity-table .badge-negligible { background: #f3f4f6; color: #374151; }
 
-.output-visual.output-heat {
+/* 1. Сбрасываем старые отступы для карточек с визуализацией и задаем им высоту */
+.output-card {
   position: relative;
   overflow: hidden;
-  min-height: 300px; 
-  padding: 0; 
+  padding: 0 !important; /* Перебиваем padding: 24px из общих стилей (.feature-card, .output-card) */
+  min-height: 420px; /* Оптимальная высота, чтобы влезли и график, и таблица, и плашка */
+  display: block; 
 }
 
+/* 2. Растягиваем блок графики на всю площадь карточки */
+.output-visual {
+  position: absolute;
+  inset: 0; /* То же самое, что top:0; left:0; right:0; bottom:0; */
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  background: transparent;
+  /* Добавляем внутренний отступ снизу, чтобы таблица не пряталась под плашку и ее можно было доскроллить */
+  padding-bottom: 95px !important; 
+}
+
+/* Если iframe нужно слегка поджать, чтобы ось X не скрылась под плашкой: */
 .output-visual.output-heat iframe {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  /* Высота 100% минус примерная высота плашки */
+  height: calc(100% - 95px); 
   border: none;
+}
+
+/* 3. Новая полупрозрачная плашка для текста (эффект Glassmorphism) */
+.output-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 24px;
+  background: rgba(7, 17, 31, 0.75); /* Полупрозрачный фон в цвет темы */
+  backdrop-filter: blur(12px); /* Эффект матового стекла (размывает фон под собой) */
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+  z-index: 10;
+}
+
+/* Подчищаем отступы внутри плашки */
+.output-overlay h3 {
+  margin: 0 0 6px !important;
+  color: var(--text);
+  font-size: 1.15rem;
+}
+
+.output-overlay p {
+  margin: 0 !important;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
 body::before {
@@ -784,9 +830,9 @@ main {
 }
 
 .outputs-grid {
-  grid-template-columns: 1fr; /* Строго одна колонка */
-  width: 100%;                 /* Ширина 60% от секции */
-  margin: 0 auto;             /* Центрируем блок по горизонтали */
+  grid-template-columns: 1fr; /* Ð¡Ñ‚Ñ€Ð¾Ð³Ð¾ Ð¾Ð´Ð½Ð° ÐºÐ¾Ð»Ð¾Ð½ÐºÐ° */
+  width: 100%;                 /* Ð¨Ð¸Ñ€Ð¸Ð½Ð° 60% Ð¾Ñ‚ ÑÐµÐºÑ†Ð¸Ð¸ */
+  margin: 0 auto;             /* Ð¦ÐµÐ½Ñ‚Ñ€Ð¸Ñ€ÑƒÐµÐ¼ Ð±Ð»Ð¾Ðº Ð¿Ð¾ Ð³Ð¾Ñ€Ð¸Ð·Ð¾Ð½Ñ‚Ð°Ð»Ð¸ */
 }
 
 .compare-grid {
@@ -805,7 +851,7 @@ main {
 }
 
 .output-card {
-  min-width: 0; /* ИСПРАВЛЕНО: НЕ ДАЕТ ТАБЛИЦЕ РАСПИРАТЬ КАРТОЧКУ В GRID */
+  min-width: 0; /* Ð˜Ð¡ÐŸÐ ÐÐ’Ð›Ð•ÐÐž: ÐÐ• Ð”ÐÐ•Ð¢ Ð¢ÐÐ‘Ð›Ð˜Ð¦Ð• Ð ÐÐ¡ÐŸÐ˜Ð ÐÐ¢Ð¬ ÐšÐÐ Ð¢ÐžÐ§ÐšÐ£ Ð’ GRID */
   display: flex;
   flex-direction: column;  
 }
@@ -857,17 +903,7 @@ main {
   line-height: 1.9;
 }
 
-.output-visual {
-  height: 180px;
-  border-radius: 18px;
-  border: 1px solid var(--line);
-  background: rgba(7, 17, 31, 0.65);
-  
-  /* Новые свойства для переноса графики вниз: */
-  order: 99;         /* Отправляем блок в самый конец карточки */
-  margin-top: 24px;  /* Добавляем отступ сверху (от текста) */
-  margin-bottom: 0;  /* Убираем старый отступ снизу */
-}
+
 
 .output-heat {
   background:
@@ -1068,8 +1104,8 @@ main {
   }
 
 .outputs-grid {
-    grid-template-columns: 1fr; /* Подтверждаем одну колонку */
-    width: 100%;                /* На маленьких экранах занимаем все 100% */
+    grid-template-columns: 1fr; /* ÐŸÐ¾Ð´Ñ‚Ð²ÐµÑ€Ð¶Ð´Ð°ÐµÐ¼ Ð¾Ð´Ð½Ñƒ ÐºÐ¾Ð»Ð¾Ð½ÐºÑƒ */
+    width: 100%;                /* ÐÐ° Ð¼Ð°Ð»ÐµÐ½ÑŒÐºÐ¸Ñ… ÑÐºÑ€Ð°Ð½Ð°Ñ… Ð·Ð°Ð½Ð¸Ð¼Ð°ÐµÐ¼ Ð²ÑÐµ 100% */
   }
 
   .hero {
@@ -1198,3 +1234,4 @@ main {
     margin: 4px auto;
   }
 }
+

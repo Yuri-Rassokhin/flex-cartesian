@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FlexCartesian — Explore Systems as Functions of Parameters</title>
+  <title>FlexCartesian â€” Explore Systems as Functions of Parameters</title>
   <meta name="description" content="FlexCartesian is a Ruby framework for modelling and analysing parametric systems through parameter spaces, functions, real-system measurements, and system-level exploration." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,21 +35,21 @@
       <section id="top" class="hero section">
         <div class="section-head hero-copy reveal">
           <h1>Explore<span class="highlight"> real systems as functions of parameters.</span></h1>
-          <p class="hero-lead">Build a holistic digital twin in four steps: describe parameters, model system behaviour, capture real data, and derive insights. From bottlenecks to best practices — and beyond. Any question, answered in one line of code.</p>
+          <p class="hero-lead">Build a holistic digital twin in four steps: describe parameters, model system behaviour, capture real data, and derive insights. From bottlenecks to best practices â€” and beyond. Any question, answered in one line of code.</p>
         </div>
       </section>
 
       <section id="concept" class="section concept">
         <div class="section-head reveal">
           <h2>Taming fragmented knowledge.</h2>
-          <p>Real systems are defined by multiple independent parameters. Each configuration is just one observation in a much larger space. Yet exploration is typically performed through isolated runs: ad-hoc benchmarks, biased experiments, manual comparisons, and fragmented logs. These observations are never integrated into a coherent model. What we get is not understanding — but a collection of disconnected observations. The system is never seen as a whole — rather built upon assumptions.</p>
+          <p>Real systems are defined by multiple independent parameters. Each configuration is just one observation in a much larger space. Yet exploration is typically performed through isolated runs: ad-hoc benchmarks, biased experiments, manual comparisons, and fragmented logs. These observations are never integrated into a coherent model. What we get is not understanding â€” but a collection of disconnected observations. The system is never seen as a whole â€” rather built upon assumptions.</p>
         </div>
       </section>
 
       <section id="workflow" class="section workflow">
         <div class="section-head reveal">
           <h2>From scattered probes to exploration.</h2>
-          <p>What if we stopped running experiments… and started exploring the system itself? FlexCartesian treats a system not as a set of scattered measurements, but as a holistic function that behaves over space with dimenions defined by system parameters. This shift in perspective from blind probes to parameteric analysis allows us to move from fragmented data points to a structured understanding of how the system behaves across different configurations. It enables us to identify patterns, trade-offs, and bottlenecks that would be invisible in isolated runs.</p>
+          <p>What if we stopped running experimentsâ€¦ and started exploring the system itself? FlexCartesian treats a system not as a set of scattered measurements, but as a holistic function that behaves over space with dimenions defined by system parameters. This shift in perspective from blind probes to parameteric analysis allows us to move from fragmented data points to a structured understanding of how the system behaves across different configurations. It enables us to identify patterns, trade-offs, and bottlenecks that would be invisible in isolated runs.</p>
         </div>
         <div class="feature-grid">
           <article class="feature-card reveal">
@@ -88,7 +88,7 @@
     <h2>Concise for human, precise for insight.</h2>
   </div>
   <div class="section-head reveal reveal-delay-1">
-    <p>The system is evaluated across the entire parameter space. Each result becomes part of a structured behavioural model — not just an individual measurement. Everything in high-level declarative style.</p>
+    <p>The system is evaluated across the entire parameter space. Each result becomes part of a structured behavioural model â€” not just an individual measurement. Everything in high-level declarative style.</p>
   </div>
 
   <div class="feature-grid">
@@ -120,126 +120,31 @@
     <p>This makes optimisation systematic rather than experimental, exposes non-obvious interactions between parameters, and makes system behaviour reproducible and explainable. The system is no longer sampled. It is understood.</p>
   </div>
 
-  <div class="outputs-grid">
-<article class="output-card reveal">
-  <div class="output-visual output-heat">
-    <iframe src="assets/viz/viz.html" title="FlexCartesian Heatmap" loading="lazy"></iframe>
-  </div>
-  <h3>Heatmaps</h3>
-  <p>Expose productive regions in parameter space.</p>
-</article>
+<div class="outputs-grid">
+    <article class="output-card reveal">
+      <div class="output-visual output-heat">
+        <iframe src="assets/viz/viz.html" title="FlexCartesian Heatmap" loading="lazy"></iframe>
+      </div>
+      <div class="output-overlay">
+        <h3>Heatmaps</h3>
+        <p>Expose productive regions in parameter space.</p>
+      </div>
+    </article>
 
-<article class="output-card reveal reveal-delay-1">
-  <div class="output-visual output-bars" style="padding: 0; background: #fff;">
-    <div class="sensitivity-table-wrapper">
-      <table class="sensitivity-table">
-        <thead>
-          <tr>
-            <th>Parameter</th>
-            <th>Influence</th>
-            <th>Deviation</th>
-            <th>Probes</th>
-            <th>Category</th>
-            <th>Linearity</th>
-            <th>Recommendation</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="mono">iterate_requests</td>
-            <td>15.69</td>
-            <td>23.47</td>
-            <td>1000</td>
-            <td><span class="badge badge-strong">strong</span></td>
-            <td>highly non-linear</td>
-            <td>critical parameter; prioritize for variance-based analysis</td>
-          </tr>
-          <tr>
-            <td class="mono">iterate_processes</td>
-            <td>11.51</td>
-            <td>22.13</td>
-            <td>1000</td>
-            <td><span class="badge badge-strong">strong</span></td>
-            <td>highly non-linear</td>
-            <td>critical parameter; prioritize for variance-based analysis</td>
-          </tr>
-          <tr>
-            <td class="mono">iterate_iteration</td>
-            <td>2.28</td>
-            <td>5.8</td>
-            <td>1000</td>
-            <td><span class="badge badge-moderate">moderate</span></td>
-            <td>highly non-linear</td>
-            <td>secondary priority; fine-tune only after 'strong' parameters</td>
-          </tr>
-          <tr>
-            <td class="mono">infra_shape</td>
-            <td>0.0</td>
-            <td>0.0</td>
-            <td>0</td>
-            <td><span class="badge badge-negligible">negligible</span></td>
-            <td>undefined</td>
-            <td>fix at default or cheapest value to reduce dimensionality</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <article class="output-card reveal reveal-delay-1">
+      <div class="output-visual output-bars" style="background: #fff;">
+        <div class="sensitivity-table-wrapper">
+          <table class="sensitivity-table">
+            </table>
+        </div>
+      </div>
+      <div class="output-overlay">
+        <h3>Sensitivity</h3>
+        <p>Identify which parameters actually drive the outcome.</p>
+      </div>
+    </article>
   </div>
-  <h3>Sensitivity</h3>
-  <p>Identify which parameters actually drive the outcome.</p>
-</article>
 
-<article class="output-card reveal reveal-delay-2">
-  <div class="output-visual" style="padding: 0; background: #fff;">
-    <div class="sensitivity-table-wrapper">
-      <table class="sensitivity-table">
-        <thead>
-          <tr>
-            <th>iterate_iteration</th>
-            <th>infra_shape</th>
-            <th>iterate_requests</th>
-            <th>iterate_processes</th>
-            <th>inference</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td class="mono">vm.standard.a1.flex</td>
-            <td>1</td>
-            <td>1</td>
-            <td class="mono">0.276375369</td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td class="mono">vm.standard.a1.flex</td>
-            <td>1</td>
-            <td>2</td>
-            <td class="mono">0.279915767</td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td class="mono">vm.standard.a1.flex</td>
-            <td>1</td>
-            <td>4</td>
-            <td class="mono">0.276986867</td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td class="mono">vm.standard.a1.flex</td>
-            <td>1</td>
-            <td>8</td>
-            <td class="mono">0.272358715</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <h3>Digital Twin</h3>
-  <p>The model dynamically evolves with real system.</p>
-</article>
-
-  </div>
 </section>
 
 <section id="positioning" class="section positioning section-screen">
@@ -339,30 +244,30 @@ window.addEventListener("load", () => {
 </script>
 
 <script>
-// Находим нужные элементы
+// ÐÐ°Ñ…Ð¾Ð´Ð¸Ð¼ Ð½ÑƒÐ¶Ð½Ñ‹Ðµ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ñ‹
 const navToggle = document.querySelector('.nav-toggle');
 const topbar = document.querySelector('.topbar');
 const mobileNavLinks = document.querySelectorAll('.nav a');
 
-// Функция переключения состояния меню
+// Ð¤ÑƒÐ½ÐºÑ†Ð¸Ñ Ð¿ÐµÑ€ÐµÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ñ ÑÐ¾ÑÑ‚Ð¾ÑÐ½Ð¸Ñ Ð¼ÐµÐ½ÑŽ
 function toggleMenu() {
-  // Добавляем/убираем класс nav-open у шапки
+  // Ð”Ð¾Ð±Ð°Ð²Ð»ÑÐµÐ¼/ÑƒÐ±Ð¸Ñ€Ð°ÐµÐ¼ ÐºÐ»Ð°ÑÑ nav-open Ñƒ ÑˆÐ°Ð¿ÐºÐ¸
   const isOpen = topbar.classList.toggle('nav-open');
   
-  // Обновляем атрибут доступности для скринридеров
+  // ÐžÐ±Ð½Ð¾Ð²Ð»ÑÐµÐ¼ Ð°Ñ‚Ñ€Ð¸Ð±ÑƒÑ‚ Ð´Ð¾ÑÑ‚ÑƒÐ¿Ð½Ð¾ÑÑ‚Ð¸ Ð´Ð»Ñ ÑÐºÑ€Ð¸Ð½Ñ€Ð¸Ð´ÐµÑ€Ð¾Ð²
   navToggle.setAttribute('aria-expanded', isOpen);
   
-  // Блокируем скролл страницы, если меню открыто
+  // Ð‘Ð»Ð¾ÐºÐ¸Ñ€ÑƒÐµÐ¼ ÑÐºÑ€Ð¾Ð»Ð» ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ñ‹, ÐµÑÐ»Ð¸ Ð¼ÐµÐ½ÑŽ Ð¾Ñ‚ÐºÑ€Ñ‹Ñ‚Ð¾
   document.body.classList.toggle('no-scroll', isOpen);
 }
 
-// Слушаем клик по кнопке-бургеру
+// Ð¡Ð»ÑƒÑˆÐ°ÐµÐ¼ ÐºÐ»Ð¸Ðº Ð¿Ð¾ ÐºÐ½Ð¾Ð¿ÐºÐµ-Ð±ÑƒÑ€Ð³ÐµÑ€Ñƒ
 navToggle.addEventListener('click', toggleMenu);
 
-// Закрываем меню автоматически при клике на любую ссылку
+// Ð—Ð°ÐºÑ€Ñ‹Ð²Ð°ÐµÐ¼ Ð¼ÐµÐ½ÑŽ Ð°Ð²Ñ‚Ð¾Ð¼Ð°Ñ‚Ð¸Ñ‡ÐµÑÐºÐ¸ Ð¿Ñ€Ð¸ ÐºÐ»Ð¸ÐºÐµ Ð½Ð° Ð»ÑŽÐ±ÑƒÑŽ ÑÑÑ‹Ð»ÐºÑƒ
 mobileNavLinks.forEach(link => {
   link.addEventListener('click', () => {
-    // Если меню открыто — закрываем его
+    // Ð•ÑÐ»Ð¸ Ð¼ÐµÐ½ÑŽ Ð¾Ñ‚ÐºÑ€Ñ‹Ñ‚Ð¾ â€” Ð·Ð°ÐºÑ€Ñ‹Ð²Ð°ÐµÐ¼ ÐµÐ³Ð¾
     if (topbar.classList.contains('nav-open')) {
       toggleMenu();
     }
@@ -373,4 +278,5 @@ mobileNavLinks.forEach(link => {
 
 </body>
 </html>
+
 
