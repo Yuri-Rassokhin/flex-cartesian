@@ -66,7 +66,7 @@ normalized_rows.each do |row|
     z_matrix[yi][xi] = val_z
   end
 
-  zaxis_title_js = show_z_title ? "title: #{JSON.generate(function)}," : ""
+  zaxis_title_js = show_z_title ? "title: #{JSON.generate(function)}," : "title: '',"
   grid_flag = show_grid ? 'true' : 'false'
 
   html = <<~HTML
@@ -101,11 +101,24 @@ normalized_rows.each do |row|
           connectgaps: false,
           showscale: #{show_legend ? 'true' : 'false'},
           // Задаем светло-голубую цветовую шкалу (от бледного к более насыщенному)
-          colorscale: [[0, '#E1F5FE'], [1, '#03A9F4']]
+          colorscale: 'Bluered',
+          // Добавляем сетку на саму поверхность
+          contours: {
+            x: {
+              show: #{grid_flag},
+              color: '#ffffff', // Белый цвет линий (можно заменить на '#9e9e9e' для серых)
+              width: 1          // Толщина линий
+            },
+            y: {
+              show: #{grid_flag},
+              color: '#ffffff',
+              width: 1
+            }
+          }
         }];
 
         const layout = {
-          title: #{JSON.generate("#{function} as a function of #{x} and #{y}")},
+          title: #{JSON.generate("#{function} (#{x}, #{y})")},
           scene: {
             xaxis: {
               title: #{JSON.generate(x)},
