@@ -6,7 +6,7 @@ def index_show
   @index
 end
 
-def initialize(dims = nil, path: nil, format: :json, logger: nil, log_level: Logger::WARN, source: nil, uri: nil, dimensions: nil)
+def initialize(dims = nil, path: nil, format: :json, logger: nil, log_level: Logger::WARN, source: nil, uri: nil, dimensions: nil, separator: ',')
     @logger = logger || Logger.new($stdout)
     @logger.level = log_level
 
@@ -30,7 +30,7 @@ def initialize(dims = nil, path: nil, format: :json, logger: nil, log_level: Log
       raise "Missing data source type" if source.empty?
       raise "Missing data URI" if uri.empty?
       raise "Missing data dimensions" if dimensions.empty?
-      index(source: source, uri: uri, dimensions: dimensions)
+      index(source: source, uri: uri, dimensions: dimensions, separator: separator)
     end
 
     @dimensions = normalize_dimensions(@dimensions)
@@ -193,12 +193,14 @@ end
 
 # reads from target column using data source created by `data` method
 def lookup(vector, target)
-  key = vector.values
-  @index[key] ? @index[key][target] : nil
+  vec = vector_to(vector, :hash)
+  tg = target.to_sym
+  @index[vec] ? @index[vec][tg] : nil
 end
 
 # creates cartesian space and index from URI
-def index(source:, uri:, dimensions:)
+# index is a hash that maps { dim1: value1, ..., dimN: valueN} to a row of the data source
+def index(source:, uri:, dimensions:, separator: ',')
   @index = {}
   @dimensions ||= {}
   # initialize empty dimensions
@@ -209,17 +211,16 @@ def index(source:, uri:, dimensions:)
   case source
   when :csv
     require 'csv'
-    table = CSV.read(uri, headers: true)
+    table = CSV.read(uri, headers: true, header_converters: :symbol, col_sep: separator, strip: true)
 
     table.each do |row|
-      key = dimensions.map do |dim|
-        value = row[dim.to_s]
-        dim_sym = dim.to_sym
-        unless @dimensions_hash[dim_sym][value]
-          @dimensions[dim_sym] << value
-          @dimensions_hash[dim_sym][value] = true
+      key = dimensions.each_with_object({}) do |dim, hash|
+        value = row[dim].to_s.strip
+        unless @dimensions_hash[dim][value]
+          @dimensions[dim] << value
+          @dimensions_hash[dim][value] = true
         end
-        value
+       hash[dim.to_sym] = value
       end
       @index[key] = row
     end

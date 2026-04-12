@@ -4,7 +4,7 @@ require "informers"
 EMBEDDER = Informers.pipeline("embedding", "sentence-transformers/all-MiniLM-L6-v2")
 
 def embed(text)
-  EMBEDDER.(text).first
+  EMBEDDER.(text)
 end
 
 def cosine(v1, v2)
@@ -15,16 +15,17 @@ def cosine(v1, v2)
   dot / (n1 * n2)
 end
 
-space = FlexCartesian.new(source: :csv, uri: "./chatgpt_quantum.csv", dimensions: [:tokens, :temperature] )
+space = FlexCartesian.new(source: :csv, separator: ';', uri: "./chatgpt_quantum.csv", dimensions: [:tokens, :temperature] )
 
-anchor = space.data(:get, vector: { model: "gpt-4o-mini", prompt: "Explain quantum mechanics in one sentence", temperature: 0.0, tokens: 20 }, target: "response")
+anchor = space.data(:get, vector: { tokens: "20", temperature: "0.0" }, target: "response")
 raise "Bad anchor" unless anchor
+anchor = embed(anchor)
 
 space.func(:add, :response) { |v| space.data(:get, vector: v, target: "response") }
-space.func(:add, :embedding) { |v| embed(v.response) }
+space.func(:add, :embedding, hide: true) { |v| embed(v.response) }
 space.func(:add, :semantic_shift) { |v| 1.0 - cosine(v.embedding, anchor) }
 
-space.func(:run, progress: true, title: "Building embeddings")
+space.func(:run)
 
 space.output(format: :csv, file: "chatgpt_embeddings.csv")
 
