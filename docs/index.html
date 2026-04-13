@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FlexCartesian â€” Explore Systems as Functions of Parameters</title>
+  <title>FlexCartesian - Explore Systems as Functions of Parameters</title>
   <meta name="description" content="FlexCartesian is a Ruby framework for modelling and analysing parametric systems through parameter spaces, functions, real-system measurements, and system-level exploration." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,21 +35,21 @@
       <section id="top" class="hero section">
         <div class="section-head hero-copy reveal">
           <h1>Explore<span class="highlight"> real systems as functions of parameters.</span></h1>
-          <p class="hero-lead">Build a holistic digital twin in four steps: describe parameters, model system behaviour, capture real data, and derive insights. From bottlenecks to best practices â€” and beyond. Any question, answered in one line of code.</p>
+          <p class="hero-lead">Build a holistic digital twin in four steps: describe parameters, model system behaviour, capture real data, and derive insights. From bottlenecks to best practices - and beyond. Any question, answered in one line of code.</p>
         </div>
       </section>
 
       <section id="concept" class="section concept">
         <div class="section-head reveal">
           <h2>Taming fragmented knowledge.</h2>
-          <p>Real systems are defined by multiple independent parameters. Each configuration is just one observation in a much larger space. Yet exploration is typically performed through isolated runs: ad-hoc benchmarks, biased experiments, manual comparisons, and fragmented logs. These observations are never integrated into a coherent model. What we get is not understanding â€” but a collection of disconnected observations. The system is never seen as a whole â€” rather built upon assumptions.</p>
+          <p>Real systems are defined by multiple independent parameters. Each configuration is just one observation in a much larger space. Yet exploration is typically performed through isolated runs: ad-hoc benchmarks, biased experiments, manual comparisons, and fragmented logs. These observations are never integrated into a coherent model. What we get is not understanding - but a collection of disconnected observations. The system is never seen as a whole - rather built upon assumptions.</p>
         </div>
       </section>
 
       <section id="workflow" class="section workflow">
         <div class="section-head reveal">
           <h2>From scattered probes to exploration.</h2>
-          <p>What if we stopped running experimentsâ€¦ and started exploring the system itself? FlexCartesian treats a system not as a set of scattered measurements, but as a holistic function that behaves over space with dimenions defined by system parameters. This shift in perspective from blind probes to parameteric analysis allows us to move from fragmented data points to a structured understanding of how the system behaves across different configurations. It enables us to identify patterns, trade-offs, and bottlenecks that would be invisible in isolated runs.</p>
+          <p>What if we stopped running experiments - and started exploring the system itself? FlexCartesian treats a system not as a set of scattered measurements, but as a holistic function that behaves over space with dimenions defined by system parameters. This shift in perspective from blind probes to parameteric analysis allows us to move from fragmented data points to a structured understanding of how the system behaves across different configurations. It enables us to identify patterns, trade-offs, and bottlenecks that would be invisible in isolated runs.</p>
         </div>
         <div class="feature-grid">
           <article class="feature-card reveal">
@@ -69,16 +69,16 @@
           <article class="feature-card reveal reveal-delay-2">
           <div class="step-head">
           <div class="step-num">03</div>
-            <h3>Launch digital twin</h3>
+            <h3>Create behavioural blueprint</h3>
           </div>
-            <p>Behavioural functions obtain live data from real system. Use FlexCartesian as a modelling framework around actual applications, APIs, services, or infrastructure - and let the twin evolve in time, remaining linked to real system.</p>
+            <p>Behavioural functions obtain live data from real system via apps, APIs, services, or infrastructure - and let the blueprint evolve in time, remaining linked to real system.</p>
           </article>
           <article class="feature-card reveal">
           <div class="step-head">
             <div class="step-num">04</div>
             <h3>Get insights</h3>
           </div>
-            <p>Observe full behavioural landscape of your system. Apply built-in and your own analyzers to identify bottlenecks, trade-offs, and parameter influence. Export to CSV, JSON, YAML, or MD for further analysis and visualisation.</p>
+            <p>Visualize full behavioural blueprint of your system. Apply built-in and your own analyzers to identify bottlenecks, sweet spots, and influences. Export the blueprint for further analysis.</p>
           </article>
         </div>
       </section>
@@ -88,25 +88,54 @@
     <h2>Concise for human, precise for insight.</h2>
   </div>
   <div class="section-head reveal reveal-delay-1">
-    <p>The system is evaluated across the entire parameter space. Each result becomes part of a structured behavioural model â€” not just an individual measurement. Everything in high-level declarative style.</p>
+    <p>Use case: as an LLM, ChatGPT may answer the same repeated question differently, depending on its parameters - tokens and temperature. In many fields, such as science or legal, stability of the answering is crucial. Let's apply FlexCartesian to build ChatGPT's behavioural blueprint and find its optimal operating mode to ensure stability of its answers, based on test request: "Explain quantum mechanics in one sentence."</p>
   </div>
-
   <div class="feature-grid">
 
 <article class="feature-card reveal">
   <div class="code-card code-large">
     <pre><code><span class="kw">require</span> <span class="str">'flex-cartesian'</span>
+<span class="kw">require_relative</span> <span class="str">'models'</span>
 
-<span class="kw">space</span> = <span class="cls">FlexCartesian</span>.<span class="fn">new</span>({<span class="sym">count:</span>[2, 4], <span class="sym">size:</span>[32, 64], <span class="sym">target:</span>[<span class="str">"8.8.8.8"</span>, <span class="str">"1.1.1.1"</span>, <span class="str">"208.67.222.222"</span>]})
+<span style="color: var(--muted)"># create parameter space for ChatGPT's behaviour</span>
+<span class="kw">space</span> = <span class="cls">FlexCartesian</span>.<span class="fn">new</span>({ <span class="sym">temperature:</span> [0.0, 0.2, 0.4, 0.6, 0.8, 1.0], <span class="sym">tokens:</span> [20, 50, 100, 200, 400] })
 
-<span class="kw">result</span> = {}<br>
-<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:command</span>) { |v| <span class="str">"ping -c #{v.count} -s #{v.size} #{v.target}"</span> }
-<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:raw</span>, <span class="sym">hide:</span> <span class="kw">true</span>) { |v| result[v.command] ||= <span class="str">`#{v.command} 2&gt;&amp;1`</span> }
-<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:time</span>) { |v| v.raw[/min\/avg\/max\/(?:mdev|stddev) = [^\/]+\/([^\/]+)/, 1]&amp;.<span class="fn">to_f</span>&amp;.<span class="fn">round</span>(2) }
+<span style="color: var(--muted)"># create test prompt for ChatGPT</span>
+<span class="kw">msg</span> = [
+  { <span class="sym">role:</span> <span class="str">"system"</span>, <span class="sym">content:</span> <span class="str">"You are a precise and consistent assistant."</span> },
+  { <span class="sym">role:</span> <span class="str">"user"</span>, <span class="sym">content:</span> <span class="str">"Explain quantum mechanics in one sentence."</span> }
+]
 
-<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:run</span>, <span class="sym">progress:</span> <span class="kw">true</span>, <span class="sym">title:</span> <span class="str">"Obtaining data"</span>)
+<span style="color: var(--muted)"># first response from ChatGPT</span>
+<span class="kw">anchor</span> = <span class="kw">nil</span>
 
-<span class="kw">space</span>.<span class="fn">output</span>(<span class="sym">colorize:</span> <span class="kw">true</span>)</code></pre>
+<span style="color: var(--muted)"># behavioural functions in the parameter space:</span>
+<span style="color: var(--muted)"># ChatGPT's responses</span>
+<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:response</span>) { |v| <span class="fn">llm</span>(<span class="sym">temperature:</span> v.temperature, <span class="sym">max_tokens:</span> v.tokens, <span class="sym">messages:</span> <span class="kw">msg</span> )
+                                  .<span class="fn">gsub</span>(<span class="str">/[\r\n]+/</span>, <span class="str">' '</span>).<span class="fn">downcase</span>.<span class="fn">strip</span> }
+<span style="color: var(--muted)"># semantic embeddings of the responses</span>
+<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:embedding</span>) { |v| <span class="kw">anchor</span> ||= <span class="fn">embed</span>(v.response); <span class="fn">embed</span>(v.response) }
+<span style="color: var(--muted)"># quantified semantic shift from the first response stored in `anchor`</span>
+<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:semantic_shift</span>) { |v| (1.0 - <span class="fn">cosine</span>(v.embedding, <span class="kw">anchor</span>)).<span class="fn">round</span>(2) }
+
+<span style="color: var(--muted)"># compute all the functions in the parameter space</span>
+<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:run</span>, <span class="sym">progress:</span> <span class="kw">true</span>, <span class="sym">title:</span> <span class="str">"Obtaining behavioural data"</span>)
+
+<span style="color: var(--muted)"># parameter space with behavioral functions are the behavioural blueprint - we can visualize it</span>
+<span class="kw">space</span>.<span class="fn">visualize</span>(<span class="sym">x:</span> <span class="sym">:temperature</span>, <span class="sym">y:</span> <span class="sym">:tokens</span>, <span class="sym">function:</span> <span class="sym">:semantic_shift</span>,
+  <span class="sym">format:</span> <span class="sym">:html</span>,
+  <span class="sym">output:</span> <span class="str">"./viz.html"</span>,
+  <span class="sym">show_legend:</span> <span class="kw">false</span>,
+  <span class="sym">show_z_title:</span> <span class="kw">true</span>,
+  <span class="sym">show_grid:</span> <span class="kw">true</span>,
+  <span class="sym">equal_axes:</span> <span class="kw">true</span>,
+  <span class="sym">start_at_zero:</span> <span class="kw">true</span>,
+  <span class="sym">show_plot_title:</span> <span class="kw">false</span>
+)
+
+<span style="color: var(--muted)"># finally, analyze how precisely parameters influence ChatGPT's response</span>
+<span class="kw">a</span> = <span class="kw">space</span>.<span class="fn">analyzer</span>(<span class="sym">:morris</span>, <span class="sym">trajectories:</span> 10, <span class="sym">step:</span> 0.1, <span class="sym">seed:</span> 42)
+<span class="kw">a</span>.<span class="fn">output</span>(<span class="sym">colorize:</span> <span class="kw">true</span>, <span class="sym">function:</span> <span class="sym">:semantic_shift</span>)</code></pre>
   </div>
 </article>
 
@@ -115,9 +144,9 @@
 
 <section id="outputs" class="section outputs">
   <div class="section-head reveal">
-    <h2>Complete behavioural model.</h2>
-    <p>Instead of isolated runs, FlexCartesian builds a continuous behavioural model of the system across its entire parameter space. It reveals how performance evolves across dimensions, where optimal configurations emerge, and where limits, bottlenecks, and trade-offs define the system's behaviour.</p>
-    <p>This makes optimisation systematic rather than experimental, exposes non-obvious interactions between parameters, and makes system behaviour reproducible and explainable. The system is no longer sampled. It is understood.</p>
+    <h2>Complete behavioural blueprint.</h2>
+    <p>Instead of isolated runs, FlexCartesian builds full behavioural blueprint of the system across its entire parameter space. It reveals where optimal configurations emerge, and where limits, bottlenecks, and trade-offs define the system's behaviour.</p>
+    <p>This makes optimisation systematic rather than experimental, exposes non-obvious interactions between parameters, and makes system behaviour reproducible and explainable. The system is no longer sampled. It is understood.</p>   
   </div>
 
 <div class="outputs-grid">
@@ -126,8 +155,8 @@
         <iframe src="assets/viz/viz.html" title="FlexCartesian Heatmap" loading="lazy"></iframe>
       </div>
       <div class="output-overlay">
-        <h3>Heatmaps</h3>
-        <p>Expose productive regions in parameter space.</p>
+        <h3>Heatmap</h3>
+        <p>FlexCartesian has proven that ChatGPT is perfectly stable if the temperature does not exceed 0.4 - and, notably, it remains stable with longer context lengths. Thus we have found the optimal operating mode for answering scientific questions - and this has been validated in numbers.</p>
       </div>
     </article>
 
