@@ -1051,20 +1051,26 @@ main {
   display: flex;
   flex-direction: column;
   height: 100%;
-  text-align: center; /* Центрируем заголовки и абзацы */
+  min-height: auto !important; /* Перебиваем min-height: 500px из общих стилей */
+  text-align: left; /* Параграфы и списки выравниваем строго по левому краю */
   padding: 32px 24px;
 }
 
 .positioning .output-card h3 {
-  margin-bottom: 14px;
+  text-align: center; /* Центрируем только заголовки */
   font-size: 1.25rem;
+  margin-bottom: 20px;
+  min-height: 3.2em; /* Выделяем ровно 2 строки под заголовок, чтобы текст ниже начинался на одной линии */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .positioning .output-card p {
   color: var(--muted);
   font-size: 0.95rem;
   line-height: 1.6;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 
 /* Современные списки без дефолтных буллитов */
@@ -1072,13 +1078,12 @@ main {
   list-style: none;
   padding: 0;
   margin: 0;
-  text-align: left; /* Сам список оставляем по левому краю для удобства чтения */
-  margin-top: auto; /* Прижимаем список к низу карточки, если тексты над ними разной длины */
 }
 
 .modern-list li {
   position: relative;
   padding-left: 20px;
+  margin-left: 8px; /* Чуть сдвигаем весь список вправо, чтобы точки не липли к невидимому краю */
   margin-bottom: 14px;
   color: var(--muted);
   font-size: 0.95rem;
