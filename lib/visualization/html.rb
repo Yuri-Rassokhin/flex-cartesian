@@ -105,6 +105,7 @@ normalized_rows.each do |row|
           x: #{JSON.generate(x_values)},
           y: #{JSON.generate(y_values)},
           z: #{JSON.generate(z_matrix)},
+          hovertemplate: "#{x}: %{x}<br>#{y}: %{y}<br>#{function}: %{z}<extra></extra>",
           connectgaps: false,
           showscale: #{show_legend ? 'true' : 'false'},
           // Задаем светло-голубую цветовую шкалу (от бледного к более насыщенному)

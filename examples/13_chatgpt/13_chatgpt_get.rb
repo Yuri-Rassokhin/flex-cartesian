@@ -42,9 +42,9 @@ space = FlexCartesian.new({
 #  model: [ "gpt-4.1", "gpt-4o", "gpt-4o-mini" ],
    temperature: [0.0, 0.2, 0.4, 0.6, 0.8, 1.0],
   prompt: [
-#    "Explain quantum mechanics in one sentence",
-    "Write a quatrain about war"
-#    "Solve 2+2"
+#    "Explain quantum mechanics in one sentence"
+#    "Write a quatrain about war"
+    "Solve 2+2"
   ],
   tokens: [20, 50, 100, 200, 400]
 })
