@@ -164,6 +164,37 @@
       <div class="output-visual output-bars" style="background: #fff;">
         <div class="sensitivity-table-wrapper">
           <table class="sensitivity-table">
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Influence</th>
+      <th>Deviation</th>
+      <th>Probes</th>
+      <th>Category</th>
+      <th>Linearity</th>
+      <th>Recommendation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="mono">tokens</td>
+      <td>0.15</td>
+      <td>0.29</td>
+      <td>10</td>
+      <td><span class="badge badge-strong">strong</span></td>
+      <td>highly non-linear</td>
+      <td>critical parameter with complex interactions; prioritize for variance-based analysis (e.g. Sobol)</td>
+    </tr>
+    <tr>
+      <td class="mono">temperature</td>
+      <td>0.13</td>
+      <td>0.2</td>
+      <td>10</td>
+      <td><span class="badge badge-strong">strong</span></td>
+      <td>highly non-linear</td>
+      <td>critical parameter with complex interactions; prioritize for variance-based analysis (e.g. Sobol)</td>
+    </tr>
+  </tbody>
             </table>
         </div>
       </div>
