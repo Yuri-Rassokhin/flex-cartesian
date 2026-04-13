@@ -22,7 +22,7 @@
   height: 100%;
   overflow-x: auto;
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch; /* Плавный скролл на мобильных */
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Стили самой таблицы */
@@ -30,7 +30,7 @@
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  font-size: 0.75rem; /* Уменьшенный шрифт для карточки */
+  font-size: 0.75rem;
   color: #111827;
   margin: 0;
 }
@@ -39,16 +39,16 @@
 .sensitivity-table td {
   padding: 8px 12px;
   border-bottom: 1px solid #e5e7eb;
-  white-space: nowrap; /* Запрещаем перенос строк, чтобы таблица была ровной */
-  background: transparent !important; /* Убиваем паразитный фон колонок */
+  white-space: nowrap;
+  background: transparent !important;
 }
 
 .sensitivity-table th {
-  background-color: #f3f4f6 !important; /* Светлый фон для заголовка */
+  background-color: #f3f4f6 !important;
   font-weight: 600;
   color: #4b5563;
   position: sticky;
-  top: 0; /* Фиксируем заголовок при вертикальном скролле */
+  top: 0;
   z-index: 10;
 }
 
@@ -57,7 +57,7 @@
 }
 
 .sensitivity-table tr:hover td {
-  background-color: rgba(248, 250, 252, 0.05) !important; /* Полупрозрачный фон для темной темы */
+  background-color: rgba(248, 250, 252, 0.05) !important;
 }
 
 /* Моноширинный шрифт для названий параметров */
@@ -84,18 +84,18 @@
 /* 1. Карточка становится умным Flex-контейнером */
 .output-card {
   display: flex;
-  flex-direction: column; /* Выстраиваем контент сверху вниз */
+  flex-direction: column;
   overflow: hidden;
-  padding: 0 !important; /* Перебиваем padding: 24px из общих стилей */
-  min-height: 500px; /* Базовая высота */
+  padding: 0 !important;
+  min-height: 500px;
 }
 
 /* 2. Блок с графикой забирает всё оставшееся место */
 .output-visual {
   position: relative;
   width: 100%;
-  flex-grow: 1; /* Блок забирает всё свободное пространство под плашкой */
-  min-height: 350px; /* Гарантия минимальной высоты графика на мобильных */
+  flex-grow: 1;
+  min-height: 350px;
   border: none;
   border-radius: 0;
   margin: 0;
@@ -108,7 +108,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%; /* График заполняет выделенный ему flex-контейнер */
+  height: 100%;
   border: none;
 }
 
@@ -116,17 +116,16 @@
 .output-overlay {
   position: relative;
   width: 100%;
-  order: -1; /* МАГИЯ: заставляет плашку быть первой сверху, не меняя HTML */
+  order: -1;
   padding: 24px;
-  background: rgba(7, 17, 31, 0.85); /* Полупрозрачный фон в цвет темы */
+  background: rgba(7, 17, 31, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
   z-index: 20;
-  flex-shrink: 0; /* Запрещаем сжимать текстовый блок на тесных экранах */
+  flex-shrink: 0;
 }
 
-/* Подчищаем отступы внутри плашки */
 .output-overlay h3 {
   margin: 0 0 8px !important;
   color: var(--text);
@@ -1051,16 +1050,19 @@ main {
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: auto !important; /* Перебиваем min-height: 500px из общих стилей */
-  text-align: left; /* Параграфы и списки выравниваем строго по левому краю */
-  padding: 32px 24px;
+  min-height: auto !important; /* Убираем 500px, оставшиеся от графиков */
+  text-align: left;
+  padding: 24px 16px 32px 16px; /* 24px сверху, 16px слева/справа, 32px снизу */
 }
 
 .positioning .output-card h3 {
-  text-align: center; /* Центрируем только заголовки */
+  text-align: center;
   font-size: 1.25rem;
-  margin-bottom: 20px;
-  min-height: 3.2em; /* Выделяем ровно 2 строки под заголовок, чтобы текст ниже начинался на одной линии */
+  line-height: 1.35;
+  margin: 0 auto 24px auto; /* 24px снизу - ровно такой же отступ, как 24px сверху карточки */
+  min-height: 2.7em; /* Жестко выделяем высоту под ровно 2 строки */
+  max-width: 260px; /* Заставляем текст всегда переноситься в 2 строки на десктопе */
+  text-wrap: balance; /* Красивый перенос в современных браузерах */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1071,19 +1073,21 @@ main {
   font-size: 0.95rem;
   line-height: 1.6;
   margin-bottom: 24px;
+  padding-left: 20px; /* Невидимый отступ текста слева */
+  padding-right: 20px; /* Равный невидимый отступ текста справа */
 }
 
 /* Современные списки без дефолтных буллитов */
 .modern-list {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin-left: 0; /* Контейнер списка начинается от самого края карточки */
+  margin-right: 20px; /* Справа такой же отступ, как у параграфа */
 }
 
 .modern-list li {
   position: relative;
-  padding-left: 20px;
-  margin-left: 8px; /* Чуть сдвигаем весь список вправо, чтобы точки не липли к невидимому краю */
+  padding-left: 20px; /* Текст внутри списка начинается на 20px, идеально совпадая с текстом параграфа! */
   margin-bottom: 14px;
   color: var(--muted);
   font-size: 0.95rem;
@@ -1098,8 +1102,8 @@ main {
 .modern-list li::before {
   content: "";
   position: absolute;
-  left: 0;
-  top: 0.45em; /* Центрируем относительно первой строки текста */
+  left: 0; /* Точка висит слева, до начала текста (Hanging bullet) */
+  top: 0.45em;
   width: 6px;
   height: 6px;
   border-radius: 50%;
@@ -1144,7 +1148,7 @@ main {
     width: 100%;
   }
   
-  /* Делаем так, чтобы 3 карточки на планшете выстраивались в колонку */
+  /* На планшете выстраиваем карточки в колонку */
   .positioning-grid {
     grid-template-columns: 1fr;
   }
@@ -1275,3 +1279,4 @@ main {
     margin: 4px auto;
   }
 }
+
