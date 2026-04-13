@@ -108,14 +108,13 @@
 <span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:response</span>) { |v| <span class="fn">llm</span>(<span class="sym">temperature:</span> v.temperature, <span class="sym">max_tokens:</span> v.tokens, <span class="sym">messages:</span> <span class="kw">msg</span> ) }
 <span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:embedding</span>) { |v| <span class="kw">anchor</span> ||= <span class="fn">embed</span>(v.response); <span class="fn">embed</span>(v.response) }
 <span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:semantic_shift</span>) { |v| (1.0 - <span class="fn">cosine</span>(v.embedding, <span class="kw">anchor</span>)).<span class="fn">round</span>(2) }
-<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:run</span>, <span class="sym">progress:</span> <span class="kw">true</span>, <span class="sym">title:</span> <span class="str">"Obtaining behavioural data"</span>)
+<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:run</span>, <span class="sym">progress:</span> <span class="kw">true</span>, <span class="sym">title:</span> <span class="str">"Building behavioural blueprint"</span>)
 
-<span style="color: var(--muted)"># visualize behavioural blueprint as a heatmap</span>
+<span style="color: var(--muted)"># visualize blueprint as a heatmap</span>
 <span class="kw">space</span>.<span class="fn">visualize</span>(<span class="sym">x:</span> <span class="sym">:temperature</span>, <span class="sym">y:</span> <span class="sym">:tokens</span>, <span class="sym">function:</span> <span class="sym">:semantic_shift</span>)
 
-<span style="color: var(--muted)"># quantify influence of ChatGPT parameters to its response</span>
-<span class="kw">a</span> = <span class="kw">space</span>.<span class="fn">analyzer</span>(<span class="sym">:morris</span>, <span class="sym">trajectories:</span> 10, <span class="sym">step:</span> 0.1, <span class="sym">seed:</span> 42)
-<span class="kw">a</span>.<span class="fn">output</span>(<span class="sym">colorize:</span> <span class="kw">true</span>, <span class="sym">function:</span> <span class="sym">:semantic_shift</span>)</code></pre>
+<span style="color: var(--muted)"># quantify influence of the parameters in the blueprint</span>
+<span class="fn">analyzer</span>(<span class="sym">:morris</span>, <span class="sym">trajectories:</span> 10, <span class="sym">step:</span> 0.1, <span class="sym">seed:</span> 42).<span class="fn">output</span>(<span class="sym">function:</span> <span class="sym">:semantic_shift</span>)</code></pre>
   </div>
 </article>
 
