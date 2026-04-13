@@ -49,7 +49,7 @@
 <section id="workflow" class="section workflow">
         <div class="section-head reveal">
           <h2>Parametric Behaviour Blueprinting.</h2>
-          <p>What if we stopped running blind experiments and started exploring the system itself? FlexCartesian introduces a paradigm shift: <strong>Parametric Behaviour Blueprinting (PBB)</strong>. It treats a system not as a set of scattered measurements, but as a holistic function over a space with dimensions defined by its parameters. This shift allows us to move from fragmented data points to a structured, mathematically proven understanding of system behaviour. It enables us to identify patterns, trade-offs, and bottlenecks that remain invisible in isolated runs.</p>
+          <p>What if we stopped running blind experiments and started exploring the system itself? FlexCartesian introduces a paradigm shift: <strong>Parametric Behaviour Blueprinting (PBB)</strong>. It treats a system not as a set of scattered measurements, but as a holistic function over a space with dimensions defined by its parameters. This shift allows us to move from fragmented data points to a structured, mathematically proven understanding of system behaviour.</p>
         </div>
         <div class="feature-grid">
           <article class="feature-card reveal">
@@ -109,9 +109,9 @@
 <span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:response</span>) { |v| <span class="fn">llm</span>(<span class="sym">temperature:</span> v.temperature, <span class="sym">max_tokens:</span> v.tokens, <span class="sym">messages:</span> <span class="kw">msg</span> ) }
 <span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:embedding</span>) { |v| <span class="kw">anchor</span> ||= <span class="fn">embed</span>(v.response); <span class="fn">embed</span>(v.response) }
 <span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:semantic_shift</span>) { |v| (1.0 - <span class="fn">cosine</span>(v.embedding, <span class="kw">anchor</span>)).<span class="fn">round</span>(2) }
-<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:run</span>, <span class="sym">progress:</span> <span class="kw">true</span>, <span class="sym">title:</span> <span class="str">"Building behaviour blueprint"</span>)
+<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:run</span>, <span class="sym">progress:</span> <span class="kw">true</span>, <span class="sym">title:</span> <span class="str">"Extracting behavioural blueprint"</span>)
 
-<span style="color: var(--muted)"># visualize behaviour blueprint as a 2D-heatmap</span>
+<span style="color: var(--muted)"># visualize behavioural blueprint as a 2D-heatmap</span>
 <span class="kw">space</span>.<span class="fn">visualize</span>(<span class="sym">x:</span> <span class="sym">:temperature</span>, <span class="sym">y:</span> <span class="sym">:tokens</span>, <span class="sym">function:</span> <span class="sym">:semantic_shift</span>)
 
 <span style="color: var(--muted)"># quantify influence of the parameters in the blueprint</span>
