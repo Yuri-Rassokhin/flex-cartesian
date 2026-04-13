@@ -1171,7 +1171,7 @@ main {
     justify-self: end;
   }
 
-  .nav {
+.nav {
     position: fixed;
     top: 0;
     left: 0;
@@ -1185,7 +1185,7 @@ main {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 20px;
+    gap: 8px; /* УМЕНЬШИЛИ: было 20px */
     padding: 20px;
     z-index: 45;
     opacity: 0;
@@ -1196,8 +1196,8 @@ main {
   }
 
   .nav a {
-    font-size: 1.25rem;
-    padding: 12px 24px;
+    font-size: 1.15rem; /* УМЕНЬШИЛИ: было 1.25rem */
+    padding: 10px 24px; /* УМЕНЬШИЛИ: было 12px 24px */
     width: 100%;
     text-align: center;
   }
