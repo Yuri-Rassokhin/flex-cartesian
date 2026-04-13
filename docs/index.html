@@ -122,16 +122,7 @@
 <span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:run</span>, <span class="sym">progress:</span> <span class="kw">true</span>, <span class="sym">title:</span> <span class="str">"Obtaining behavioural data"</span>)
 
 <span style="color: var(--muted)"># parameter space with behavioral functions are the behavioural blueprint - we can visualize it</span>
-<span class="kw">space</span>.<span class="fn">visualize</span>(<span class="sym">x:</span> <span class="sym">:temperature</span>, <span class="sym">y:</span> <span class="sym">:tokens</span>, <span class="sym">function:</span> <span class="sym">:semantic_shift</span>,
-  <span class="sym">format:</span> <span class="sym">:html</span>,
-  <span class="sym">output:</span> <span class="str">"./viz.html"</span>,
-  <span class="sym">show_legend:</span> <span class="kw">false</span>,
-  <span class="sym">show_z_title:</span> <span class="kw">true</span>,
-  <span class="sym">show_grid:</span> <span class="kw">true</span>,
-  <span class="sym">equal_axes:</span> <span class="kw">true</span>,
-  <span class="sym">start_at_zero:</span> <span class="kw">true</span>,
-  <span class="sym">show_plot_title:</span> <span class="kw">false</span>
-)
+<span class="kw">space</span>.<span class="fn">visualize</span>(<span class="sym">x:</span> <span class="sym">:temperature</span>, <span class="sym">y:</span> <span class="sym">:tokens</span>, <span class="sym">function:</span> <span class="sym">:semantic_shift</span>)
 
 <span style="color: var(--muted)"># finally, analyze how precisely parameters influence ChatGPT's response</span>
 <span class="kw">a</span> = <span class="kw">space</span>.<span class="fn">analyzer</span>(<span class="sym">:morris</span>, <span class="sym">trajectories:</span> 10, <span class="sym">step:</span> 0.1, <span class="sym">seed:</span> 42)
@@ -156,7 +147,7 @@
       </div>
       <div class="output-overlay">
         <h3>Heatmap</h3>
-        <p>FlexCartesian has proven that ChatGPT is perfectly stable if the temperature does not exceed 0.4 - and, notably, it remains stable with longer context lengths. Thus we have validated the optimal operating mode for answering scientific questions.</p>
+        <p>"LLM responses are stable if the temperature does not exceed 0.4, including longer context lengths. This is the optimal operating mode for answering scientific questions."</p>
       </div>
     </article>
 

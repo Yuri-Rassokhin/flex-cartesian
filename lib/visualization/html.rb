@@ -4,7 +4,7 @@ require "csv"
 require "json"
 require 'tempfile'
 
-def visualize(format: :html, x:, y:, function:, output: nil, show_legend: true, show_z_title: true, show_grid: true, equal_axes: false, start_at_zero: true, show_plot_title: true)
+def visualize(format: :html, x:, y:, function:, output: nil, show_legend: false, show_z_title: true, show_grid: true, equal_axes: true, start_at_zero: true, show_plot_title: false)
   raise "X-asis of visialization cannot be empty" unless x
   raise "Function of visialization cannot be empty" unless function
 
