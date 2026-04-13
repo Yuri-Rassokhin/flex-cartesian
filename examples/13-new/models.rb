@@ -34,7 +34,7 @@ def llm(model: "gpt-4.1-mini", temperature:, messages:, max_tokens:)
     raise "OpenAI API error: #{json["error"]["message"]}"
   end
 
-  json["choices"][0]["message"]["content"]
+  json["choices"][0]["message"]["content"].gsub(/[\r\n]+/, ' ').downcase.strip
 end
 
 EMBEDDER = Informers.pipeline("embedding", "sentence-transformers/all-MiniLM-L6-v2")

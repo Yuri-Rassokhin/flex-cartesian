@@ -14,7 +14,7 @@ anchor = nil
 
 # DEFINE BEHAVIOURAL FUNCTIONS IN THE PARAMETER SPACE, FOR EACH COMBINATTION OF PARAMETERS:
 # ChatGPT's responses
-space.func(:add, :response) { |v| llm(temperature: v.temperature, max_tokens: v.tokens, messages: msg ).gsub(/[\r\n]+/, ' ').downcase.strip }
+space.func(:add, :response) { |v| llm(temperature: v.temperature, max_tokens: v.tokens, messages: msg ) }
 # semantic embeddings of the responses
 space.func(:add, :embedding, hide: true) { |v| anchor ||= embed(v.response); embed(v.response) }
 # quantified semantic shift from the very first response stored in `anchor`

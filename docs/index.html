@@ -109,22 +109,16 @@
 <span style="color: var(--muted)"># first response from ChatGPT</span>
 <span class="kw">anchor</span> = <span class="kw">nil</span>
 
-<span style="color: var(--muted)"># behavioural functions in the parameter space:</span>
-<span style="color: var(--muted)"># ChatGPT's responses</span>
-<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:response</span>) { |v| <span class="fn">llm</span>(<span class="sym">temperature:</span> v.temperature, <span class="sym">max_tokens:</span> v.tokens, <span class="sym">messages:</span> <span class="kw">msg</span> )
-                                  .<span class="fn">gsub</span>(<span class="str">/[\r\n]+/</span>, <span class="str">' '</span>).<span class="fn">downcase</span>.<span class="fn">strip</span> }
-<span style="color: var(--muted)"># semantic embeddings of the responses</span>
+<span style="color: var(--muted)"># define behavioural functions in the parameter space:</span>
+<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:response</span>) { |v| <span class="fn">llm</span>(<span class="sym">temperature:</span> v.temperature, <span class="sym">max_tokens:</span> v.tokens, <span class="sym">messages:</span> <span class="kw">msg</span> ) }
 <span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:embedding</span>) { |v| <span class="kw">anchor</span> ||= <span class="fn">embed</span>(v.response); <span class="fn">embed</span>(v.response) }
-<span style="color: var(--muted)"># quantified semantic shift from the first response stored in `anchor`</span>
 <span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:semantic_shift</span>) { |v| (1.0 - <span class="fn">cosine</span>(v.embedding, <span class="kw">anchor</span>)).<span class="fn">round</span>(2) }
-
-<span style="color: var(--muted)"># compute all the functions in the parameter space</span>
 <span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:run</span>, <span class="sym">progress:</span> <span class="kw">true</span>, <span class="sym">title:</span> <span class="str">"Obtaining behavioural data"</span>)
 
-<span style="color: var(--muted)"># parameter space with behavioral functions are the behavioural blueprint - we can visualize it</span>
+<span style="color: var(--muted)"># visualize behavioural blueprint</span>
 <span class="kw">space</span>.<span class="fn">visualize</span>(<span class="sym">x:</span> <span class="sym">:temperature</span>, <span class="sym">y:</span> <span class="sym">:tokens</span>, <span class="sym">function:</span> <span class="sym">:semantic_shift</span>)
 
-<span style="color: var(--muted)"># finally, analyze how precisely parameters influence ChatGPT's response</span>
+<span style="color: var(--muted)"># quantify influence of ChatGPT parameters to its response</span>
 <span class="kw">a</span> = <span class="kw">space</span>.<span class="fn">analyzer</span>(<span class="sym">:morris</span>, <span class="sym">trajectories:</span> 10, <span class="sym">step:</span> 0.1, <span class="sym">seed:</span> 42)
 <span class="kw">a</span>.<span class="fn">output</span>(<span class="sym">colorize:</span> <span class="kw">true</span>, <span class="sym">function:</span> <span class="sym">:semantic_shift</span>)</code></pre>
   </div>
