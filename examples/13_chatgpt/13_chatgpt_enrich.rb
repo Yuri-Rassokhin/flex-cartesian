@@ -15,11 +15,9 @@ def cosine(v1, v2)
   dot / (n1 * n2)
 end
 
-space = FlexCartesian.new(source: :csv, separator: ';', uri: "./chatgpt_quantum.csv", dimensions: [:tokens, :temperature] )
+space = FlexCartesian.new(source: :csv, separator: ';', uri: "./chatgpt_poetry.csv", dimensions: [:tokens, :temperature] )
 
-anchor = space.data(:get, vector: { tokens: "20", temperature: "0.0" }, target: "response")
-raise "Bad anchor" unless anchor
-anchor = embed(anchor)
+anchor = embed(space.data(:get, vector: { tokens: "20", temperature: "0.0" }, target: "response"))
 
 space.func(:add, :response) { |v| space.data(:get, vector: v, target: "response") }
 space.func(:add, :embedding, hide: true) { |v| embed(v.response) }
@@ -31,3 +29,19 @@ space.output(format: :csv, file: "chatgpt_embeddings.csv")
 
 space.output(colorize: true)
 
+space.visualize(
+  format: :html,
+  x: :temperature,
+  y: :tokens,
+  function: :semantic_shift,
+  output: "./examples/13_chatgpt/viz.html",
+  show_legend: false,
+  show_z_title: true,
+  show_grid: true,
+  equal_axes: true,
+  start_at_zero: true,
+  show_plot_title: false
+)
+
+a = space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42)
+a.output(colorize:true, function: :semantic_shift)

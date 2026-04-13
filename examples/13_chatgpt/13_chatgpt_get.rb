@@ -40,13 +40,13 @@ end
 space = FlexCartesian.new({
    model: [ "gpt-4o-mini" ],
 #  model: [ "gpt-4.1", "gpt-4o", "gpt-4o-mini" ],
-   temperature: [0.0, 0.3, 0.7, 1.0],
+   temperature: [0.0, 0.2, 0.4, 0.6, 0.8, 1.0],
   prompt: [
-    "Explain quantum mechanics in one sentence",
-#    "Write a quatrain about war",
+#    "Explain quantum mechanics in one sentence",
+    "Write a quatrain about war"
 #    "Solve 2+2"
   ],
-  tokens: [20, 50, 100, 200]
+  tokens: [20, 50, 100, 200, 400]
 })
 
 space.func(:add, :response) do |v|
@@ -60,7 +60,7 @@ space.func(:add, :response) do |v|
     temperature: v.temperature,
     max_tokens: v.tokens,
     messages: messages
-  ).downcase.strip
+  ).gsub(/[\r\n]+/, ' ').downcase.strip
 end
 
 space.func(:run, progress: true, title: "Requesting  ChatGPT")

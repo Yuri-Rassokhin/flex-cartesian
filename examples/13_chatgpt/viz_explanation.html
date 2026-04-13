@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Surface Plot</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: Arial, sans-serif;
+    }
+    #chart {
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <div id="chart"></div>
+  <script>
+    const data = [{
+      type: "surface",
+      x: [0.0,0.2,0.4,0.6,0.8,1.0],
+      y: [20,50,100,200,400],
+      z: [[-2.220446049250313e-16,-2.220446049250313e-16,-2.220446049250313e-16,-2.220446049250313e-16,-2.220446049250313e-16,-2.220446049250313e-16],[0.15841714529554085,0.15841714529554085,0.13381057335191315,0.14750442891710747,0.2125179474532124,0.16195037660283407],[0.15841714529554085,0.22491070015550763,0.11147981110315963,0.15841714529554085,0.1836796810067517,0.12586024664136042],[0.22491070015550763,0.22491070015550763,0.15841714529554085,0.20199814685984951,0.11147981110315963,0.1895235440480264],[0.15841714529554085,0.15841714529554085,0.15841714529554085,0.19693879235518097,0.14078102459297015,0.20052214016585945]],
+      connectgaps: false,
+      showscale: false,
+      // Задаем светло-голубую цветовую шкалу (от бледного к более насыщенному)
+      colorscale: 'Bluered',
+      // Добавляем сетку на саму поверхность
+      contours: {
+        x: {
+          show: true,
+          color: '#ffffff', // Белый цвет линий (можно заменить на '#9e9e9e' для серых)
+          width: 1          // Толщина линий
+        },
+        y: {
+          show: true,
+          color: '#ffffff',
+          width: 1
+        }
+      }
+    }];
+
+    const layout = {
+      title: '',
+      scene: {
+      aspectmode: 'cube',
+        xaxis: {
+          title: "temperature",
+          showgrid: true,
+          zeroline: true,
+          rangemode: 'tozero',
+        },
+        yaxis: {
+          title: "tokens",
+          showgrid: true,
+          zeroline: true,
+          rangemode: 'tozero',
+        },
+        zaxis: {
+          title: "semantic_shift",
+          showgrid: true,
+          zeroline: true,
+          rangemode: 'tozero',
+        }
+      },
+      margin: { l: 0, r: 0, b: 0, t: 50 }
+    };
+
+    Plotly.newPlot("chart", data, layout, { responsive: true });
+  </script>
+</body>
+</html>

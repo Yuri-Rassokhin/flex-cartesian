@@ -33,7 +33,7 @@ end
       stream.puts cells.join(separator) + separator
       stream.puts separator + headers.map.with_index { |h,i| "-" * widths[i] }.join(separator) + separator
     when :csv
-      stream.puts headers.map.with_index { |h,i| fmt_cell(h, file: file, colorize: colorize, header: true, width: widths[i]) }.join(separator) + separator
+      stream.puts headers.map.with_index { |h,i| fmt_cell(h, file: file, colorize: colorize, header: true, width: widths[i]) }.join(separator)
     else
       stream.puts separator + headers.map.with_index { |h,i| fmt_cell(h, file: file, colorize: colorize, header: true, width: widths[i]) }.join(separator) + separator
     end
@@ -68,7 +68,7 @@ def cartesian_output(separator: "|", colorize: true, format: :plain, limit: nil,
     when :markdown
       out.puts sep + line + sep
     when :csv
-      out.puts line + sep
+      out.puts line
     end
   end
 
