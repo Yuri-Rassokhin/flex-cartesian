@@ -62,14 +62,14 @@
           <article class="feature-card reveal reveal-delay-1">
           <div class="step-head">
           <div class="step-num">02</div>
-            <h3>Express behavioural functions</h3>
+            <h3>Express behaviour functions</h3>
           </div>
             <p>Express system properties as functions, instead of relying on ad hoc notes or isolated runs.</p>
           </article>
           <article class="feature-card reveal reveal-delay-2">
           <div class="step-head">
           <div class="step-num">03</div>
-            <h3>Create behavioural blueprint</h3>
+            <h3>Build behaviour blueprint</h3>
           </div>
             <p>Behavioural functions obtain live data from real system via apps, APIs, services, or infrastructure - and let the blueprint evolve in time, remaining linked to real system.</p>
           </article>
@@ -78,7 +78,7 @@
             <div class="step-num">04</div>
             <h3>Get insights</h3>
           </div>
-            <p>Visualize full behavioural blueprint of your system. Apply built-in and your own analyzers to identify bottlenecks, sweet spots, and influences. Export the blueprint for further analysis.</p>
+            <p>Visualize full behaviour blueprint of your system. Apply built-in and your own analyzers to identify bottlenecks, sweet spots, and influences. Export the blueprint for further analysis.</p>
           </article>
         </div>
       </section>
@@ -88,7 +88,7 @@
     <h2>Concise for human, precise for insight.</h2>
   </div>
   <div class="section-head reveal reveal-delay-1">
-    <p>Use case: as an LLM, ChatGPT may answer the same repeated question differently, depending on its parameters - tokens and temperature. In many fields, such as science or legal, stability of the answering is crucial. Let's apply FlexCartesian to build ChatGPT's behavioural blueprint and find its optimal operating mode to ensure stability of its answers, based on test request: "Explain quantum mechanics in one sentence."</p>
+    <p>Use case: as an LLM, ChatGPT may answer the same repeated question differently, depending on its parameters - tokens and temperature. In many fields, such as science or legal, stability of the answering is crucial. Let's apply FlexCartesian to build ChatGPT's behaviour blueprint and find its optimal operating mode to ensure stability of its answers, based on test request: "Explain quantum mechanics in one sentence."</p>
   </div>
   <div class="feature-grid">
 
@@ -104,13 +104,13 @@
 <span style="color: var(--muted)"># behaviour space for ChatGPT</span>
 <span class="kw">space</span> = <span class="cls">FlexCartesian</span>.<span class="fn">new</span>({ <span class="sym">temperature:</span> [0.0, 0.2, 0.4, 0.6, 0.8, 1.0], <span class="sym">tokens:</span> [20, 50, 100, 200, 400] })
 
-<span style="color: var(--muted)"># behavioural functions of ChatGPT</span>
+<span style="color: var(--muted)"># behaviour functions for ChatGPT</span>
 <span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:response</span>) { |v| <span class="fn">llm</span>(<span class="sym">temperature:</span> v.temperature, <span class="sym">max_tokens:</span> v.tokens, <span class="sym">messages:</span> <span class="kw">msg</span> ) }
 <span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:embedding</span>) { |v| <span class="kw">anchor</span> ||= <span class="fn">embed</span>(v.response); <span class="fn">embed</span>(v.response) }
 <span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:semantic_shift</span>) { |v| (1.0 - <span class="fn">cosine</span>(v.embedding, <span class="kw">anchor</span>)).<span class="fn">round</span>(2) }
-<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:run</span>, <span class="sym">progress:</span> <span class="kw">true</span>, <span class="sym">title:</span> <span class="str">"Building behavioural blueprint"</span>)
+<span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:run</span>, <span class="sym">progress:</span> <span class="kw">true</span>, <span class="sym">title:</span> <span class="str">"Building behaviour blueprint"</span>)
 
-<span style="color: var(--muted)"># visualize blueprint as a heatmap</span>
+<span style="color: var(--muted)"># visualize behaviour blueprint as a 2D-heatmap</span>
 <span class="kw">space</span>.<span class="fn">visualize</span>(<span class="sym">x:</span> <span class="sym">:temperature</span>, <span class="sym">y:</span> <span class="sym">:tokens</span>, <span class="sym">function:</span> <span class="sym">:semantic_shift</span>)
 
 <span style="color: var(--muted)"># quantify influence of the parameters in the blueprint</span>
@@ -123,8 +123,8 @@
 
 <section id="outputs" class="section outputs">
   <div class="section-head reveal">
-    <h2>Complete behavioural blueprint.</h2>
-    <p>Instead of isolated runs, FlexCartesian builds full behavioural blueprint of the system across its entire parameter space. It reveals where optimal configurations emerge, and where limits, bottlenecks, and trade-offs define the system's behaviour.</p>
+    <h2>Complete behaviour blueprint.</h2>
+    <p>Instead of isolated runs, FlexCartesian builds full behaviour blueprint of the system across its entire parameter space. It reveals where optimal configurations emerge, and where limits, bottlenecks, and trade-offs define the system's behaviour.</p>
     <p>This makes optimisation systematic rather than experimental, exposes non-obvious interactions between parameters, and makes system behaviour reproducible and explainable. The system is no longer sampled. It is understood.</p>   
   </div>
 
