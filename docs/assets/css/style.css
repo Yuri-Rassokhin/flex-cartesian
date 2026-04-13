@@ -1050,19 +1050,17 @@ main {
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: auto !important; /* Убираем 500px, оставшиеся от графиков */
+  min-height: auto !important;
   text-align: left;
-  padding: 24px 16px 32px 16px; /* 24px сверху, 16px слева/справа, 32px снизу */
+  padding: 32px 24px; /* Симметричные отступы сверху, снизу и по бокам */
 }
 
 .positioning .output-card h3 {
   text-align: center;
   font-size: 1.25rem;
-  line-height: 1.35;
-  margin: 0 auto 24px auto; /* 24px снизу - ровно такой же отступ, как 24px сверху карточки */
-  min-height: 2.7em; /* Жестко выделяем высоту под ровно 2 строки */
-  max-width: 260px; /* Заставляем текст всегда переноситься в 2 строки на десктопе */
-  text-wrap: balance; /* Красивый перенос в современных браузерах */
+  line-height: 1.4;
+  margin: 0 0 32px 0; /* Отступ снизу точно такой же, как padding-top карточки (32px), поэтому заголовок визуально по центру */
+  min-height: 2.8em; /* Строго под 2 строки */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1072,43 +1070,26 @@ main {
   color: var(--muted);
   font-size: 0.95rem;
   line-height: 1.6;
-  margin-bottom: 24px;
-  padding-left: 20px; /* Невидимый отступ текста слева */
-  padding-right: 20px; /* Равный невидимый отступ текста справа */
+  margin: 0 0 32px 0; /* Отступ до списка */
+  min-height: 6.5em; /* Жестко фиксируем высоту абзаца (вмещает до 4 строк). Теперь списки во всех карточках начнутся ровно на одном пикселе */
 }
 
-/* Современные списки без дефолтных буллитов */
+/* Списки без точек, акцентным цветом */
 .modern-list {
   list-style: none;
   padding: 0;
-  margin-left: 0; /* Контейнер списка начинается от самого края карточки */
-  margin-right: 20px; /* Справа такой же отступ, как у параграфа */
+  margin: 0;
 }
 
 .modern-list li {
-  position: relative;
-  padding-left: 20px; /* Текст внутри списка начинается на 20px, идеально совпадая с текстом параграфа! */
-  margin-bottom: 14px;
-  color: var(--muted);
+  color: var(--accent); /* Текст цвета неоновой точки */
   font-size: 0.95rem;
   line-height: 1.5;
+  margin-bottom: 14px;
 }
 
 .modern-list li:last-child {
   margin-bottom: 0;
-}
-
-/* Светящаяся точка вместо скучного кружочка */
-.modern-list li::before {
-  content: "";
-  position: absolute;
-  left: 0; /* Точка висит слева, до начала текста (Hanging bullet) */
-  top: 0.45em;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 12px rgba(108, 229, 255, 0.8);
 }
 
 .positioning-closing {
@@ -1148,7 +1129,7 @@ main {
     width: 100%;
   }
   
-  /* На планшете выстраиваем карточки в колонку */
+  /* Делаем так, чтобы 3 карточки на планшете выстраивались в колонку */
   .positioning-grid {
     grid-template-columns: 1fr;
   }
@@ -1279,4 +1260,3 @@ main {
     margin: 4px auto;
   }
 }
-
