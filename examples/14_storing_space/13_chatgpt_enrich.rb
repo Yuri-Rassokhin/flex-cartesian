@@ -27,21 +27,6 @@ space.func(:run)
 
 space.output(format: :csv, file: "chatgpt_embeddings.csv")
 
-space.output(colorize: true)
+space.visualize(x: :temperature, y: :tokens, function: :semantic_shift, output: "./examples/13_chatgpt/viz.html")
 
-space.visualize(
-  format: :html,
-  x: :temperature,
-  y: :tokens,
-  function: :semantic_shift,
-  output: "./examples/13_chatgpt/viz.html",
-  show_legend: false,
-  show_z_title: true,
-  show_grid: true,
-  equal_axes: true,
-  start_at_zero: true,
-  show_plot_title: false
-)
-
-a = space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42)
-a.output(colorize:true, function: :semantic_shift)
+space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42).output(function: :semantic_shift)

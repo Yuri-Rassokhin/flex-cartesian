@@ -6,7 +6,7 @@ require 'uri'
 OPENAI_TOKEN = ENV["OPENAI_TOKEN"]
 
 def llm(model: "gpt-4.1-mini", temperature:, messages:, max_tokens:)
-  raise "Missing OPENAI_TOKEN" unless OPENAI_TOKEN
+  raise "Missing OPENAI_TOKEN environment variable, please set it for your OpenAI API" unless OPENAI_TOKEN
 
   sleep 0.2 # to respect API rate
   uri = URI("https://api.openai.com/v1/chat/completions")
