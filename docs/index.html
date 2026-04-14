@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=4" />
+  <link rel="stylesheet" href="assets/css/style.css?v=5" />
 </head>
 <body>
   <div class="site-shell">
@@ -88,24 +88,24 @@
     <h2>Concise for human, precise for insight.</h2>
   </div>
   <div class="section-head reveal reveal-delay-1">
-    <p>Exemplary use case: ChatGPT may answer differently to the same repeated question. However, in such fields as science, the stability of an answer is crucial. Let's build ChatGPT's behavioural blueprint and find its absolute optimal operating mode to ensure stability of responses.</p>
+	<p>Let’s ground this in a real-world scenario. LLMs tend to answer the same question differently each time. For scientific topics, inconsistency is unacceptable. Using FlexCartesian, we can extract a complete behavioural blueprint of the LLM and reveal its optimal operating mode to ensure response stability.</p>
   </div>
   
   <div class="feature-grid">
 
 <article class="feature-card reveal">
   <div class="code-card code-large">
-<pre><code><span style="color: var(--muted)"># test prompt for ChatGPT</span>
+<pre><code><span style="color: var(--muted)"># test prompt; we'll use ChatGPT as an example LLM</span>
 <span class="kw">msg</span> = [ { <span class="sym">role:</span> <span class="str">"system"</span>, <span class="sym">content:</span> <span class="str">"You are a precise and consistent assistant."</span> },
         { <span class="sym">role:</span> <span class="str">"user"</span>, <span class="sym">content:</span> <span class="str">"Explain quantum mechanics in one sentence."</span> } ]
 
-<span style="color: var(--muted)"># first response from ChatGPT, from which we'll be measuring semantic shift</span>
+<span style="color: var(--muted)"># first response from LLM, from which we'll be measuring semantic shift</span>
 <span class="kw">anchor</span> = <span class="kw">nil</span>
 
-<span style="color: var(--muted)"># behaviour space for ChatGPT</span>
+<span style="color: var(--muted)"># behaviour space for LLM</span>
 <span class="kw">space</span> = <span class="cls">FlexCartesian</span>.<span class="fn">new</span>({ <span class="sym">temperature:</span> [0.0, 0.2, 0.4, 0.6, 0.8, 1.0], <span class="sym">tokens:</span> [20, 50, 100, 200, 400] })
 
-<span style="color: var(--muted)"># behaviour functions for ChatGPT</span>
+<span style="color: var(--muted)"># behaviour functions for LLM</span>
 <span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:response</span>) { |v| <span class="fn">llm</span>(<span class="sym">temperature:</span> v.temperature, <span class="sym">max_tokens:</span> v.tokens, <span class="sym">messages:</span> <span class="kw">msg</span> ) }
 <span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:embedding</span>) { |v| <span class="kw">anchor</span> ||= <span class="fn">embed</span>(v.response); <span class="fn">embed</span>(v.response) }
 <span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:semantic_shift</span>) { |v| (1.0 - <span class="fn">cosine</span>(v.embedding, <span class="kw">anchor</span>)).<span class="fn">round</span>(2) }
@@ -135,7 +135,7 @@
       </div>
       <div class="output-overlay">
         <h3>Heatmap Insights</h3>
-	<p><i>"ChatGPT's responses are stable if the temperature does not exceed 0.4, including longer context lengths. This is the optimal operating mode for answering scientific questions."</i></p>
+	<p><i>"LLM responses are stable if the temperature does not exceed 0.4, including longer context lengths. This is the optimal operating mode for answering scientific questions."</i></p>
       </div>
     </article>
 
