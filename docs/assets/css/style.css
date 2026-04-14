@@ -25,28 +25,28 @@
   -webkit-overflow-scrolling: touch;
 }
 
-/* Стили самой таблицы */
+/* Стили самой таблицы — НОВАЯ ТЕМНАЯ ТЕМА */
 .sensitivity-table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
   font-size: 0.75rem;
-  color: #111827;
+  color: var(--text);
   margin: 0;
 }
 
 .sensitivity-table th, 
 .sensitivity-table td {
-  padding: 8px 12px;
-  border-bottom: 1px solid #e5e7eb;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
   white-space: nowrap;
   background: transparent !important;
 }
 
 .sensitivity-table th {
-  background-color: #f3f4f6 !important;
+  background-color: rgba(255, 255, 255, 0.03) !important;
   font-weight: 600;
-  color: #4b5563;
+  color: var(--muted);
   position: sticky;
   top: 0;
   z-index: 10;
@@ -57,19 +57,19 @@
 }
 
 .sensitivity-table tr:hover td {
-  background-color: rgba(248, 250, 252, 0.05) !important;
+  background-color: rgba(108, 229, 255, 0.05) !important;
 }
 
 /* Моноширинный шрифт для названий параметров */
 .sensitivity-table .mono {
   font-family: 'JetBrains Mono', monospace;
-  color: #2563eb;
+  color: var(--accent);
 }
 
-/* Бейджики категорий */
+/* Бейджики категорий - адаптированы под общую палитру */
 .sensitivity-table .badge {
   display: inline-block;
-  padding: 0.2em 0.5em;
+  padding: 0.3em 0.6em;
   font-size: 0.65rem;
   font-weight: 600;
   border-radius: 4px;
@@ -77,16 +77,28 @@
   letter-spacing: 0.05em;
 }
 
-.sensitivity-table .badge-strong { background: #fee2e2; color: #991b1b; }
-.sensitivity-table .badge-moderate { background: #fef3c7; color: #92400e; }
-.sensitivity-table .badge-negligible { background: #f3f4f6; color: #374151; }
+.sensitivity-table .badge-strong { 
+  background: rgba(255, 140, 102, 0.15); 
+  color: var(--hotter); 
+  border: 1px solid rgba(255, 140, 102, 0.3);
+}
+.sensitivity-table .badge-moderate { 
+  background: rgba(255, 216, 106, 0.15); 
+  color: var(--hot); 
+  border: 1px solid rgba(255, 216, 106, 0.3);
+}
+.sensitivity-table .badge-negligible { 
+  background: rgba(255, 255, 255, 0.05); 
+  color: var(--muted); 
+  border: 1px solid var(--line);
+}
 
 /* 1. Карточка становится умным Flex-контейнером */
 .output-card {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  padding: 0 !important; /* ВОТ ЭТОТ ПРАВИЛО ВСЁ ЛОМАЛО */
+  padding: 0 !important;
   min-height: 500px;
 }
 
@@ -825,9 +837,10 @@ main {
 }
 
 .outputs-grid {
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
   width: 100%;
-  margin: 0 auto;
+  margin: 0 auto 80px auto;
 }
 
 .compare-grid {
@@ -1171,7 +1184,7 @@ main {
     justify-self: end;
   }
 
-.nav {
+  .nav {
     position: fixed;
     top: 0;
     left: 0;
