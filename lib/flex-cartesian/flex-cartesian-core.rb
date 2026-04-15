@@ -86,7 +86,7 @@ def initialize(dims = nil, path: nil, format: :json, logger: nil, log_level: Log
     end
   end
 
-def func(command = :print, *names, hide: false, progress: false, title: "calculating functions", order: nil, &block)
+def func(command = :print, *names, hide: false, progress: false, title: "Computing function(s)", order: nil, &block)
   case command
 
   when :add
@@ -151,7 +151,7 @@ def func(command = :print, *names, hide: false, progress: false, title: "calcula
   end
 end
 
-def cartesian(dims = nil, lazy: false, progress: false, title: "Traversing space")
+def cartesian(dims = nil, lazy: false, progress: false, title: "Iterating over parameter space")
 
   # process edge cases and initialize data structures
   return to_enum(:cartesian, dims, lazy: lazy) unless block_given?
