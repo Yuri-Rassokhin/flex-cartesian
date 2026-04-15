@@ -173,8 +173,7 @@ module FlexCartesianVisualization
       </html>
     HTML
 
-    File.write(output ? output : STDOUT, html)
-    output
+  output ? File.write(output, html) : STDOUT.write(html)
   end
 
   def numeric_or_string(value)
