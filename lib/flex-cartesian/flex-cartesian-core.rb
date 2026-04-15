@@ -86,23 +86,34 @@ def initialize(dims = nil, path: nil, format: :json, logger: nil, log_level: Log
     end
   end
 
-def func(command = :print, name = nil, hide: false, progress: false, title: "calculating functions", order: nil, &block)
+def func(command = :print, *names, hide: false, progress: false, title: "calculating functions", order: nil, &block)
   case command
+
   when :add
-    raise ArgumentError, "Function name and block required for :add" unless name && block_given?
-    add_function(name, order: order, &block)
-    @function_hidden.delete(name.to_sym)
-    @function_hidden << name.to_sym if hide
+    raise ArgumentError, "Function name required for :add" if names.empty?
+    raise ArgumentError, "Block required for :add" unless block_given?
+    @logger.warn "You are adding #{names.size} identical functions" if names.size > 1
+
+    names.each do |name|
+      add_function(name, order: order, &block)
+      @function_hidden.delete(name.to_sym)
+      @function_hidden << name.to_sym if hide
+    end
 
   when :del
-    raise ArgumentError, "Function name required for :del" unless name
-    remove_function(name)
+    raise ArgumentError, "Function name(s) required for :del" if names.empty?
+    names.each do |name|
+      remove_function(name)
+    end
 
   when :print
     if @derived.empty?
       puts "(no functions defined)"
     else
-      @derived.each do |fname, fblock|
+      functions_found = names.empty? ? @derived : names & @derived
+      functions_missing = names - @derived
+
+      functions_found.each do |fname, fblock|
         source = fblock.source rescue '(source unavailable)'
         body = source.sub(/^.*?\s(?=(\{|\bdo\b))/, '').strip
         order = ""
@@ -116,13 +127,20 @@ def func(command = :print, name = nil, hide: false, progress: false, title: "cal
         end
         puts "  #{fname.inspect.ljust(12)}| #{body}#{@function_hidden.include?(fname) ? ' [HIDDEN]' : ''}#{order}"
       end
+
+      functions_missing.each { |fname| puts "(no function defined)" }
     end
 
   when :run
+    functions_missing = names - @derived
+    raise "No such function(s): #{functions_missing.join(', ')}" unless functions_missing.empty?
+
+    functions_found = names.empty? ? @derived : names & @derived
     @function_results = {}
+
     cartesian(progress: progress, title: title) do |v|
       @function_results[v] ||= {}
-      @derived.each do |fname, block|
+      functions_found.each do |fname, block|
         value = block.call(v)
         @function_results[v][fname] = value
         ensure_dimension_width(fname, value)
