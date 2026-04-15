@@ -110,8 +110,8 @@ def func(command = :print, *names, hide: false, progress: false, title: "Computi
     if @derived.empty?
       puts "(no functions defined)"
     else
-      functions_found = names.empty? ? @derived : names & @derived
-      functions_missing = names - @derived
+      functions_found = names.empty? ? @derived : @derived.slice(*names)
+      functions_missing = names.empty? ? [] : names - @derived.keys
 
       functions_found.each do |fname, fblock|
         source = fblock.source rescue '(source unavailable)'
@@ -128,14 +128,14 @@ def func(command = :print, *names, hide: false, progress: false, title: "Computi
         puts "  #{fname.inspect.ljust(12)}| #{body}#{@function_hidden.include?(fname) ? ' [HIDDEN]' : ''}#{order}"
       end
 
-      functions_missing.each { |fname| puts "(no function defined)" }
+      functions_missing.each { |fname| puts "#{fname.inspect.ljust(12)}| (no function defined)" }
     end
 
   when :run
-    functions_missing = names - @derived
-    raise "No such function(s): #{functions_missing.join(', ')}" unless functions_missing.empty?
+    functions_missing = names.empty? ? [] : names - @derived.keys
+    raise "No function(s) defined: #{functions_missing.join(', ')}" unless functions_missing.empty?
 
-    functions_found = names.empty? ? @derived : names & @derived
+    functions_found = names.empty? ? @derived : @derived.slice(*names)
     @function_results = {}
 
     cartesian(progress: progress, title: title) do |v|
