@@ -101,10 +101,10 @@
 <span style="color: var(--muted)"># first response from LLM, from which we'll be measuring semantic shift</span>
 <span class="kw">anchor</span> = <span class="kw">nil</span>
 
-<span style="color: var(--muted)"># behaviour space for LLM</span>
+<span style="color: var(--muted)"># behavioural space for LLM</span>
 <span class="kw">space</span> = <span class="cls">FlexCartesian</span>.<span class="fn">new</span>({ <span class="sym">temperature:</span> [0.0, 0.2, 0.4, 0.6, 0.8, 1.0], <span class="sym">tokens:</span> [20, 50, 100, 200, 400] })
 
-<span style="color: var(--muted)"># behaviour functions for LLM</span>
+<span style="color: var(--muted)"># behavioural functions for LLM</span>
 <span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:response</span>) { |v| <span class="fn">llm</span>(<span class="sym">temperature:</span> v.temperature, <span class="sym">max_tokens:</span> v.tokens, <span class="sym">messages:</span> <span class="kw">msg</span> ) }
 <span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:embedding</span>) { |v| <span class="kw">anchor</span> ||= <span class="fn">embed</span>(v.response); <span class="fn">embed</span>(v.response) }
 <span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:add</span>, <span class="sym">:semantic_shift</span>) { |v| (1.0 - <span class="fn">cosine</span>(v.embedding, <span class="kw">anchor</span>)).<span class="fn">round</span>(2) }
