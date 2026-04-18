@@ -26,7 +26,7 @@ space.visualize(
   x: :size,
   y: :target,
   func: [ :time, :cap ],
-  output: "./viz.html",
+  output: "./examples/09_ping_visualize/viz.html",
   show_legend: false,
   show_z_title: true,
   show_grid: true,
@@ -36,6 +36,5 @@ space.visualize(
   theme: :light
 )
 
-# quantify influence of the parameters in the blueprint
-space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42).output(func: :time)
+puts "Visualization saved in ./examples/09_ping_visualize/viz.html"
 

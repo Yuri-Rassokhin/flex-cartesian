@@ -11,4 +11,4 @@ s.func(:add, :loss) { |v| v.raw_ping[/(\d+(?:\.\d+)?)% packet loss/, 1]&.to_f.ro
 
 s.func(:run, progress: true, title: "Pinging")
 
-s.output(colorize: true)
+s.output

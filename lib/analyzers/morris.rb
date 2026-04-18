@@ -19,7 +19,7 @@ class Morris < Analyzer
     build!
   end
 
-def sensitivity(function:)
+def sensitivity(func:)
   effects = Hash.new { |h, k| h[k] = [] }
 
   @edges.each do |edge|
@@ -31,8 +31,8 @@ def sensitivity(function:)
 
     next unless from_res && to_res
 
-    y1 = from_res[function]
-    y2 = to_res[function]
+    y1 = from_res[func]
+    y2 = to_res[func]
 
     next if y1.nil? || y2.nil?
 
@@ -50,7 +50,7 @@ def sensitivity(function:)
     if n == 0
       {
         parameter: factor.to_s,
-        "influence[#{function}]": 0.0,
+        "influence[#{func}]": 0.0,
         deviation: 0.0,
         probes: 0
       }
@@ -69,12 +69,12 @@ def sensitivity(function:)
 
       {
         parameter: factor.to_s,
-        "influence[#{function}]": importance.round(2),
+        "influence[#{func}]": importance.round(2),
         deviation: deviation.round(2),
         probes: n
       }
     end
-  end.compact.sort_by { |row| -row[:"influence[#{function}]"] }
+  end.compact.sort_by { |row| -row[:"influence[#{func}]"] }
 end
 
 def categorize(rows, function:)
@@ -153,11 +153,11 @@ def recommend(rows, function:)
 end
 
   def output(func:, categorize: true, recommend: true, **opts)
-    raise ArgumentError, "target function must be provided" unless function
+    raise ArgumentError, "target function must be provided" unless func
     raise "Cannot execute #sensitivity as there are no functions defined in parameter space" if @space.derived.empty?
-    rows = sensitivity(function: function)
-    rows = self.categorize(rows, function: function) if categorize
-    rows = self.recommend(rows, function: function) if recommend
+    rows = sensitivity(func: func)
+    rows = self.categorize(rows, function: func) if categorize
+    rows = self.recommend(rows, function: func) if recommend
     @space.output(rows, **opts)
   end
 

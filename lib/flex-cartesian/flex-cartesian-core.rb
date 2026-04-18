@@ -286,6 +286,20 @@ def data(command, vector: nil, target: nil )
   end
 end
 
+  # convert Struct or Array vector to Hash with all checks
+  def vector_to(v, type)
+    return nil unless vector_consistent?(v)
+
+    case type
+    when :hash
+      vector_to_hash!(v)
+    when :struct
+      vector_to_struct!(v)
+    else
+      raise "Incorrect target type for vector conversion: #{type}"
+    end
+  end
+
 
 
 private
@@ -416,20 +430,6 @@ end
     raise "Incorrect dimensiality of vector '#{v.inspect}'" unless vector_to_hash!(v).size == @dimensiality
     raise "Incorrect vector dimensions #{v.keys.inspect}" unless @names.to_set == vector_to_hash!(v).keys.to_set
     true
-  end
-
-  # convert Struct or Array vector to Hash with all checks
-  def vector_to(v, type)
-    return nil unless vector_consistent?(v)
-
-    case type
-    when :hash
-      vector_to_hash!(v)
-    when :struct
-      vector_to_struct!(v)
-    else
-      raise "Incorrect target type for vector conversion: #{type}"
-    end
   end
 
 end
