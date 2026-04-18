@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FlexCartesian Workspace</title>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.css" />
+  <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/winbox@0.2.82/dist/winbox.bundle.js"></script>
+
+  <style>
+    body { 
+      background: #0d1117; /* Под цвет твоего лендинга */
+      margin: 0; 
+      overflow: hidden; 
+      font-family: sans-serif; 
+    }
+    /* Стилизация окон под темную тему */
+    .wb-body { background: #161b22; }
+  </style>
+</head>
+<body>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // 1. Инициализация контейнера для терминала
+      const termContainer = document.createElement('div');
+      termContainer.style.height = "100%";
+      termContainer.style.width = "100%";
+      termContainer.style.padding = "5px";
+      termContainer.style.boxSizing = "border-box";
+
+      // 2. Создаем базовое окно WinBox для терминала
+      new WinBox("Terminal", {
+        mount: termContainer,
+        width: "600px",
+        height: "400px",
+        x: 20,
+        y: 20,
+        background: "#21262d",
+        border: 2
+      });
+
+      // 3. Запускаем Xterm.js
+      const term = new Terminal({
+        theme: { background: '#161b22', foreground: '#c9d1d9' },
+        cursorBlink: true
+      });
+      term.open(termContainer);
+
+      // 4. Подключаем WebSockets
+      const ws = new WebSocket('ws://' + window.location.host + '/');
+      let currentCommand = '';
+
+      ws.onmessage = (event) => {
+        const msg = JSON.parse(event.data);
+        
+        if (msg.type === 'term') {
+          // Выводим текст в терминал
+          term.write(msg.data);
+        } else if (msg.type === 'window') {
+          // Динамически создаем новое окно при команде от бэкенда
+          const contentWrapper = document.createElement('div');
+          contentWrapper.innerHTML = msg.html;
+          
+          new WinBox(msg.title, {
+            mount: contentWrapper,
+            width: "500px",
+            height: "400px",
+            x: "center",
+            y: "center",
+            background: "#1f6feb" // Акцентный цвет для окон с результатами
+          });
+        }
+      };
+
+      // 5. Обработка ввода в терминале (простой буфер для PoC)
+      term.onData(e => {
+        switch (e) {
+          case '\r': // Enter
+            ws.send(JSON.stringify({ command: currentCommand }));
+            currentCommand = '';
+            break;
+          case '\u007F': // Backspace
+            if (currentCommand.length > 0) {
+              currentCommand = currentCommand.slice(0, -1);
+              term.write('\b \b');
+            }
+            break;
+          default:
+            // Печатаем символ и добавляем в буфер (если это обычный символ)
+            if (e.length === 1 && e.charCodeAt(0) >= 32) {
+              currentCommand += e;
+              term.write(e);
+            }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

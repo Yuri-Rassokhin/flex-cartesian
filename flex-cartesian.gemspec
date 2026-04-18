@@ -19,6 +19,10 @@ Gem::Specification.new do |spec|
   spec.add_dependency "method_source", "~> 1.0"
   spec.add_dependency "csv"
   spec.add_dependency "roo"
+  spec.add_dependency "sinatra"
+  spec.add_dependency "sinatra-websocket"
+  spec.add_dependency "thin"
+  spec.add_dependency "json"
 
   spec.required_ruby_version = '>= 3.0'
 
