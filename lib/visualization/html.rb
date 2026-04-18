@@ -5,16 +5,15 @@ module FlexCartesianVisualization
 
   # Добавлен параметр theme: :dark. 
   # font_color и grid_color теперь по умолчанию nil, они вычисляются на основе темы.
-  def visualize(format: :html, x:, y:, func:, output: nil, theme: :dark, show_legend: false, show_z_title: true, show_grid: true, equal_axes: true, start_at_zero: true, show_plot_title: false, bg_color: 'transparent', font_color: nil, grid_color: nil, colorscale: 'Bluered')
+  def visualize(format: :html, x:, y:, func:, output: nil, text: :dark, show_legend: false, show_z_title: true, show_grid: true, equal_axes: true, start_at_zero: true, show_plot_title: false, bg_color: 'transparent', font_color: nil, grid_color: nil, colorscale: 'Bluered')
     raise "X-axis of visualization cannot be empty" unless x
     
     funcs = Array(func).map(&:to_s)
     raise "Functions of visualization cannot be empty" if funcs.empty?
 
     # Логика тем: если цвета не заданы вручную, выбираем их исходя из флага theme
-    is_light = (theme == :light)
-    actual_font_color = font_color || (is_light ? '#333333' : '#edf5ff')
-    actual_grid_color = grid_color || (is_light ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.15)')
+    actual_font_color = font_color || (text == :dark ? '#333333' : '#edf5ff')
+    actual_grid_color = grid_color || (text == :dark ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.15)')
 
     case format
     when :html
@@ -109,8 +108,8 @@ module FlexCartesianVisualization
         showscale: index == 0 ? show_legend : false,
         colorscale: colorscale,
         contours: {
-          x: { show: show_grid, color: grid_color, width: 1 },
-          y: { show: show_grid, color: grid_color, width: 1 }
+          x: { show: show_grid, color: '#ffffff', width: 1 }, # 'color' is hardcoded to white - TODO: make it tunable
+          y: { show: show_grid, color: '#ffffff', width: 1 }
         }
       }
     end
