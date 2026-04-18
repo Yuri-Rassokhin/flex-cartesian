@@ -3,13 +3,18 @@ module FlexCartesianVisualization
   require "json"
   require "tempfile"
 
-  # Теперь метод принимает массив `functions:`
-  def visualize(format: :html, x:, y:, functions:, output: nil, show_legend: false, show_z_title: true, show_grid: true, equal_axes: true, start_at_zero: true, show_plot_title: false, bg_color: 'transparent', font_color: '#edf5ff', grid_color: 'rgba(255,255,255,0.15)', colorscale: 'Bluered')
+  # Добавлен параметр theme: :dark. 
+  # font_color и grid_color теперь по умолчанию nil, они вычисляются на основе темы.
+  def visualize(format: :html, x:, y:, functions:, output: nil, theme: :dark, show_legend: false, show_z_title: true, show_grid: true, equal_axes: true, start_at_zero: true, show_plot_title: false, bg_color: 'transparent', font_color: nil, grid_color: nil, colorscale: 'Bluered')
     raise "X-axis of visualization cannot be empty" unless x
     
-    # Приводим к массиву на случай, если передали одно значение
     funcs = Array(functions).map(&:to_s)
     raise "Functions of visualization cannot be empty" if funcs.empty?
+
+    # Логика тем: если цвета не заданы вручную, выбираем их исходя из флага theme
+    is_light = (theme == :light)
+    actual_font_color = font_color || (is_light ? '#333333' : '#edf5ff')
+    actual_grid_color = grid_color || (is_light ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.15)')
 
     case format
     when :html
@@ -25,8 +30,8 @@ module FlexCartesianVisualization
         start_at_zero: start_at_zero,
         show_plot_title: show_plot_title,
         bg_color: bg_color,
-        font_color: font_color,
-        grid_color: grid_color,
+        font_color: actual_font_color,
+        grid_color: actual_grid_color,
         colorscale: colorscale
       )
     else
@@ -50,7 +55,6 @@ module FlexCartesianVisualization
       raise ArgumentError, "Column '#{y}' not found in CSV. Available columns: #{headers.inspect}"
     end
 
-    # Проверяем наличие всех запрошенных функций в CSV
     functions.each do |func|
       unless headers.include?(func)
         raise ArgumentError, "Column '#{func}' not found in CSV. Available columns: #{headers.inspect}"
@@ -72,7 +76,6 @@ module FlexCartesianVisualization
     x_index = x_values.each_with_index.to_h
     y_index = y_values.each_with_index.to_h
 
-    # Создаем хэш Z-матриц для каждой функции
     z_matrices = {}
     functions.each do |func|
       z_matrices[func] = Array.new(y_values.size) { Array.new(x_values.size, nil) }
@@ -87,14 +90,12 @@ module FlexCartesianVisualization
       yi = y_index[val_y]
       xi = x_index[val_x]
 
-      # Заполняем матрицы для всех переданных функций
       functions.each do |func|
         val_z = numeric_or_string(row[func])
         z_matrices[func][yi][xi] = val_z unless val_z.nil?
       end
     end
 
-    # Формируем данные для Plotly через руби-хэши для безопасной конвертации в JSON
     plotly_data = functions.map.with_index do |func, index|
       {
         type: "surface",
@@ -102,10 +103,10 @@ module FlexCartesianVisualization
         x: x_values,
         y: y_values,
         z: z_matrices[func],
-        opacity: 0.85, # Добавлена прозрачность для наложения слоев
+        opacity: 0.85,
         hovertemplate: "#{x}: %{x}<br>#{y}: %{y}<br>#{func}: %{z}<extra></extra>",
         connectgaps: false,
-        showscale: index == 0 ? show_legend : false, # Показываем легенду только для первого графика, чтобы не захламлять экран
+        showscale: index == 0 ? show_legend : false,
         colorscale: colorscale,
         contours: {
           x: { show: show_grid, color: grid_color, width: 1 },
@@ -148,32 +149,40 @@ module FlexCartesianVisualization
       <body>
         <div id="chart"></div>
         <script>
-          // Данные полностью сформированы в Ruby
           const data = #{JSON.generate(plotly_data)};
 
           const layout = {
             #{plot_title}
             paper_bgcolor: '#{plotly_bg}',
             plot_bgcolor: '#{plotly_bg}',
-            font: { color: '#{font_color}' },
+            font: { color: '#{font_color}' }, // Применяется ко всему тексту (заголовок, названия осей, значения)
             scene: {
             #{aspect_mode_js}
               xaxis: {
                 title: #{JSON.generate(x)},
                 showgrid: #{grid_flag},
                 zeroline: #{grid_flag},
+                gridcolor: '#{grid_color}', // Цвет линий сетки
+                zerolinecolor: '#{grid_color}', // Цвет нулевой линии
+                linecolor: '#{grid_color}', // Цвет линии самой оси
                 #{range_mode_js}
               },
               yaxis: {
                 title: #{JSON.generate(y)},
                 showgrid: #{grid_flag},
                 zeroline: #{grid_flag},
+                gridcolor: '#{grid_color}',
+                zerolinecolor: '#{grid_color}',
+                linecolor: '#{grid_color}',
                 #{range_mode_js}
               },
               zaxis: {
                 #{zaxis_title_js}
                 showgrid: #{grid_flag},
                 zeroline: #{grid_flag},
+                gridcolor: '#{grid_color}',
+                zerolinecolor: '#{grid_color}',
+                linecolor: '#{grid_color}',
                 #{range_mode_js}
               }
             },
@@ -209,4 +218,3 @@ module FlexCartesianVisualization
   end
 
 end
-
