@@ -31,5 +31,6 @@ space.func(:run, progress: true, title: "Requesting  ChatGPT")
 
 space.output(format: :csv, file: "./examples/14_storing_space/chatgpt.csv")
 space.output(format: :markdown, colorize: true)
+
 puts "\nParameter space saved to ./examples/14_storing_space/chatgpt.csv"
 
