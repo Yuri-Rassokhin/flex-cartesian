@@ -31,7 +31,8 @@ space.visualize(
   show_grid: true,
   equal_axes: true,
   start_at_zero: true,
-  show_plot_title: false
+  show_plot_title: false,
+  theme: :light
 )
 
 # quantify influence of the parameters in the blueprint
