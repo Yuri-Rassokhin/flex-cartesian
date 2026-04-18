@@ -17,6 +17,7 @@ result = {}
 space.func(:add, :command) { |v| "ping -c #{v.count} -s #{v.size} -i #{v.interval} #{v.target}" }
 space.func(:add, :raw_ping, hide: true) { |v| result[v.command] ||= `#{v.command} 2>&1` }
 space.func(:add, :time) { |v| v.raw_ping[/min\/avg\/max\/(?:mdev|stddev) = [^\/]+\/([^\/]+)/, 1]&.to_f }
+space.func(:add, :cap) { |v| 150 }
 space.func(:run, progress: true)
 
 # visualize behavioural blueprint as a 2D-heatmap
@@ -24,7 +25,7 @@ space.visualize(
   format: :html,
   x: :size,
   y: :target,
-  functions: :time,
+  functions: [ :time, :cap ],
   output: "./viz.html",
   show_legend: false,
   show_z_title: true,
