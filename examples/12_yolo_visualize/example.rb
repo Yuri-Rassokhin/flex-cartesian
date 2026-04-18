@@ -1,6 +1,6 @@
 require 'flex-cartesian'
 
-source = "./examples/11_visualization/yolo-arm-a1.xlsx"
+source = "./examples/12_yolo_visualize/yolo-arm-a1.xlsx"
 
 space = FlexCartesian.new(source: :xlsx, uri: source, dimensions: [:iteration, :requests, :processes] )
 
@@ -12,7 +12,7 @@ space.visualize(
   x: :requests,
   y: :processes,
   func: :inference,
-  output: "./examples/11_visualization/viz.html",
+  output: "./examples/12_yolo_visualize/viz.html",
   show_legend: false,
   show_z_title: true,
   show_grid: true,
@@ -20,3 +20,5 @@ space.visualize(
   start_at_zero: true,
   show_plot_title: false
 )
+
+puts "Visualization has been saved in ./examples/12_yolo_visualize/viz.html"
