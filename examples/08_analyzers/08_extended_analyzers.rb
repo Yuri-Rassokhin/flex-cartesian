@@ -20,7 +20,19 @@ space.func(:add, :time) { |v| v.raw_ping[/min\/avg\/max\/(?:mdev|stddev) = [^\/]
 space.func(:run, progress: true)
 
 # visualize behavioural blueprint as a 2D-heatmap
-space.visualize(x: :size, y: :target, function: :time, output: "./viz.html")
+space.visualize(
+  format: :html,
+  x: :size,
+  y: :target,
+  functions: :time,
+  output: "./viz.html",
+  show_legend: false,
+  show_z_title: true,
+  show_grid: true,
+  equal_axes: true,
+  start_at_zero: true,
+  show_plot_title: false
+)
 
 # quantify influence of the parameters in the blueprint
 space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42).output(function: :time)

@@ -1,25 +1,28 @@
 module FlexCartesianVisualization
-
   require "csv"
   require "json"
-  require 'tempfile'
+  require "tempfile"
 
-  def visualize(format: :html, x:, y:, function:, output: nil, show_legend: false, show_z_title: true, show_grid: true, equal_axes: true, start_at_zero: true, show_plot_title: false, bg_color: 'transparent', font_color: '#edf5ff', grid_color: 'rgba(255,255,255,0.15)', colorscale: 'Bluered')
+  # Теперь метод принимает массив `functions:`
+  def visualize(format: :html, x:, y:, functions:, output: nil, show_legend: false, show_z_title: true, show_grid: true, equal_axes: true, start_at_zero: true, show_plot_title: false, bg_color: 'transparent', font_color: '#edf5ff', grid_color: 'rgba(255,255,255,0.15)', colorscale: 'Bluered')
     raise "X-axis of visualization cannot be empty" unless x
-    raise "Function of visualization cannot be empty" unless function
+    
+    # Приводим к массиву на случай, если передали одно значение
+    funcs = Array(functions).map(&:to_s)
+    raise "Functions of visualization cannot be empty" if funcs.empty?
 
     case format
     when :html
       generate_html(
-        x: x.to_s, 
-        y: y.to_s, 
-        function: function.to_s, 
-        output: output, 
-        show_legend: show_legend, 
-        show_z_title: show_z_title, 
-        show_grid: show_grid, 
-        equal_axes: equal_axes, 
-        start_at_zero: start_at_zero, 
+        x: x.to_s,
+        y: y.to_s,
+        functions: funcs,
+        output: output,
+        show_legend: show_legend,
+        show_z_title: show_z_title,
+        show_grid: show_grid,
+        equal_axes: equal_axes,
+        start_at_zero: start_at_zero,
         show_plot_title: show_plot_title,
         bg_color: bg_color,
         font_color: font_color,
@@ -31,8 +34,7 @@ module FlexCartesianVisualization
     end
   end
 
-  def generate_html(x:, y: nil, function:, output:, show_legend:, show_z_title:, show_grid:, equal_axes:, start_at_zero:, show_plot_title:, bg_color:, font_color:, grid_color:, colorscale:)
-    # TODO: eliminate the need for temp file
+  def generate_html(x:, y: nil, functions:, output:, show_legend:, show_z_title:, show_grid:, equal_axes:, start_at_zero:, show_plot_title:, bg_color:, font_color:, grid_color:, colorscale:)
     temp_file = Tempfile.new
     output(format: :csv, file: temp_file)
     table = CSV.read(temp_file, headers: true, col_sep: ";")
@@ -48,8 +50,11 @@ module FlexCartesianVisualization
       raise ArgumentError, "Column '#{y}' not found in CSV. Available columns: #{headers.inspect}"
     end
 
-    unless headers.include?(function)
-      raise ArgumentError, "Column '#{function}' not found in CSV. Available columns: #{headers.inspect}"
+    # Проверяем наличие всех запрошенных функций в CSV
+    functions.each do |func|
+      unless headers.include?(func)
+        raise ArgumentError, "Column '#{func}' not found in CSV. Available columns: #{headers.inspect}"
+      end
     end
 
     normalized_rows = table.map do |row|
@@ -67,27 +72,55 @@ module FlexCartesianVisualization
     x_index = x_values.each_with_index.to_h
     y_index = y_values.each_with_index.to_h
 
-    z_matrix = Array.new(y_values.size) { Array.new(x_values.size, nil) }
+    # Создаем хэш Z-матриц для каждой функции
+    z_matrices = {}
+    functions.each do |func|
+      z_matrices[func] = Array.new(y_values.size) { Array.new(x_values.size, nil) }
+    end
 
     normalized_rows.each do |row|
       val_x = numeric_or_string(row[x])
       val_y = numeric_or_string(row[y])
-      val_z = numeric_or_string(row[function])
 
-      next if val_x.nil? || val_y.nil? || val_z.nil?
+      next if val_x.nil? || val_y.nil?
 
       yi = y_index[val_y]
       xi = x_index[val_x]
-      z_matrix[yi][xi] = val_z
+
+      # Заполняем матрицы для всех переданных функций
+      functions.each do |func|
+        val_z = numeric_or_string(row[func])
+        z_matrices[func][yi][xi] = val_z unless val_z.nil?
+      end
     end
 
-    zaxis_title_js = show_z_title ? "title: #{JSON.generate(function)}," : "title: '',"
+    # Формируем данные для Plotly через руби-хэши для безопасной конвертации в JSON
+    plotly_data = functions.map.with_index do |func, index|
+      {
+        type: "surface",
+        name: func,
+        x: x_values,
+        y: y_values,
+        z: z_matrices[func],
+        opacity: 0.85, # Добавлена прозрачность для наложения слоев
+        hovertemplate: "#{x}: %{x}<br>#{y}: %{y}<br>#{func}: %{z}<extra></extra>",
+        connectgaps: false,
+        showscale: index == 0 ? show_legend : false, # Показываем легенду только для первого графика, чтобы не захламлять экран
+        colorscale: colorscale,
+        contours: {
+          x: { show: show_grid, color: grid_color, width: 1 },
+          y: { show: show_grid, color: grid_color, width: 1 }
+        }
+      }
+    end
+
+    combined_func_names = functions.join(", ")
+    zaxis_title_js = show_z_title ? "title: #{JSON.generate(combined_func_names)}," : "title: '',"
     grid_flag = show_grid ? 'true' : 'false'
     aspect_mode_js = equal_axes ? "aspectmode: 'cube'," : "aspectmode: 'auto',"
     range_mode_js = start_at_zero ? "rangemode: 'tozero'," : ""
-    plot_title = show_plot_title ? "title: #{JSON.generate("#{function} (#{x}, #{y})")}," : "title: '',"
-    
-    # Plotly understands 'rgba(0,0,0,0)' better than 'transparent' for its internal canvas
+    plot_title = show_plot_title ? "title: #{JSON.generate("#{combined_func_names} (#{x}, #{y})")}," : "title: '',"
+
     plotly_bg = bg_color == 'transparent' ? 'rgba(0,0,0,0)' : bg_color
 
     html = <<~HTML
@@ -115,28 +148,8 @@ module FlexCartesianVisualization
       <body>
         <div id="chart"></div>
         <script>
-          const data = [{
-            type: "surface",
-            x: #{JSON.generate(x_values)},
-            y: #{JSON.generate(y_values)},
-            z: #{JSON.generate(z_matrix)},
-            hovertemplate: "#{x}: %{x}<br>#{y}: %{y}<br>#{function}: %{z}<extra></extra>",
-            connectgaps: false,
-            showscale: #{show_legend ? 'true' : 'false'},
-            colorscale: '#{colorscale}',
-            contours: {
-              x: {
-                show: #{grid_flag},
-                color: '#{grid_color}',
-                width: 1
-              },
-              y: {
-                show: #{grid_flag},
-                color: '#{grid_color}',
-                width: 1
-              }
-            }
-          }];
+          // Данные полностью сформированы в Ruby
+          const data = #{JSON.generate(plotly_data)};
 
           const layout = {
             #{plot_title}
@@ -173,7 +186,7 @@ module FlexCartesianVisualization
       </html>
     HTML
 
-  output ? File.write(output, html) : STDOUT.write(html)
+    output ? File.write(output, html) : STDOUT.write(html)
   end
 
   def numeric_or_string(value)
@@ -196,3 +209,4 @@ module FlexCartesianVisualization
   end
 
 end
+
