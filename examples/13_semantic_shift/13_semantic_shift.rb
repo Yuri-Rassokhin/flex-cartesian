@@ -28,7 +28,7 @@ space.visualize(
   format: :html,
   x: :temperature,
   y: :tokens,
-  function: :semantic_shift,
+  func: :semantic_shift,
   output: "./viz.html",
   show_legend: false,
   show_z_title: true,
@@ -40,5 +40,5 @@ space.visualize(
 
 # finally, analyze how precisely parameters influence ChatGPT's response
 a = space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42)
-a.output(colorize:true, function: :semantic_shift)
+a.output(colorize:true, func: :semantic_shift)
 

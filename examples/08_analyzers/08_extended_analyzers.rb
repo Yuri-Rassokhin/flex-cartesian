@@ -25,7 +25,7 @@ space.visualize(
   format: :html,
   x: :size,
   y: :target,
-  functions: [ :time, :cap ],
+  func: [ :time, :cap ],
   output: "./viz.html",
   show_legend: false,
   show_z_title: true,
@@ -37,5 +37,5 @@ space.visualize(
 )
 
 # quantify influence of the parameters in the blueprint
-space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42).output(function: :time)
+space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42).output(func: :time)
 

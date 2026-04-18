@@ -10,5 +10,5 @@ s.func(:add, :time) { |v| v.raw_ping[/min\/avg\/max\/(?:mdev|stddev) = [^\/]+\/(
 s.func(:run, progress: true, title: "Obtaining data")
 
 a = s.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42)
-a.output(function: :time, colorize: true)
+a.output(func: :time, colorize: true)
 

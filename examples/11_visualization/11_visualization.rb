@@ -11,7 +11,7 @@ space.visualize(
   format: :html,
   x: :requests,
   y: :processes,
-  function: :inference,
+  func: :inference,
   output: "./examples/11_visualization/viz.html",
   show_legend: false,
   show_z_title: true,

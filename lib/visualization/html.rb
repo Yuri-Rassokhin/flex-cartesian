@@ -5,10 +5,10 @@ module FlexCartesianVisualization
 
   # Добавлен параметр theme: :dark. 
   # font_color и grid_color теперь по умолчанию nil, они вычисляются на основе темы.
-  def visualize(format: :html, x:, y:, functions:, output: nil, theme: :dark, show_legend: false, show_z_title: true, show_grid: true, equal_axes: true, start_at_zero: true, show_plot_title: false, bg_color: 'transparent', font_color: nil, grid_color: nil, colorscale: 'Bluered')
+  def visualize(format: :html, x:, y:, func:, output: nil, theme: :dark, show_legend: false, show_z_title: true, show_grid: true, equal_axes: true, start_at_zero: true, show_plot_title: false, bg_color: 'transparent', font_color: nil, grid_color: nil, colorscale: 'Bluered')
     raise "X-axis of visualization cannot be empty" unless x
     
-    funcs = Array(functions).map(&:to_s)
+    funcs = Array(func).map(&:to_s)
     raise "Functions of visualization cannot be empty" if funcs.empty?
 
     # Логика тем: если цвета не заданы вручную, выбираем их исходя из флага theme
@@ -21,7 +21,7 @@ module FlexCartesianVisualization
       generate_html(
         x: x.to_s,
         y: y.to_s,
-        functions: funcs,
+        func: funcs,
         output: output,
         show_legend: show_legend,
         show_z_title: show_z_title,
@@ -39,7 +39,7 @@ module FlexCartesianVisualization
     end
   end
 
-  def generate_html(x:, y: nil, functions:, output:, show_legend:, show_z_title:, show_grid:, equal_axes:, start_at_zero:, show_plot_title:, bg_color:, font_color:, grid_color:, colorscale:)
+  def generate_html(x:, y: nil, func:, output:, show_legend:, show_z_title:, show_grid:, equal_axes:, start_at_zero:, show_plot_title:, bg_color:, font_color:, grid_color:, colorscale:)
     temp_file = Tempfile.new
     output(format: :csv, file: temp_file)
     table = CSV.read(temp_file, headers: true, col_sep: ";")
@@ -55,9 +55,9 @@ module FlexCartesianVisualization
       raise ArgumentError, "Column '#{y}' not found in CSV. Available columns: #{headers.inspect}"
     end
 
-    functions.each do |func|
-      unless headers.include?(func)
-        raise ArgumentError, "Column '#{func}' not found in CSV. Available columns: #{headers.inspect}"
+    func.each do |f|
+      unless headers.include?(f)
+        raise ArgumentError, "Column '#{f}' not found in CSV. Available columns: #{headers.inspect}"
       end
     end
 
@@ -77,8 +77,8 @@ module FlexCartesianVisualization
     y_index = y_values.each_with_index.to_h
 
     z_matrices = {}
-    functions.each do |func|
-      z_matrices[func] = Array.new(y_values.size) { Array.new(x_values.size, nil) }
+    func.each do |f|
+      z_matrices[f] = Array.new(y_values.size) { Array.new(x_values.size, nil) }
     end
 
     normalized_rows.each do |row|
@@ -90,21 +90,21 @@ module FlexCartesianVisualization
       yi = y_index[val_y]
       xi = x_index[val_x]
 
-      functions.each do |func|
-        val_z = numeric_or_string(row[func])
-        z_matrices[func][yi][xi] = val_z unless val_z.nil?
+      func.each do |f|
+        val_z = numeric_or_string(row[f])
+        z_matrices[f][yi][xi] = val_z unless val_z.nil?
       end
     end
 
-    plotly_data = functions.map.with_index do |func, index|
+    plotly_data = func.map.with_index do |f, index|
       {
         type: "surface",
-        name: func,
+        name: f,
         x: x_values,
         y: y_values,
-        z: z_matrices[func],
+        z: z_matrices[f],
         opacity: 0.85,
-        hovertemplate: "#{x}: %{x}<br>#{y}: %{y}<br>#{func}: %{z}<extra></extra>",
+        hovertemplate: "#{x}: %{x}<br>#{y}: %{y}<br>#{f}: %{z}<extra></extra>",
         connectgaps: false,
         showscale: index == 0 ? show_legend : false,
         colorscale: colorscale,
@@ -115,7 +115,7 @@ module FlexCartesianVisualization
       }
     end
 
-    combined_func_names = functions.join(", ")
+    combined_func_names = func.join(", ")
     zaxis_title_js = show_z_title ? "title: #{JSON.generate(combined_func_names)}," : "title: '',"
     grid_flag = show_grid ? 'true' : 'false'
     aspect_mode_js = equal_axes ? "aspectmode: 'cube'," : "aspectmode: 'auto',"

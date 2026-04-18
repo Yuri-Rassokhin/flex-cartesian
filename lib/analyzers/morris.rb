@@ -152,7 +152,7 @@ def recommend(rows, function:)
   end
 end
 
-  def output(function:, categorize: true, recommend: true, **opts)
+  def output(func:, categorize: true, recommend: true, **opts)
     raise ArgumentError, "target function must be provided" unless function
     raise "Cannot execute #sensitivity as there are no functions defined in parameter space" if @space.derived.empty?
     rows = sensitivity(function: function)
