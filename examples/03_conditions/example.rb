@@ -23,7 +23,9 @@ space.cond(:clear)
 # See the size of parameter space restored to default size of the full space
 puts "Restored size of full space: #{space.size}"
 # Set condition based on function result - highly useful for isosurfaces and such
-space.func(:add, :example) { |v| v.dim1 + dim3 ? 2 : 3 }
+puts "Setting function with condition"
+space.func(:add, :example) { |v| v.dim1 + (v.dim3 ? 2 : 3) }
+space.func(:run)
 space.cond(:set) { |v| space.function(v, :example) <= 3 }
 space.output
 
