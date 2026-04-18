@@ -15,6 +15,6 @@ space.func(:run)
 
 space.visualize(x: :temperature, y: :tokens, func: :semantic_shift, output: "./examples/14_storing_space/viz.html")
 
-puts "Visualization has been saved in ./examples/14_storing_space/viz.html"
+puts "Visualization saved to ./examples/14_storing_space/viz.html"
 
 space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42).output(func: :semantic_shift)

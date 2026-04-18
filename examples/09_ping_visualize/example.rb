@@ -21,20 +21,7 @@ space.func(:add, :cap) { |v| 150 }
 space.func(:run, progress: true)
 
 # visualize behavioural blueprint as a 2D-heatmap
-space.visualize(
-  format: :html,
-  x: :size,
-  y: :target,
-  func: [ :time, :cap ],
-  output: "./examples/09_ping_visualize/viz.html",
-  show_legend: false,
-  show_z_title: true,
-  show_grid: true,
-  equal_axes: true,
-  start_at_zero: true,
-  show_plot_title: false,
-  theme: :light
-)
+space.visualize(x: :size, y: :target, func: [ :time, :cap ], output: "./examples/09_ping_visualize/viz.html")
 
-puts "Visualization saved in ./examples/09_ping_visualize/viz.html"
+puts "Visualization saved to ./examples/09_ping_visualize/viz.html"
 

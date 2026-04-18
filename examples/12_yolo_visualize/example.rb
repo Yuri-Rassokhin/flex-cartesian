@@ -7,18 +7,6 @@ space = FlexCartesian.new(source: :xlsx, uri: source, dimensions: [:iteration, :
 space.func(:add, :inference) { |v| space.data(:get, vector: v, target: "collect_inference_time") }
 space.func(:run)
 
-space.visualize(
-  format: :html,
-  x: :requests,
-  y: :processes,
-  func: :inference,
-  output: "./examples/12_yolo_visualize/viz.html",
-  show_legend: false,
-  show_z_title: true,
-  show_grid: true,
-  equal_axes: true,
-  start_at_zero: true,
-  show_plot_title: false
-)
+space.visualize(x: :requests, y: :processes, func: :inference, output: "./examples/12_yolo_visualize/viz.html")
 
-puts "Visualization has been saved in ./examples/12_yolo_visualize/viz.html"
+puts "Visualization saved to ./examples/12_yolo_visualize/viz.html"
