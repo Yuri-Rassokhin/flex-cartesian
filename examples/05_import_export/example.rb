@@ -8,7 +8,7 @@ example = {
 }
 s = FlexCartesian.new(example)
 
-s.export('example.json', format: :json)
-s.import('example.json').output
+s.export('./examples/05_import_export/example.json', format: :json)
+s.import('./examples/05_import_export/example.json').output
 s.output
 
