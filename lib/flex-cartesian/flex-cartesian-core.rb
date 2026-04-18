@@ -212,8 +212,8 @@ end
 # reads from target column using data source created by `data` method
 def lookup(vector, target)
   vec = vector_to(vector, :hash)
-  tg = target.to_sym
-  @index[vec] ? @index[vec][tg] : nil
+  return nil unless @index[vec]
+  @index[vec][target.to_sym] ? @index[vec][target.to_sym] : @index[vec][target.to_s]
 end
 
 # creates cartesian space and index from URI
@@ -257,14 +257,15 @@ def index(source:, uri:, dimensions:, separator: ',')
 
       # index key is an array of dimensional values from the specified dimensions only
       # this key points to FULL row which is assumed to have values of the future functions
-      key = dimensions.map do |dim|
-        value = row[dim.to_s]
+      key = dimensions.each_with_object({}) do |dim, hash|
+        # TODO: XSLX values are converted to string for uniformity with CSV, even though XSLX returns proper types
+        value = row[dim.to_s].to_s.strip
         dim_sym = dim.to_sym
         unless @dimensions_hash[dim_sym][value]
           @dimensions[dim_sym] << value
           @dimensions_hash[dim_sym][value] = true
         end
-        value
+        hash[dim.to_sym]= value
       end
       @index[key] = row
     end
