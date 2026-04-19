@@ -97,6 +97,15 @@ Finally, we want to assess the influence of each parameter to the semantic shift
 space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42).output(function: :semantic_shift)
 ```
 
+This will give us measurable influence and nature of the influence of the parameters:
+
+### 📊 Sensitivity Insights
+
+| Parameter(s) | Influence Level | Behavior & Characteristics | Methodological Recommendation |
+| :--- | :---: | :--- | :--- |
+| `temperature` | 🔴 **Strong** | Highly non-linear | Prioritize for variance-based analysis |
+| `tokens` | 🔴 **Strong** | Non-linear impact on response semantics | Focus on identifying stable operating modes |
+
 ## Installation
 
 ```bash
