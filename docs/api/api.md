@@ -3,7 +3,7 @@ flowchart TB
     classDef layer fill:#ffffff,stroke:#2c3e50,stroke-width:2px;
     classDef ghost fill:transparent,stroke:transparent,color:transparent;
 
-    subgraph Analyzers ["ANALYZERS"]
+    subgraph Analyzers ["<b>ANALYZERS</b><br/>space, names, levels, name, description, url, complexity, category"]
         direction LR
         gA1["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost ~~~ M["<b>Morris</b><br/>initialize<br/>sensitivity<br/>output"] ~~~ gA2["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost
     end
