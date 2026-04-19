@@ -36,16 +36,23 @@ For example, FlexCartesian has been used for the following systems in real-world
 
 In general, FlexCartesian brings value in any use case where you need to systematically explore the entire parameter space of viable values of input parameters. These are performance benchmarking of infrastructure; tuning of AI/ML models; generating simulations in physics or bioinformatics; generating API stress-tests; generating full-coverate test scripts, and many more.
 
-Any field involving ***iteration over multi-dimensional space of input parameters*** benefits from FlexCartesian.
+Any field involving ***iteration over multi-dimensional parameter space*** benefits from FlexCartesian.
 
-## How Does It Work?
+## Essential Advantages
 
-This paradigm is known as `paramater space analysis`, and it involves systematically exploring the range of possible input values (parameters) in a system to understand their effect on outputs, aiming to optimize performance or understand system behavior. It maps how different parameter combinations affect results, ideally using visualization to identify optimal configurations.
+FlexCartesian takes this paradigm, known as parameter space analysis, to the next level we call Parametric Behaviour Blueprinting (PBB).
 
+1. You define input parameters of your system, and constraints, if any.
+2. You express behavioural functions of your system - this can be probes fetching metrics from your system, or built-in connectors to the data source storing metrics of your system.
+3. FlexCartesian builds multi-dimensional Cartesian space of the parameters, and computes behavioural functions in this space - with respect to constraints, if any.
+4. From now on, FlexCartesian holds Parametric Behavioural Blueprint of your system - and it gives you all the power of the BPP paradigm:
+- You can visualize interactive HTML heatmaps of your system's behaviour
+- You can analyze influence of the parameters on the behaviour of the system
+- You can find sweet-spot combinations of parameter values
+- You can enrich your system by adding derived behavioural functions, and further explore its behaviour
+- You can keep the link between the blueprint and real system alive, so that the blueprint will evolve in time, just as real system does
 
-
-
-
+Effectively, FlexCartesian creates a live digital blueprint of your system.
 
 ## Installation
 
