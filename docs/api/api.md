@@ -1,44 +1,32 @@
 ```Mermaid
-block-beta
-  columns 1
+flowchart TB
+    classDef layer fill:#ffffff,stroke:#2c3e50,stroke-width:2px;
+    classDef ghost fill:transparent,stroke:transparent,color:transparent;
 
-  A["Analyzers
-  ----------------
-  Morris
-  def initialize
-  def sensitivity
-  def output"]
+    subgraph Analyzers ["Analyzers"]
+        direction LR
+        gA1["xxxxxxxxxxxxxxxx"]:::ghost ~~~ M["<b>Morris</b><br/>def initialize<br/>def sensitivity<br/>def output"] ~~~ gA2["xxxxxxxxxxxxxxxx"]:::ghost
+    end
 
-  B["Core Components"]
-  block:C:5
-    DS["Data Sources
-    def data"]
-    UT["Utilities
-    def size
-    def to_a
-    def vector_to"]
-    FN["Functions
-    def func"]
-    IT["Iterators
-    def cartesian"]
-    IO["Input / Output
-    def import
-    def export
-    def visualize..."]
-  end
+    subgraph Core ["Core Components"]
+        direction LR
+        DS["<b>Data Sources</b><br/>def data"] ~~~ UT["<b>Utilities</b><br/>def size<br/>def to_a<br/>def vector_to"] ~~~ FN["<b>Functions</b><br/>def func"] ~~~ IT["<b>Iterators</b><br/>def cartesian"] ~~~ IO["<b>Input / Output</b><br/>def import<br/>def export<br/>def visualize..."]
+    end
 
-  D["Conditions
-  ----------------
-  def cond"]
+    subgraph Cond ["Conditions"]
+        direction LR
+        gC1["xxxxxxxxxxxxxxxx"]:::ghost ~~~ C["<b>Conditions</b><br/>def cond"] ~~~ gC2["xxxxxxxxxxxxxxxx"]:::ghost
+    end
 
-  E["Parameter Space
-  ----------------
-  def initialize
-  valid?
-  levels
-  dimensionality..."]
+    subgraph Params ["Parameter Space"]
+        direction LR
+        gP1["xxxxxxxxxxxxxxxx"]:::ghost ~~~ PS["<b>Parameter Space</b><br/>def initialize<br/>valid?<br/>levels<br/>dimensionality..."] ~~~ gP2["xxxxxxxxxxxxxxxx"]:::ghost
+    end
 
-  A --> B
-  B --> D
-  D --> E
+    Analyzers ~~~ Core
+    Core ~~~ Cond
+    Cond ~~~ Params
+
+    class Analyzers,Core,Cond,Params layer;
 ```
+
