@@ -26,9 +26,6 @@ space.func(:run, progress: true, title: "Obtaining behavioural data")
 # parameter space with behavioral functions is the behavioural model - we can visualize it
 space.visualize(x: :temperature, y: :tokens, func: :semantic_shift, output: "./examples/13_chatgpt_semantic_shift/viz.html")
 
-puts "Visualization saved to ./examples/13_chatgpt_semantic_shift/viz.html"
-
 # finally, analyze how precisely parameters influence ChatGPT's response
-a = space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42)
-a.output(colorize:true, func: :semantic_shift)
+space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42).output(func: :semantic_shift, format: :markdown)
 
