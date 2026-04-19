@@ -1,4 +1,4 @@
-## FlexCartesian Stack
+# FlexCartesian Stack
 
 FlexCartesian represents a system using Parametric Behaviour Blueprinting stack, as given below.
 Component titles are clickable, and they refer to the description and API of the component.
@@ -35,25 +35,25 @@ flowchart TB
     class Analyzers,Core,Cond,Params layer;
 ```
 
-## Stack Components
+## STACK COMPONENTS
 
 ### Parameter Space
 
 Parameter space is a space formed as multi-dimensional Cartesian product of the dimensions represented by discrete dimensional values.
 
-#### Create parameter space
-
 ```ruby
 def initialize(dims = nil, path: nil, format: :json, source: nil, uri: nil, dimensions: nil, separator: ',')
 ```
 
-Create dimensions from their description (the space will be empty):
+Create parameter space.
+A space can be created in two ways.
+Firstly, an empty space can be created from the description of dimensions:
 
 - `dims` hash of dimensions (key) and array of dimensional values (value)
 - `path` to the file describing dimensions
 - `format` format of the file describing dimensions, either JSON or YAML
 
-Read tabular data source and create dimensions from the specified columns (the space will be empty, but the data source will remain available to link behavioural functions)
+Secondly, a space can be created from a tabular data source. In this approach, dimensions are automatically created from specified columns in the data source, and dimensional values will be filled in from these columns. The resulting space will be empty, but entire the data source will remain available to link the data to behavioural functions, if needed. This method is very powerful - effectively, it allows for the creation of a live behavioural blueprint which evolves in time synchronously with the evolution of the data in the data source.
 
 - `source` data source type, one of `:xlsx` or `:csv`
 - `uri` local path to the data source file
