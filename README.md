@@ -102,7 +102,7 @@ This will give us measurable influence and nature of the influence of the parame
 | Parameter | Influence | Category | Recommendation |
 | :--- | :---: | :--- | :--- |
 | `temperature` | 🔴 **Strong** | Highly non-linear | Prioritize for variance-based analysis |
-| `tokens` | 🔴 **Strong** | Non-linear impact on response semantics | Focus on identifying stable operating modes |
+| `tokens` | 🔴 **Strong** | Highly non-lineaer | Prioritize for variance-based analysis |
 
 ## Installation
 
