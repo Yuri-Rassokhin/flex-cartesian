@@ -104,7 +104,8 @@ Now we can visualize PBB as a fancy 2D-heatmap showing how semantic of ChatGPT's
 space.visualize(x: :temperature, y: :tokens, func: :semantic_shift, output: "./viz.html")
 ```
 
-We can open this interactive visualization './viz.html' in a browser. The semantic shift varies from 0.0 (the answer is identical to the first answer) to 1.0 (the answer is totally inconsistent from the first answer):
+We can open this `./viz.html` in a browser.
+The semantic shift varies from 0.0 (the answer is identical to the first answer) to 1.0 (the answer is totally inconsistent from the first answer):
 
 <p align="center">
 	<img src="docs/assets/viz/example-low-rate.gif" width="600"/>
