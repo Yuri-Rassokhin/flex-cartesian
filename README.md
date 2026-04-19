@@ -5,7 +5,7 @@
   <p><b>Tool for exploration and modelling of parametric systems.</b></p>
 </div>
 
-## What It It For?
+## What Is It For?
 
 If you deal with a system that behaves as a function of multiple tunable parameters, and you want to explore its behaviour, FlexCartesian does it for you.
 Effectively, it answers the following questions for your system, whatever it is - a database, AI/ML model, file storage, web server, or a physical system even.
