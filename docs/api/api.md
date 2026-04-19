@@ -88,8 +88,12 @@ Return number of dimensions in the current space.
 
 Condition is a logical function defined in parameter space.
 Condition restricts the space to the subset of vectors that satisfy this condition.
+
 A space can have arbitraty number of conditions, and they apply using logical AND.
-This means, conditions restrict the space to the subset that satisfies ALL conditions.
+This means, conditions restrict the space to the subset that satisfies ALL of them.
+
+All layers of the stack higher up respect conditions - that is, when a method applies to space, effectively it applies only to its subset defined by the conditions.
+For example, if `cartesian` iterator iterates over space, it actually iterates over its subset defined by the conditions.
 
 #### Managing Conditions
 
