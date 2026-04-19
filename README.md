@@ -154,13 +154,13 @@ space = FlexCartesian.new({
 
 # define behavioural functions:
 # 1. 'command' constructs raw ping command
-# 2. 'raw_ping' executing the command and returns raw result
+# 2. 'raw' executing the command and returns raw result
 # 3. 'time' extracts ping time from the result
 # 4. 'cap' is a fancy stuff, it shows 150 ms ping threshold on the future visialization.
 result = {}
 space.func(:add, :command) { |v| "ping -c #{v.count} -s #{v.size} -i #{v.interval} #{v.target}" }
-space.func(:add, :raw_ping, hide: true) { |v| result[v.command] ||= `#{v.command} 2>&1` }
-space.func(:add, :time) { |v| v.raw_ping[/min\/avg\/max\/(?:mdev|stddev) = [^\/]+\/([^\/]+)/, 1]&.to_f }
+space.func(:add, :raw, hide: true) { |v| result[v.command] ||= `#{v.command} 2>&1` }
+space.func(:add, :time) { |v| v.raw[/min\/avg\/max\/(?:mdev|stddev) = [^\/]+\/([^\/]+)/, 1]&.to_f }
 space.func(:add, :cap) { |v| 150 }
 
 # Now we compute all the functions in the parameter space
