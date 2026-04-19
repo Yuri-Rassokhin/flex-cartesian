@@ -40,7 +40,7 @@ Any field involving ***iteration over multi-dimensional parameter space*** benef
 
 ## Essential Advantages
 
-FlexCartesian takes this paradigm, known as parameter space analysis, to the next level we call Parametric Behaviour Blueprinting (PBB).
+FlexCartesian takes this paradigm, known as **parameter space analysis**, to the next level we call **Parametric Behaviour Blueprinting (PBB)**.
 
 1. You define input parameters of your system, and constraints, if any.
 2. You express behavioural functions of your system - this can be probes fetching metrics from your system, or built-in connectors to the data source storing metrics of your system.
