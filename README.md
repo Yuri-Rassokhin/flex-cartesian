@@ -36,7 +36,7 @@ For example, FlexCartesian has been used for the following systems in real-world
 
 In general, FlexCartesian brings value in any use case where you need to systematically explore the entire parameter space of viable values of input parameters. These are performance benchmarking of infrastructure; tuning of AI/ML models; generating simulations in physics or bioinformatics; generating API stress-tests; generating full-coverate test scripts, and many more.
 
-Any field involving *iteration over multi-dimensional space of input parameters*  benefits from FlexCartesian.
+Any field involving ***iteration over multi-dimensional space of input parameters*** benefits from FlexCartesian.
 
 ## How Does It Work?
 
