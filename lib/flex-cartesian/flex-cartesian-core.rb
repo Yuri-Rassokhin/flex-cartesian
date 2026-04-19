@@ -37,7 +37,7 @@ def initialize(dims = nil, path: nil, format: :json, logger: nil, log_level: Log
     # array of arrays of dimension values (not a Cartesian product yet)
     @levels = dimension_values(@dimensions)
     # total size of Cartesian space (number of vectors, that is, ALL combinations, ignoring conditions)
-    @size = @levels.map(&:size).inject(:*)
+    @raw_size = @levels.map(&:size).inject(:*)
     # array of dimension names
     @names = @dimensions.keys
     # internal structure: for each dimension, minimal textual width that fits all values in this dimension - required for table output

@@ -100,7 +100,7 @@ end
   def size
     return 0 unless @dimensions.is_a?(Hash)
 
-    return @plan.size if @plan
+    return @plan.size if @plan # TODO: dead code
 
     if @conditions.empty?
       values = @dimensions.values.map { |dim| dim.is_a?(Enumerable) ? dim.to_a : [dim] }
