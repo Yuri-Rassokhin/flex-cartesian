@@ -83,7 +83,7 @@ space.func(:add, :semantic_shift) { |v| (1.0 - cosine(v.embedding, anchor)).roun
 
 After that, we can visualize fancy-looking 2D-heatmap showing how semantic of ChatGPT's answers depends on tokens and temperature.
 ```ruby
-space.visualize(x: :temperature, y: :tokens, function: :semantic_shift)
+space.visualize(x: :temperature, y: :tokens, func: :semantic_shift)
 ```
 
 You can open this interactive visualization in your browser:
@@ -94,7 +94,7 @@ You can open this interactive visualization in your browser:
 
 Finally, we want to assess the influence of each parameter on the semantic shift of ChatGPT's answers.
 ```ruby
-space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42).output(function: :semantic_shift)
+space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42).output(func: :semantic_shift)
 ```
 
 This will give us measurable influence and nature of the influence of the parameters:
