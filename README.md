@@ -22,7 +22,7 @@ Fundamentally, this exploration conveys an answer to one fundamental question:
 
 This is precisely the core value of FlexCartesian - it finds the best operating mode for your system.
 
-## What Systems Can Be Explored?"
+## What Systems Can Be Explored?
 
 Literally any system can be explored - as long as you can measure its behaviour.
 For example, FlexCartesian has been used for exploration of the best operating modes of -
