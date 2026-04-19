@@ -53,7 +53,7 @@ FlexCartesian takes this paradigm, known as **parameter space analysis**, to the
 - You can enrich your system by adding derived behavioural functions, and further explore its behaviour
 - You can keep the link between the blueprint and real system alive, so that the blueprint will evolve in time, just as real system does
 
-Effectively, FlexCartesian creates a live digital blueprint of your system serving as the engine for mathematical modelling linked to real system.
+Effectively, FlexCartesian creates a live digital blueprint of your system, serving as the engine for mathematical modelling linked to real system.
 
 ## Installation
 
