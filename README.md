@@ -88,7 +88,7 @@ space.visualize(x: :temperature, y: :tokens, function: :semantic_shift)
 
 You can open this interactive visualization in your browser.
 
-<video src="docs/assets/viz/example.mp4" width="800" controls muted autoplay loop>Your browser doesn't support video</video>
+<video src="https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/assets/viz/example.mp4" width="800" controls muted autoplay loop>Your browser doesn't support video</video>
 
 Finally, we want to assess the influence of each parameter to the semantic shift of ChatGPT's answers.
 ```ruby
