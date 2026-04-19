@@ -45,8 +45,8 @@ Parameter space is a space formed as multi-dimensional Cartesian product of the 
 def initialize(dims = nil, path: nil, format: :json, source: nil, uri: nil, dimensions: nil, separator: ',')
 ```
 
-Create parameter space.
-A space can be created in two ways.
+Create parameter space. A space can be created in two ways.
+
 Firstly, an empty space can be created from the description of dimensions:
 
 - `dims` hash of dimensions (key) and array of dimensional values (value)
