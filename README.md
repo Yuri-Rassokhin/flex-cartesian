@@ -153,8 +153,8 @@ space = FlexCartesian.new({
 	    "dynamodb.af-south-1.amazonaws.com"]})   # Capetown
 
 # define behavioural functions:
-# 1. 'command' constructs raw ping command
-# 2. 'raw' executing the command and returns raw result
+# 1. 'command' constructs ping command
+# 2. 'raw' executes the command and returns raw result
 # 3. 'time' extracts ping time from the result
 # 4. 'cap' is a fancy stuff, it shows 150 ms ping threshold on the future visialization.
 result = {}
