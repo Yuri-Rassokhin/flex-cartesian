@@ -152,7 +152,7 @@ space = FlexCartesian.new({
 result = {}
 space.func(:add, :command) { |v| "ping -c #{v.count} -s #{v.size} -i #{v.interval} #{v.target}" }
 space.func(:add, :raw, hide: true) { |v| result[v.command] ||= `#{v.command} 2>&1` }
-space.func(:add, :time) { |v| v.raw[/min\/avg\/max\/(?:mdev|stddev) = [^\/]+\/([^\/]+)/, 1]&.to_f }
+space.func(:add, :time) { |v| v.raw[/min\/avg\/max\/(?:mdev|stddev) = [^\/]+\/([^\/]+)/, 1]&.to_f.round(2) }
 space.func(:add, :cap) { |v| 150 }
 
 # Now we compute all the functions in the parameter space
