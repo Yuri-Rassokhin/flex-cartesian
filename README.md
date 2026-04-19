@@ -2,10 +2,8 @@
   <a href="https://yuri-rassokhin.github.io/flex-cartesian/">
     <img src="docs/assets/branding/logo.svg" alt="FlexCartesian Logo" width="160"/>
   </a>
-  <p><b>FlexCartesian is a Ruby framework for modelling and analysing parametric systems.</b></p>
+  <p><b>Tool for exploration and modelling of parametric systems.</b></p>
 </div>
-
-# FlexCartesian is a tool for parameter space analysis.
 
 ## What Value Does It Create?
 
