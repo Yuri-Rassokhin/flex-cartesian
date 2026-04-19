@@ -10,11 +10,11 @@
 If you deal with a system that behaves as a function of multiple tunable parameters, and you want to explore its behaviour, FlexCartesian does it for you.
 Effectively, it answers the following questions for your system.
 
-1. What parameters are the most influential?
-2. Is the influence of parameters linear or chaotic?
-3. What parameters can be ignored as negligible?
-4. Which parameters are independent and which ones are inter-correlated?
-5. How does the system's behaviour evolve in time?
+- What parameters are the most influential?
+- Is the influence of parameters linear or chaotic?
+- What parameters can be ignored as negligible?
+- Which parameters are independent and which ones are inter-correlated?
+- How does the system's behaviour evolve in time?
 
 Fundamentally, this exploration conveys an answer to one fundamental question:
 
@@ -46,13 +46,14 @@ FlexCartesian takes this paradigm, known as **parameter space analysis**, to the
 2. You express behavioural functions of your system - this can be probes fetching metrics from your system, or built-in connectors to the data source storing metrics of your system.
 3. FlexCartesian builds multi-dimensional Cartesian space of the parameters, and computes behavioural functions in this space - with respect to constraints, if any.
 4. From now on, FlexCartesian holds Parametric Behavioural Blueprint of your system - and it gives you all the power of the BPP paradigm:
+
 - You can visualize interactive HTML heatmaps of your system's behaviour
 - You can analyze influence of the parameters on the behaviour of the system
 - You can find sweet-spot combinations of parameter values
 - You can enrich your system by adding derived behavioural functions, and further explore its behaviour
 - You can keep the link between the blueprint and real system alive, so that the blueprint will evolve in time, just as real system does
 
-Effectively, FlexCartesian creates a live digital blueprint of your system.
+Effectively, FlexCartesian creates a live digital blueprint of your system serving as the engine for mathematical modelling linked to real system.
 
 ## Installation
 
