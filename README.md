@@ -8,23 +8,30 @@
 ## What Is It For?
 
 If you deal with a system that behaves as a function of multiple tunable parameters, and you want to explore its behaviour, FlexCartesian does it for you.
-Effectively, it answers the following questions for your system, whatever it is - a database, AI/ML model, file storage, web server, or a physical system even.
+Effectively, it answers the following questions for your system.
 
-1. What parameters are the most influential in your system?
+1. What parameters are the most influential?
 2. Is the influence of parameters linear or chaotic?
 3. What parameters can be ignored as negligible?
 4. Which parameters are independent and which ones are inter-correlated?
 5. How does the system's behaviour evolve in time?
 
-Fundamentally, this exploration conveys an answer to one fundamental question -
+Fundamentally, this exploration conveys an answer to one fundamental question:
 
 ## "What Is The Best Operating Mode Of My System?"
 
-**FlexCartesian finds the best operating mode for your system.**
+This is precisely the bottom of the value FlexCartesian brings to you - it finds the best operating mode for your system.
 
+## What Systems Can Be Explored?"
 
+Literally any system can be explored - as long as you can measure its behaviour.
+For example, FlexCartesian has been used for exploration of the best operating modes of -
 
-
+| System Explored | Research Question | Answer Conveyed |
+| --------------- | ----------------- | --------------- |
+| LLM (ChatGPT, Cohere, LLAMA, Qwen, JAIS) | What temperature/token combinations are optimal to make LLM's answers to repeated questions stable and consistent? | Tier-1 LLMs are very stable with temperature <= 0.2 and ~1,000 tokens, at least |
+| Vision models (YOLO, Detectron) | Which architecture leads by performance/ratio, GPU or ARM? | Surprisingly, it's ARM in many use cases |
+| Semantic search (FAISS and lots of embedding models) | Should semantic index be preloaded to memory, and which one - CPU or GPU? | Preloading makes difference. Suprisingly, preloading to cheaper CPU RAM often brings nearly the same acceleration as limited and costly GPU RAM |
 
 This paradigm is known as `paramater space analysis`, and it involves systematically exploring the range of possible input values (parameters) in a system to understand their effect on outputs, aiming to optimize performance or understand system behavior. It maps how different parameter combinations affect results, ideally using visualization to identify optimal configurations.
 
