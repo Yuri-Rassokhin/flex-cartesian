@@ -171,7 +171,7 @@ space.func(:run, progress: true)
 space.visualize(x: :size, y: :target, func: [ :time, :cap ], output: "./viz.html")
 ```
 
-Just run this code, and you'll get an interactive HTML heatmap showing how geography and packet size influence ping to DynamoDB.
+Just run this code, and you'll get an interactive HTML heatmap `./viz.html` showing how geography and packet size influence ping to DynamoDB.
 As you can see, FlexCartesian enable very high-level and powerful DSL, paacking complex operations in one-liners.
 
 If you need mathematically rigorous assessment of the parameter influence, you just add another one-liner:
