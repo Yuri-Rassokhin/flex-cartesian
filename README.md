@@ -111,6 +111,8 @@ The semantic shift varies from 0.0 (the answer is identical to the first answer)
 	<img src="docs/assets/viz/example-low-rate.gif" width="600"/>
 </p>
 
+The heatmap suggests the answer to the initial question. To avoid semantic shift completely, we should keep temperature not exceeding 0.2, while the number of tokens has no influence to the responses at all. By the way, even with the temperatures beyond 0.2, the answering is still respectably consistent - the semantic shift hardly reaches 0.2.
+
 Finally, we want to assess the influence of each parameter on the semantic shift of ChatGPT's answers.
 
 ```ruby
@@ -127,6 +129,8 @@ This will give us quantified influence and the nature of influence of the parame
 | `tokens` | 🔴 **Strong** | Highly non-lineaer | Prioritize for variance-based analysis |
 
 </div>
+
+This sensitivity table confirms strong influence of both parameters on the consistency of the answers, and most importantly, it categorizes their influence as highly non-linear. Therefore, we should NOT make decisions on these parameters based on a few probes - to the contrary, we have to build complete behavioural bluepring using entire parameter space - and find sweet area on it: "temperature <= 0.2, no matter the tokens".
 
 ## Example #2: Sensitivity of AWS DynamoDB servers
 
