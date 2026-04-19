@@ -111,10 +111,10 @@
 <span class="kw">space</span>.<span class="fn">func</span>(<span class="sym">:run</span>, <span class="sym">progress:</span> <span class="kw">true</span>, <span class="sym">title:</span> <span class="str">"Extracting behavioural blueprint"</span>)
 
 <span style="color: var(--muted)"># visualize behavioural blueprint as a 2D-heatmap</span>
-<span class="kw">space</span>.<span class="fn">visualize</span>(<span class="sym">x:</span> <span class="sym">:temperature</span>, <span class="sym">y:</span> <span class="sym">:tokens</span>, <span class="sym">function:</span> <span class="sym">:semantic_shift</span>)
+<span class="kw">space</span>.<span class="fn">visualize</span>(<span class="sym">x:</span> <span class="sym">:temperature</span>, <span class="sym">y:</span> <span class="sym">:tokens</span>, <span class="sym">func:</span> <span class="sym">:semantic_shift</span>)
 
 <span style="color: var(--muted)"># quantify influence of the parameters in the blueprint</span>
-<span class="kw">space</span>.<span class="fn">analyzer</span>(<span class="sym">:morris</span>, <span class="sym">trajectories:</span> 10, <span class="sym">step:</span> 0.1, <span class="sym">seed:</span> 42).<span class="fn">output</span>(<span class="sym">function:</span> <span class="sym">:semantic_shift</span>)</code></pre>
+<span class="kw">space</span>.<span class="fn">analyzer</span>(<span class="sym">:morris</span>, <span class="sym">trajectories:</span> 10, <span class="sym">step:</span> 0.1, <span class="sym">seed:</span> 42).<span class="fn">output</span>(<span class="sym">func:</span> <span class="sym">:semantic_shift</span>)</code></pre>
   </div>
 </article>
 
