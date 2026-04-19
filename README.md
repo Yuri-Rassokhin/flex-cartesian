@@ -116,12 +116,15 @@ The heatmap suggests the answer to the initial question. To avoid semantic shift
 Finally, we want to assess the influence of each parameter on the semantic shift of ChatGPT's answers.
 
 ```ruby
-space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42).output(func: :semantic_shift)
+space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42).output(func: :semantic_shift, format: :markdown)
 ```
 
 This will give us quantified influence and the nature of influence of the parameters:
 
-![Sensitivity](docs/assets/viz/sensitivity.png)
+|parameter  |influence[semantic_shift]|deviation|probes|category|linearity        |recommendation                                                                                   |
+|-----------|-------------------------|---------|------|--------|-----------------|-------------------------------------------------------------------------------------------------|
+|tokens     |0.14                     |0.22     |10    |strong  |highly non-linear|critical parameter with complex interactions; prioritize for variance-based analysis (e.g. Sobol)|
+|temperature|0.09                     |0.19     |10    |strong  |highly non-linear|critical parameter with complex interactions; prioritize for variance-based analysis (e.g. Sobol)|
 
 <div align="center">
 
