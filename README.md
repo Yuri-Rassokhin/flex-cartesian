@@ -47,13 +47,49 @@ FlexCartesian takes this paradigm, known as **parameter space analysis**, to the
 3. FlexCartesian builds multi-dimensional Cartesian space of the parameters, and computes behavioural functions in this space - with respect to constraints, if any.
 4. From now on, FlexCartesian holds Parametric Behavioural Blueprint of your system - and it gives you all the power of the BPP paradigm:
 
-- You can visualize interactive HTML heatmaps of your system's behaviour
+- You can visualize interactive heatmaps of your system's behaviour
 - You can analyze influence of the parameters on the behaviour of the system
 - You can find sweet-spot combinations of parameter values
 - You can enrich your system by adding derived behavioural functions, and further explore its behaviour
 - You can keep the link between the blueprint and real system alive, so that the blueprint will evolve in time, just as real system does
 
 Effectively, FlexCartesian creates a live digital blueprint of your system, serving as the engine for mathematical modelling linked to real system.
+
+## Example
+
+Perhaps, we want to find optimal operating mode of ChatGPT - specifically, the ranges of its temperature and tokens where ChatGPT gives stable and consistent answers to repeated question. Such stability is crucial in such fields as law or science, where AI assistant must provide very stable answers based on a given corpus of documents.
+
+We define parameter space:
+
+```ruby
+space = FlexCartesian.new({ temperature: [0.0, 0.2, 0.4, 0.6, 0.8, 1.0], tokens: [20, 50, 100, 200, 400] })
+```
+
+We define behavioural function - response given by ChatGPT to the same test question, for any combination of parameter values:
+
+```ruby
+msg = [ { role: "system", content: "You are a precise and consistent assistant." },
+        { role: "user", content: "Explain quantum mechanics in one sentence." } ]
+
+space.func(:add, :response) { |v| llm(temperature: v.temperature, max_tokens: v.tokens, messages: msg ) }
+```
+
+We enrich the system by adding two more behavioural functions that will assess semantic shift of the answers given by ChatGPT.
+The first function vectorizes each answer using embedding model, and the second function calculates semantic shift as cosine of the answer against the first answer ("anchor").
+```ruby
+space.func(:add, :embedding) { |v| anchor ||= embed(v.response); embed(v.response) }
+space.func(:add, :semantic_shift) { |v| (1.0 - cosine(v.embedding, anchor)).round(2) }
+```
+
+After that, we can vidualize fancy-looking 2D-heatmap showing how semantic of ChatGPT's answers depends on tokens and temperature.
+```ruby
+space.visualize(x: :temperature, y: :tokens, function: :semantic_shift)
+```
+
+Finally, we want to assess the influence of each parameter to the semantic shift of ChatGPT's answers.
+```ruby
+space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42).output(function: :semantic_shift)
+```
 
 ## Installation
 
