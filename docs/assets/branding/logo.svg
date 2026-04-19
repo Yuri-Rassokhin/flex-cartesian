@@ -1,17 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 44" width="160" height="44">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 130" width="450" height="130">
   <defs>
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&amp;display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400&amp;display=swap');
       .text {
         font-family: 'Inter', system-ui, sans-serif;
-        font-size: 15px;
-        font-weight: 500;
-        fill: #edf5ff;
+        font-size: 54px;
+        font-weight: 400;
+        fill: #6ce5ff;
       }
     </style>
   </defs>
-  <rect width="160" height="44" rx="22" fill="#07111f" />
-  <rect x="1" y="1" width="158" height="42" rx="21" fill="rgba(180, 214, 255, 0.14)" stroke="rgba(180, 214, 255, 0.34)" stroke-width="1" />
+  
+  <rect x="5" y="5" width="440" height="120" rx="60" fill="#21354c" stroke="#5a7a95" stroke-width="4" />
+  
   <text x="50%" y="50%" dy="0.35em" text-anchor="middle" class="text">FlexCartesian</text>
 </svg>
 
