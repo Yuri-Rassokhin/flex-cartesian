@@ -29,8 +29,8 @@ For example, FlexCartesian has been used for the following systems in real-world
 
 | System Explored | Research Question | Answer Conveyed |
 | --------------- | ----------------- | --------------- |
-| LLM (ChatGPT, Cohere, LLAMA, Qwen, JAIS) | What temperature/token combinations are optimal for maintaining stable and consistent LLM's answers to repeated questions? | Tier-1 LLMs are very stable with temperature <= 0.2 and ~1,000 tokens, at least |
-| Vision models (YOLO, Detectron) | Which architecture leads by performance/ratio for 100M detections/day, GPU or ARM? | Surprisingly, it's ARM in many use cases |
+| LLM (ChatGPT, Cohere, LLAMA, Qwen, JAIS) | What temperature/token combinations are optimal for maintaining stable and consistent LLM's answers to repeated questions? | Tier-1 LLMs are very stable with the temperature <= 0.2 and ~1,000 tokens, at least |
+| Vision models (YOLO, Detectron) | Which architecture leads by performance/ratio for 100,000,000 detections/day, GPU or ARM? | Surprisingly, it's ARM in many use cases |
 | Semantic search (FAISS and lots of embedding models) | Should semantic index be preloaded to memory, and which one - CPU or GPU? | Preloading makes difference. Suprisingly, preloading to cheaper CPU RAM often brings nearly the same acceleration as limited and costly GPU RAM |
 | Cloud storage tuning | What is time gap of AI training on OCI using local NVMe versus network-attached block volumes? | It's less than 20%, often ~10% |
 
