@@ -55,9 +55,9 @@ FlexCartesian takes this paradigm, known as **parameter space analysis**, to the
 
 Effectively, FlexCartesian creates a live digital blueprint of your system, serving as the engine for mathematical modelling linked to real system.
 
-## Example
+## Example #1: Avoiding semantic shift in ChatGPT
 
-Perhaps, we want to find optimal operating mode of ChatGPT - specifically, the ranges of its temperature and tokens where ChatGPT gives stable and consistent answers to repeated question. Such stability is crucial in such fields as law or science, where AI assistant must provide very stable answers based on a given corpus of documents. While you can run [this example](https://github.com/Yuri-Rassokhin/flex-cartesian/tree/main/examples/13_chatgpt_semantic_shift) yourself, here's how FlexCartesian solves it, step by step.
+Perhaps, we want to find optimal operating mode of ChatGPT - specifically, the ranges of its temperature and tokens where ChatGPT gives stable and consistent answers to repeated question. The lack of such stability is called semantic shift, which is crucial to avoid in such fields as law or science, where AI assistant must provide very stable answers based on a given corpus of documents. While you can run [this example](https://github.com/Yuri-Rassokhin/flex-cartesian/tree/main/examples/13_chatgpt_semantic_shift) yourself, here's how FlexCartesian solves the problem of semantic shift, step by step.
 
 We define parameter space:
 
@@ -107,6 +107,56 @@ This will give us measurable influence and nature of the influence of the parame
 | `tokens` | 🔴 **Strong** | Highly non-lineaer | Prioritize for variance-based analysis |
 
 </div>
+
+## Example #2: Sensitivity of global DNS servers
+
+Let's take [another example](https://github.com/Yuri-Rassokhin/flex-cartesian/tree/main/examples/09_ping_visualize).
+If we ping AWS DynamoDB, how do ping parameters influence ping time?
+For the sake of example, let's take IP address and packet size.
+Here's full code, showing how FlexCartesian gives the answer.
+
+```ruby
+# enable FlexCartesian
+require 'flex-cartesian'
+
+# define parameter space
+space = FlexCartesian.new({
+  size: [64, 512, 1400, 1500, 4096, 8192],
+  target: [ "dynamodb.eu-central-1.amazonaws.com",   # Frankfurt
+	    "dynamodb.us-east-1.amazonaws.com",      # Virginia, US
+	    "dynamodb.sa-east-1.amazonaws.com",      # Sao Paolo
+	    "dynamodb.ap-northeast-1.amazonaws.com", # Tokio
+	    "dynamodb.af-south-1.amazonaws.com"]})   # Capetown
+
+# define behavioural functions:
+# 1. 'command' constructs raw ping command
+# 2. 'raw_ping' executing the command and returns raw result
+# 3. 'time' extracts ping time from the result
+# 4. 'cap' is just a fancy stuff, it visualizes 150 milliseconds ping threshold on the future visialization.
+result = {}
+space.func(:add, :command) { |v| "ping -c #{v.count} -s #{v.size} -i #{v.interval} #{v.target}" }
+space.func(:add, :raw_ping, hide: true) { |v| result[v.command] ||= `#{v.command} 2>&1` }
+space.func(:add, :time) { |v| v.raw_ping[/min\/avg\/max\/(?:mdev|stddev) = [^\/]+\/([^\/]+)/, 1]&.to_f }
+space.func(:add, :cap) { |v| 150 }
+
+# Now we compute all the functions in the parameter space
+space.func(:run, progress: true)
+
+# Visualize behavioural blueprint as a 2D-heatmap
+# It will show two functions - ping time (:time) and 150ms iso-surface (:cap)
+space.visualize(x: :size, y: :target, func: [ :time, :cap ], output: "./examples/09_ping_visualize/viz.html")
+```
+
+Just run this code, and you'll get an interactive HTML heatmap showing how geography and packet size influence ping to DynamoDB.
+As you can see, FlexCartesian enable very high-level and powerful DSL, paacking complex operations in one-liners.
+
+If you need mathematically rigorous assessment of the parameter influence, you just add another one-liner:
+
+```ruby
+space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42).output(func: :time, colorize: true)
+```
+
+This one-liner applies [Morris sensitivity analysis](https://en.wikipedia.org/wiki/Morris_method) to the behavioural blueprint extracted by FlexCartesian.
 
 ## Installation
 
