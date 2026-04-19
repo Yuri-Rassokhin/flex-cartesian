@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 44" width="160" height="44">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&amp;display=swap');
+      .text {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 15px;
+        font-weight: 500;
+        fill: #edf5ff;
+      }
+    </style>
+  </defs>
+  <rect width="160" height="44" rx="22" fill="#07111f" />
+  <rect x="1" y="1" width="158" height="42" rx="21" fill="rgba(180, 214, 255, 0.14)" stroke="rgba(180, 214, 255, 0.34)" stroke-width="1" />
+  <text x="50%" y="50%" dy="0.35em" text-anchor="middle" class="text">FlexCartesian</text>
+</svg>
+
