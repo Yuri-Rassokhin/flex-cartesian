@@ -88,7 +88,7 @@ space.visualize(x: :temperature, y: :tokens, function: :semantic_shift)
 
 You can open this interactive visualization in your browser.
 
-![ChatGPT's heatmap example](docs/assets/viz/example-low-rate.gif)
+![ChatGPT's heatmap example](docs/assets/viz/example.mp4)
 
 Finally, we want to assess the influence of each parameter to the semantic shift of ChatGPT's answers.
 ```ruby
