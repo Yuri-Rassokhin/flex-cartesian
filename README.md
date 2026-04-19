@@ -57,7 +57,7 @@ Effectively, FlexCartesian creates a live digital blueprint of your system, serv
 
 ## Example
 
-Perhaps, we want to find optimal operating mode of ChatGPT - specifically, the ranges of its temperature and tokens where ChatGPT gives stable and consistent answers to repeated question. Such stability is crucial in such fields as law or science, where AI assistant must provide very stable answers based on a given corpus of documents.
+Perhaps, we want to find optimal operating mode of ChatGPT - specifically, the ranges of its temperature and tokens where ChatGPT gives stable and consistent answers to repeated question. Such stability is crucial in such fields as law or science, where AI assistant must provide very stable answers based on a given corpus of documents. While you can run ![this example](https://github.com/Yuri-Rassokhin/flex-cartesian/tree/main/examples/13_chatgpt_semantic_shift) yourself, here's how FlexCartesian solve it, step by step.
 
 We define parameter space:
 
