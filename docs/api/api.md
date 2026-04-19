@@ -1,3 +1,4 @@
+```Mermaid
 block-beta
   columns 1
 
@@ -40,3 +41,4 @@ block-beta
   A --> B
   B --> D
   D --> E
+```
