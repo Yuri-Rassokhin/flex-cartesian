@@ -20,7 +20,7 @@ Fundamentally, this exploration conveys an answer to one fundamental question:
 
 ## "What Is The Best Operating Mode Of My System?"
 
-This is precisely the bottom of the value FlexCartesian brings to you - it finds the best operating mode for your system.
+This is precisely the core value of FlexCartesian - it finds the best operating mode for your system.
 
 ## What Systems Can Be Explored?"
 
