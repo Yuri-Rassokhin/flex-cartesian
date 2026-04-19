@@ -24,8 +24,8 @@ This is precisely the core value of FlexCartesian - it finds the best operating 
 
 ## What Systems Can Be Explored?
 
-Literally any system can be explored - as long as you can measure its behaviour.
-For example, FlexCartesian has been used for exploration of the best operating modes of -
+Any system can be explored, as long as you can measure its behaviour.
+For example, FlexCartesian has been used in real-world large-scale projects for the following systems.
 
 | System Explored | Research Question | Answer Conveyed |
 | --------------- | ----------------- | --------------- |
