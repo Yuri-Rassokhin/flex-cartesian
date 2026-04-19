@@ -183,7 +183,6 @@ Please have it [here](docs/api/api.md).
 gem install flex-cartesian
 ```
 
-
 ## License
 
 This project is licensed under the terms of the GNU General Public License v3.0.  
