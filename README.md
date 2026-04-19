@@ -57,15 +57,23 @@ Effectively, FlexCartesian creates a live digital blueprint of your system, serv
 
 ## Example #1: Avoiding semantic shift in ChatGPT
 
-Perhaps, we want to find optimal operating mode of ChatGPT - specifically, the ranges of its temperature and tokens where ChatGPT gives stable and consistent answers to repeated question. The lack of such stability is called semantic shift, which is crucial to avoid in such fields as law or science, where AI assistant must provide very stable answers based on a given corpus of documents. While you can run [this example](https://github.com/Yuri-Rassokhin/flex-cartesian/tree/main/examples/13_chatgpt_semantic_shift) yourself, here's how FlexCartesian solves the problem of semantic shift, step by step.
+Perhaps, we want to find optimal operating mode of ChatGPT - specifically, the ranges of its temperature and tokens where ChatGPT gives stable and consistent answers to repeated question. The lack of such stability is called semantic shift, which is crucial to avoid in such fields as law or science, where AI assistant must provide very stable answers based on a given corpus of documents. While you can run [this example](https://github.com/Yuri-Rassokhin/flex-cartesian/tree/main/examples/13_chatgpt_semantic_shift) yourself, here's how FlexCartesian suggests ChatGPT's operating mode free from semantic shift, step by step.
 
-We define parameter space:
+Enable FlexCartesian:
 
 ```ruby
-space = FlexCartesian.new({ temperature: [0.0, 0.2, 0.4, 0.6, 0.8, 1.0], tokens: [20, 50, 100, 200, 400] })
+require 'flex-cartesian'
 ```
 
-We define behavioural function - response given by ChatGPT to the same test question, for any combination of parameter values:
+Define parameter space:
+
+```ruby
+space = FlexCartesian.new({
+		temperature: [0.0, 0.2, 0.4, 0.6, 0.8, 1.0],
+		tokens: [20, 50, 100, 200, 400]})
+```
+
+Define behavioural function `response` - for any combinations of parameters, it returns response given by ChatGPT to the same test question.
 
 ```ruby
 msg = [ { role: "system", content: "You are a precise and consistent assistant." },
@@ -74,30 +82,41 @@ msg = [ { role: "system", content: "You are a precise and consistent assistant."
 space.func(:add, :response) { |v| llm(temperature: v.temperature, max_tokens: v.tokens, messages: msg ) }
 ```
 
-We enrich the system by adding two more behavioural functions that will assess semantic shift of the answers given by ChatGPT.
-The first function vectorizes each answer using embedding model, and the second function calculates semantic shift as cosine of the answer against the first answer ("anchor"). The values of `semantic_shift` function on the entire parameter space is precisely what we need!
+Enrich the system by two more behavioural functions.
+For any answer provided by `response` function, the function `embedding` returns its vector embedding, and `semantic_drift` calculates how far the response drifts away from the very first answer (`anchor`) given by ChatGPT. The values of `semantic_shift` is precisely what we need!
+
 ```ruby
 space.func(:add, :embedding) { |v| anchor ||= embed(v.response); embed(v.response) }
 space.func(:add, :semantic_shift) { |v| (1.0 - cosine(v.embedding, anchor)).round(2) }
 ```
 
-After that, we can visualize fancy-looking 2D-heatmap showing how semantic of ChatGPT's answers depends on tokens and temperature.
+Then we compute all the functions in the entire parameter space.
+Behind the scene, FlexCartesian iterates each function over all combinations of parameters.
+
 ```ruby
-space.visualize(x: :temperature, y: :tokens, func: :semantic_shift)
+space.func(:run. progress: true)
 ```
 
-You can open this interactive visualization in your browser:
+Upon completion, FlexCartesian holds PBB (Parametric Behavioural blueprint) of our system, ChatGPT.
+Now we can visualize PBB as a fancy 2D-heatmap showing how semantic of ChatGPT's answers depends on tokens and temperature.
+
+```ruby
+space.visualize(x: :temperature, y: :tokens, func: :semantic_shift, output: "./viz.html")
+```
+
+We can open this interactive visualization './viz.html' in a browser:
 
 <p align="center">
 	<img src="docs/assets/viz/example-low-rate.gif" width="600"/>
 </p>
 
 Finally, we want to assess the influence of each parameter on the semantic shift of ChatGPT's answers.
+
 ```ruby
 space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42).output(func: :semantic_shift)
 ```
 
-This will give us measurable influence and nature of the influence of the parameters:
+This will give us quantified influence and the nature of influence of the parameters:
 
 <div align="center">
 
