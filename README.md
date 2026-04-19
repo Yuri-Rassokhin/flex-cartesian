@@ -156,7 +156,7 @@ space = FlexCartesian.new({
 # 1. 'command' constructs raw ping command
 # 2. 'raw_ping' executing the command and returns raw result
 # 3. 'time' extracts ping time from the result
-# 4. 'cap' is just a fancy stuff, it visualizes 150 milliseconds ping threshold on the future visialization.
+# 4. 'cap' is a fancy stuff, it shows 150 ms ping threshold on the future visialization.
 result = {}
 space.func(:add, :command) { |v| "ping -c #{v.count} -s #{v.size} -i #{v.interval} #{v.target}" }
 space.func(:add, :raw_ping, hide: true) { |v| result[v.command] ||= `#{v.command} 2>&1` }
@@ -168,7 +168,7 @@ space.func(:run, progress: true)
 
 # Visualize behavioural blueprint as a 2D-heatmap
 # It will show two functions - ping time (:time) and 150ms iso-surface (:cap)
-space.visualize(x: :size, y: :target, func: [ :time, :cap ], output: "./examples/09_ping_visualize/viz.html")
+space.visualize(x: :size, y: :target, func: [ :time, :cap ], output: "./viz.html")
 ```
 
 Just run this code, and you'll get an interactive HTML heatmap showing how geography and packet size influence ping to DynamoDB.
