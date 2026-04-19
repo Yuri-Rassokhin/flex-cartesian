@@ -1,3 +1,4 @@
+```mermaid
 flowchart TD
     %% Глобальное направление: сверху вниз
     direction TB
@@ -38,4 +39,4 @@ flowchart TD
     classDef layer fill:#ffffff,stroke:#7f8c8d,stroke-width:1px,stroke-dasharray: 5 5;
     
     class Analyzers,Core,Cond,Params layer;
-
+```
