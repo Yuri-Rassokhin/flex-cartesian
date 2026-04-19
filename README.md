@@ -119,21 +119,12 @@ Finally, we want to assess the influence of each parameter on the semantic shift
 space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42).output(func: :semantic_shift, format: :markdown)
 ```
 
-This will give us quantified influence and the nature of influence of the parameters:
+This will produce Markdown table of the quantified influence and the nature of influence of the parameters:
 
 |parameter  |influence[semantic_shift]|deviation|probes|category|linearity        |recommendation                                                                                   |
 |-----------|-------------------------|---------|------|--------|-----------------|-------------------------------------------------------------------------------------------------|
 |tokens     |0.14                     |0.22     |10    |strong  |highly non-linear|critical parameter with complex interactions; prioritize for variance-based analysis (e.g. Sobol)|
 |temperature|0.09                     |0.19     |10    |strong  |highly non-linear|critical parameter with complex interactions; prioritize for variance-based analysis (e.g. Sobol)|
-
-<div align="center">
-
-| Parameter | Influence | Category | Recommendation |
-| :--- | :---: | :--- | :--- |
-| `temperature` | 🔴 **Strong** | Highly non-linear | Prioritize for variance-based analysis |
-| `tokens` | 🔴 **Strong** | Highly non-lineaer | Prioritize for variance-based analysis |
-
-</div>
 
 This sensitivity table confirms strong influence of both parameters on the consistency of the answers, and most importantly, it categorizes their influence as highly non-linear. Therefore, we should NOT make decisions on these parameters based on a few probes - to the contrary, we have to build complete behavioural bluepring using entire parameter space - and find sweet area on it: "temperature <= 0.2, no matter the tokens".
 
