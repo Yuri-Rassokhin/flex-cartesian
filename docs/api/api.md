@@ -37,7 +37,7 @@ flowchart TB
 
 ## STACK COMPONENTS
 
-### Parameter Space
+### PARAMETER SPACE
 
 Parameter space is a space formed as multi-dimensional Cartesian product of the dimensions represented by discrete dimensional values.
 
@@ -60,15 +60,11 @@ Secondly, a space can be created from a tabular data source. In this approach, d
 - `dimensions` array of symbolic column names in the data source that will become space dimensions
 - `separator` separation symbol in the data source file, either colon or semicolon
 
-#### Check validity of the vector in parameter space
-
 ```ruby
 def valid?(vector)
 ```
 
-Check if `vector` has consistent dimensiality, consistent dimensional values, and satisfies conditions in the current space.
-
-#### Get dimensional values
+Check if `vector` is consistent - that is, it has consistent dimensiality, consistent dimensional values, and satisfies conditions in the current space.
 
 ```ruby
 def values
@@ -76,15 +72,13 @@ def values
 
 Return array of arrays of dimensional values.
 
-#### Get dimensiality
-
 ```ruby
 def dimensiality
 ```
 
 Return number of dimensions in the current space.
 
-### Space Conditions
+### SPACE CONDITIONS
 
 Condition is a logical function defined in parameter space.
 Condition restricts the space to the subset of vectors that satisfy this condition.
@@ -95,11 +89,11 @@ This means, conditions restrict the space to the subset that satisfies ALL of th
 All layers of the stack higher up respect conditions - that is, when a method applies to space, effectively it applies only to its subset defined by the conditions.
 For example, if `cartesian` iterator iterates over space, it actually iterates over its subset defined by the conditions.
 
-#### Managing Conditions
-
 ```ruby
   def cond(command = :print, index: nil, &block)
 ```
+
+Manage conditions in the space.
 
 - `command` `:print` prints active space conditions, `:set` adds new conditions as a block, `:unset` removes specific condition by its `index` or all conditions if `index` isn't specified
 - `index` identifies condition set in the space; index is assigned automatically, because conditions have no names (unlike functions)
