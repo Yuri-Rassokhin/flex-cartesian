@@ -1,31 +1,42 @@
-```mermaid
-flowchart TB
-    %% Стили для сплошных контейнеров
-    classDef layer fill:#ffffff,stroke:#2c3e50,stroke-width:2px;
-    
-    subgraph Analyzers ["Analyzers"]
-        M["<b>Morris</b><br/>def initialize<br/>def sensitivity<br/>def output"]
-    end
+block-beta
+  columns 1
 
-    subgraph Core ["Core Components"]
-        direction LR
-        DS["<b>Data Sources</b><br/>def data"] ~~~ UT["<b>Utilities</b><br/>def size<br/>def to_a<br/>def vector_to"] ~~~ FN["<b>Functions</b><br/>def func"] ~~~ IT["<b>Iterators</b><br/>def cartesian"] ~~~ IO["<b>Input / Output</b><br/>def import<br/>def export<br/>def visualize..."]
-    end
+  A["Analyzers
+  ----------------
+  Morris
+  def initialize
+  def sensitivity
+  def output"]
 
-    subgraph Cond ["Conditions"]
-        C["<b>Conditions</b><br/>def cond"]
-    end
+  B["Core Components"]
+  block:C:5
+    DS["Data Sources
+    def data"]
+    UT["Utilities
+    def size
+    def to_a
+    def vector_to"]
+    FN["Functions
+    def func"]
+    IT["Iterators
+    def cartesian"]
+    IO["Input / Output
+    def import
+    def export
+    def visualize..."]
+  end
 
-    subgraph Params ["Parameter Space"]
-        PS["<b>Parameter Space</b><br/>def initialize<br/>valid?<br/>levels<br/>dimensionality..."]
-    end
+  D["Conditions
+  ----------------
+  def cond"]
 
-    %% Невидимые связи заставляют слои выстраиваться строго сверху вниз без стрелок
-    Analyzers ~~~ Core
-    Core ~~~ Cond
-    Cond ~~~ Params
+  E["Parameter Space
+  ----------------
+  def initialize
+  valid?
+  levels
+  dimensionality..."]
 
-    %% Применяем стили
-    class Analyzers,Core,Cond,Params layer;
-```
-
+  A --> B
+  B --> D
+  D --> E
