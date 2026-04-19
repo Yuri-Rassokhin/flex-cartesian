@@ -121,6 +121,8 @@ space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42).output(func: :sem
 
 This will give us quantified influence and the nature of influence of the parameters:
 
+![Sensitivity]("docs/assets/viz/sensitivity.png")
+
 <div align="center">
 
 | Parameter | Influence | Category | Recommendation |
