@@ -5,6 +5,29 @@
   <p><b>Tool for exploration and modelling of parametric systems.</b></p>
 </div>
 
+## What It It For?
+
+If you deal with a system that behaves as a function of multiple tunable parameters, and you want to explore its behaviour, FlexCartesian does it for you.
+Effectively, it answers the following questions for your system, whatever it is - a database, AI/ML model, file storage, web server, or a physical system even.
+
+1. What parameters are the most influential in your system?
+2. Is the influence of parameters linear or chaotic?
+3. What parameters can be ignored as negligible?
+4. Which parameters are independent and which ones are inter-correlated?
+5. How does the system's behaviour evolve in time?
+
+Fundamentally, this exploration conveys an answer to one fundamental question -
+
+## "What Is The Best Operating Mode Of My System?"
+
+**FlexCartesian finds the best operating mode for your system.**
+
+
+
+
+
+This paradigm is known as `paramater space analysis`, and it involves systematically exploring the range of possible input values (parameters) in a system to understand their effect on outputs, aiming to optimize performance or understand system behavior. It maps how different parameter combinations affect results, ideally using visualization to identify optimal configurations.
+
 ## What Value Does It Create?
 
 FlexCartesian finds the best operating mode for your system. You define input parameters and target metrics of your system, and this tool does the rest.
