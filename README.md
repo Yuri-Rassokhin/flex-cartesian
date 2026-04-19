@@ -2,7 +2,7 @@
   <a href="https://yuri-rassokhin.github.io/flex-cartesian/">
     <img src="docs/assets/branding/logo.svg" alt="FlexCartesian Logo" width="160"/>
   </a>
-  <p><b>Tool for exploration and modelling of parametric systems.</b></p>
+  <p><b>Tool for exploration, benchmarking, tuning, and modelling of parametric systems.</b></p>
 </div>
 
 ## What Is It For?
