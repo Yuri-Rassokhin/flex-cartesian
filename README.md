@@ -1,11 +1,11 @@
 <div align="center">
   <a href="https://yuri-rassokhin.github.io/flex-cartesian/">
-    <img src="assets/branding/logo.svg" alt="FlexCartesian Logo" width="160"/>
+    <img src="docs/assets/branding/logo.svg" alt="FlexCartesian Logo" width="160"/>
   </a>
   
   <br><br>
 
-  <img src="assets/branding/headline.svg" alt="Explore real systems as functions of parameters." width="100%"/>
+  <img src="docs/assets/branding/headline.svg" alt="Explore real systems as functions of parameters." width="100%"/>
   
   <p><b>FlexCartesian is a Ruby framework for modelling and analysing parametric systems.</b></p>
 </div>
