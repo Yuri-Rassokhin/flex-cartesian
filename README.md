@@ -98,12 +98,15 @@ space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42).output(function: 
 ```
 
 This will give us measurable influence and nature of the influence of the parameters:
+
 <div align="center">
+
 | Parameter | Influence | Category | Recommendation |
 | :--- | :---: | :--- | :--- |
 | `temperature` | 🔴 **Strong** | Highly non-linear | Prioritize for variance-based analysis |
 | `tokens` | 🔴 **Strong** | Highly non-lineaer | Prioritize for variance-based analysis |
-</dev>
+
+</div>
 
 ## Installation
 
