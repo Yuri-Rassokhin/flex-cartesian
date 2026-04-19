@@ -34,31 +34,18 @@ For example, FlexCartesian has been used for the following systems in real-world
 | Semantic search (FAISS and lots of embedding models) | Should semantic index be preloaded to memory, and which one - CPU or GPU? | Preloading makes difference. Suprisingly, preloading to cheaper CPU RAM often brings nearly the same acceleration as limited and costly GPU RAM |
 | Cloud storage tuning | What is time gap of AI training on OCI using local NVMe versus network-attached block volumes? | It's less than 20%, often ~10% |
 
+In general, FlexCartesian brings value in any use case where you need to systematically explore the entire parameter space of viable values of input parameters. These are performance benchmarking of infrastructure; tuning of AI/ML models; generating simulations in physics or bioinformatics; generating API stress-tests; generating full-coverate test scripts, and many more.
+
+Any field involving *iteration over multi-dimensional space of input parameters*  benefits from FlexCartesian.
+
+## How Does It Work?
+
 This paradigm is known as `paramater space analysis`, and it involves systematically exploring the range of possible input values (parameters) in a system to understand their effect on outputs, aiming to optimize performance or understand system behavior. It maps how different parameter combinations affect results, ideally using visualization to identify optimal configurations.
 
-## What Value Does It Create?
 
-FlexCartesian finds the best operating mode for your system. You define input parameters and target metrics of your system, and this tool does the rest.
 
-## What is It For?
 
-FlexCartesian is your choice if you deal with a system that behaves as a function of multiple parameters and you want to explore its behaviour.
-This paradigm is known as `paramater space analysis`, and it involves systematically exploring the range of possible input values (parameters) in a system to understand their effect on outputs, aiming to optimize performance or understand system behavior. It maps how different parameter combinations affect results, ideally using visualization to identify optimal configurations.
 
-For instance, this tool is extremely useful for -
-
-1. **Performance analysis.** Systematically evaluate your application across all viable combinations of parameters (`threads`, `batch_size`, `backend`, etc.) and capture target functions (`throughput`, `latency`, `memory`).
-2. **Heatmap analysis.** Build complete picture of the performance of your application, spot the most productive combinations of parameters, trade-off combinations, and disclose scalability.
-3. **Sensitivity analysis.** Evaluate influence of the parameters on your application, including linear VS non-linear influence and strong VS negligible impact.
-
-FlexCartesian has been developed in an actual field work, including large-scale Enterprise and AI architectures. Some of its often use cases include -
-
-* **Tuning of AI/ML models.** If you need to find a sweet-spot for your AI workload, you would want to explore all combinations of parameters and hyperparameters (`learning_rate`, `max_depth`, `subsample`, `n_estimators`) with constraints (`max_depth < 10`, `learning_rate > 0.1`) and identify productive areas of your target metrics like `accuracy`, `AUC`, etc.
-* **Infrastructure Tuning.** If you have IT infrastructure with variable options (region: ["us-west", "eu-central"], tier: ["basic", "pro"], replicas: [1, 3, 5]), then this tool scans all viable configurations to spot the optimal one. This includes practical constraints, such as "basic tier cannot have more than one replica", and so forth.
-* **Generating API and CLI tests.** If you want to generate and benchmark all valid CLI calls (myapp --threads=X --batch=Y --backend=Z) or API calls (method: ["GET", "POST"], role: ["guest", "user", "admin"], language: ["en", "fr", "de"]) and capture runtime messages, output, and errors, this tool does the things for you.
-* **Scientific and Engineering Simulations.** Generate multidimensional experimental spaces for physics simulations, bioinformatics parameter sweeps, network behavior modeling, and so forth.
-* **Test Case Generation.** Use this tool to drive automated test inputs for: RSpec shared examples, Minitest table-driven tests, PyTest parameterization, etc.
-* **Structured Reporting and Visualization.** Whenever you need to structure myriads of probes as a good-looking report, FlexCartesian does this for you in many formats: plain text, Markdown, CSV, interactive HTML visualization, etc.
 
 ## Installation
 
