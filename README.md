@@ -75,13 +75,13 @@ space.func(:add, :response) { |v| llm(temperature: v.temperature, max_tokens: v.
 ```
 
 We enrich the system by adding two more behavioural functions that will assess semantic shift of the answers given by ChatGPT.
-The first function vectorizes each answer using embedding model, and the second function calculates semantic shift as cosine of the answer against the first answer ("anchor").
+The first function vectorizes each answer using embedding model, and the second function calculates semantic shift as cosine of the answer against the first answer ("anchor"). The values of `semantic_shift` function on the entire parameter space is precisely what we need!
 ```ruby
 space.func(:add, :embedding) { |v| anchor ||= embed(v.response); embed(v.response) }
 space.func(:add, :semantic_shift) { |v| (1.0 - cosine(v.embedding, anchor)).round(2) }
 ```
 
-After that, we can vidualize fancy-looking 2D-heatmap showing how semantic of ChatGPT's answers depends on tokens and temperature.
+After that, we can visualize fancy-looking 2D-heatmap showing how semantic of ChatGPT's answers depends on tokens and temperature.
 ```ruby
 space.visualize(x: :temperature, y: :tokens, function: :semantic_shift)
 ```
