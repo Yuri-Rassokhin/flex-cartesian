@@ -176,7 +176,7 @@ As you can see, FlexCartesian enables very high-level and powerful DSL, packing 
 If you need mathematically rigorous assessment of the parameter influence, you just add yet another one-liner:
 
 ```ruby
-space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42).output(func: :time, colorize: true)
+space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42).output(func: :time)
 ```
 
 This one-liner applies [Morris sensitivity analysis](https://en.wikipedia.org/wiki/Morris_method) to the behavioural blueprint extracted by FlexCartesian.
