@@ -108,7 +108,7 @@ This will give us measurable influence and nature of the influence of the parame
 
 </div>
 
-## Example #2: Sensitivity of global DNS servers
+## Example #2: Sensitivity of AWS DynamoDB servers
 
 Let's take [another example](https://github.com/Yuri-Rassokhin/flex-cartesian/tree/main/examples/09_ping_visualize).
 If we ping AWS DynamoDB, how do ping parameters influence ping time?
