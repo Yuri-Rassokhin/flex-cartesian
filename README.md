@@ -167,7 +167,7 @@ space.func(:add, :cap) { |v| 150 }
 space.func(:run, progress: true)
 
 # Visualize behavioural blueprint as a 2D-heatmap
-# It will show two functions - ping time (:time) and 150ms iso-surface (:cap)
+# It will show two functions - ping time (:time) and 150ms threashold (:cap)
 space.visualize(x: :size, y: :target, func: [ :time, :cap ], output: "./viz.html")
 ```
 
