@@ -15,7 +15,7 @@ flowchart TB
 
     subgraph Core ["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#basic-operations'><b>BASIC OPERATIONS</b></a>"]
         direction LR
-        DS["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#data-sources'><b>Data Sources</b></a><br/>data"] ~~~ UT["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#utilities'><b>Utilities</b></a><br/>size<br/>to_a<br/>vector_to"] ~~~ FN["<b>Functions</b><br/>func<br/>function"] ~~~ IT["<b>Iterators</b><br/>cartesian"] ~~~ IO["<b>Input / Output</b><br/>output<br/>import<br/>export<br/>visualize"]
+        DS["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#data-sources'><b>Data Sources</b></a><br/>data"] ~~~ UT["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#utilities'><b>Utilities</b></a><br/>size<br/>to_a<br/>vector_to"] ~~~ FN["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#functions'><b>Functions</b></a><br/>func<br/>function"] ~~~ IT["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#iterators'><b>Iterators</b></a><br/>cartesian"] ~~~ IO["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#io'><b>IO</b></a><br/>output<br/>import<br/>export<br/>visualize"]
     end
 
     subgraph Cond ["<b>SPACE CONDITIONS</b>"]
@@ -213,7 +213,7 @@ def vector_to(v, type)
 
 Converts vector from the space to a different type. Currently, only `:hash` is supported.
 
-#### Input / Output
+#### IO
 
 ```ruby
 def output(separator: " | ", colorize: false, align: true, format: :plain, limit: nil, file: nil)
