@@ -10,7 +10,7 @@ flowchart TB
 
     subgraph Analyzers ["<b>ANALYZERS</b>"]
         direction LR
-        gA1["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost ~~~ M["<b>Morris</b><br/>initialize<br/>sensitivity<br/>output"] ~~~ gA2["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost
+        gA1["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost ~~~ M["<b>Morris</b><br/>trajectories<br/>step<br/>seed<br/>analyze<br/>output"] ~~~ gA2["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost
     end
 
     subgraph Core ["<b>BASIC OPERATIONS</b>"]
@@ -25,7 +25,7 @@ flowchart TB
 
     subgraph Params ["<b>PARAMETER SPACE</b>"]
         direction LR
-        gP1["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost ~~~ PS["<b>Parameter Space</b><br/>initialize<br/>valid?<br/>levels<br/>dimensionality<br/>values<br/>dimensions<br/>names<br/>raw_size<br/>function"] ~~~ gP2["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost
+        gP1["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost ~~~ PS["<b>Parameter Space</b><br/>initialize<br/>valid?<br/>levels<br/>dimensionality<br/>values<br/>dimensions<br/>names<br/>raw_size"] ~~~ gP2["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost
     end
 
     Analyzers ~~~ Core
@@ -278,4 +278,88 @@ Visual style parameters:
 - `grid_color` enforce custom grid color; in most cases, you don't need it as FlexCartesian will adapt the color itself
 - `colorscale` customize color gradient of the visualization
 
+#### Analyzers
+
+An analyzer is a higher-level concept on top of functions.
+While value of a function is defined *locally* in a given vector, an anayzer introduces *global* calculations, where resulting value depends on *wider area* of the parameter space, including the entire space, particularly.
+
+Analyzers are instumental in such global calculations as:
+
+- Sensitivity analysis of a given function in the space
+- Calculating statistical characteristics of a function - average, median, etc
+- Spotting local or global extremal values
+- Spotting areas of unusual behaviour of a function
+
+All analyzers share the following methods:
+
+```ruby
+def analyzer(type, **opts)
+```
+
+Returns new analyzer object attached to the current space.
+
+- `type` of the analyzer; currently, only `:morris` is supported
+- `opts` are analyzer-specific options (see below)
+
+```ruby
+def name
+```
+Human-readable name of the analyzer, ex.: "Morris sensitivity analysis".
+
+```ruby
+def description
+```
+
+Extended description of the analyzer, ex.: "Morris method explores the parameter space by changing one parameter at a time across multiple trajectories, and quantifies rate and linearity of its influence on the target function".
+
+```ruby
+def complexity
+```
+
+Computational complexity of the analyzer in textual form, ex.: "O( dimensions · trajectories )".
+
+```ruby
+def category
+```
+
+Wider category the analyzer belong to, ex.: "Sensitivity analysis".
+
+```ruby
+def url
+```
+
+URL containing description of the method implemented in the analyzer, ex.: "https://en.wikipedia.org/wiki/Morris_method".
+
+#### Specific Analyzers
+
+Currently, only one analyzer has been implemented.
+
+**Morris Analyzer**
+
+Specific options required to create Morris analyzer:
+- `trajectories` number of random trajectories in the parameter space. In the context of FlexCartesian, trajectories do respect space conditions. A trajectory tries its best to find a valid next step according to conditions, and give up trying only if there's no option to make any next step at all. This is not a bug, rather a feature of the modelling approach. Please note that too many conditions in the space may restrict trajectories too aggressively - in such case, Morris may provide impractical or misaligned assessments.
+- `step` width of a step in the trajectory, defaults to 0.1. It must be decimal from (0..1) range, interpreted as a percentage of the number of values in a dimension. Such relativity is critical for the Morris algorithm to treat all dimensions fairly. Otherwise, scarce dimensions would have been investigated disproportionally scarcely.
+- `seed` custom random seed, optional
+
+These options remain available as accessors: `def trajectories`, `def step`, and `def seed` upon creation of the analyzer.
+
+```ruby
+def analyze(func:)
+```
+
+Runs Morris analysis for the given function in the current space.
+
+```ruby
+def output(func:, categorize: true, recommend: true, **opts)
+```
+
+Prints results of Morris analysis for the `func` function.
+If this analyzer has performed this analysis before, then the results will be reused.
+Otherwise, this method will invoke `analyze` under the hood and store the result in the analyzer for the reuse in future outputs.
+
+Please note that semantics of `output` is intentionally lazy.
+It allows for the output of the same analysis multiple times (in different formats, etc) without the need for recomputation.
+Also, it keeps analysis result identical across repeated output.
+
+If you need to update analysis result, just use `analyze`.
 
