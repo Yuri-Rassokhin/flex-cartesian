@@ -20,7 +20,7 @@ flowchart TB
 
     subgraph Cond ["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#conditions'><b>CONDITIONS</b></a>"]
         direction LR
-        gC1["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost ~~~ C["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#conditions'><b>Conditions</b></a><br/>cond"] ~~~ gC2["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost
+        gC1["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost ~~~ C["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#conditions'><b>Conditions</b></a><br/>cond"] ~~~ gC2["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost
     end
 
     subgraph Params ["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#parameter-space'><b>PARAMETER SPACE</b></a>"]
