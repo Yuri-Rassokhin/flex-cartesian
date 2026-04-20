@@ -1,9 +1,11 @@
-<div align="center">
-  <a href="https://yuri-rassokhin.github.io/flex-cartesian/">
-    <img src="docs/assets/branding/logo.svg" alt="FlexCartesian Logo" width="160"/>
-  </a>
-  <p><b>Tool for exploration, benchmarking, tuning, and modelling of parametric systems.</b></p>
-</div>
+<h1 align="center">FlexCartesian</h1>
+<p align="center">
+  <b>Explore real systems as functions of parameters.</b>
+  <b></b>Create behavioural blueprints.</b>
+  <b>Get insights with a few lines of code.</b>
+</p>
+
+---
 
 ## What Is FlexCartesian For?
 
