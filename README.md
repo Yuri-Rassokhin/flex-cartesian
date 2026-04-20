@@ -13,12 +13,12 @@ FlexCartesian is a new approach for parameter space analysis. It introduces Para
 
 Most of the systems around us _are_ functions of parameters.<br/>
 
-The LLM you are using has inference parameters, and its functions are quality of response, responce time, and throughput.<br/>
-The cloud storage you are using has configuration parameters, and its functions are IOPS and throughput.<br/>
-Even the car you are driving has driving parameters, and its function is cost per mile.<br/>
+The LLM you are using has inference parameters, and its functions are quality of response, responce time, and throughput.
+The cloud storage you are using has configuration parameters, and its functions are IOPS and throughput.
+Even the car you are driving has driving parameters, and its function is cost per mile.
 
-In any case, system behaviour characterizes by its function - and you want to tune parameters of the system to optimize its function.<br/>
-This woould put the system to the absolute best operatind mode: lowest cost per mile - highest storage IOPS - lowest response time from LLM.
+In any case, system behaviour characterizes by its function - and you want to tune parameters of the system to optimize its function.
+This would put the system to the absolute best operatind mode: lowest cost per mile - highest storage IOPS - lowest response time from LLM.
 
 Hence the fundamental questions.<br/>
 
@@ -32,11 +32,22 @@ In particular:
 <b>WHAT IS THE ABSOLUTE BEST OPERATING MODE OF THE SYSTEM?</b>
 </p>
 
-FlexCartesian answers these two questions.<br/>
-It explores behaviour of your system and identifies optimal operating modes.<br/>
+FlexCartesian addresses both questions: it explores behaviour of your system and identifies optimal operating modes.
+
+# Why Does It Exist?
+
+I created FlexCartesian to solve several issues of the parameter space analysis - specifically AI performance benchmarking in my case.
+
+The problem consists of the three fields: COMPREHENSIVE data gathering from a real system => HOLISTIC modelling of the system => FLEXIBLE, EXTENSIBLE, and CONCISE analysis of the system.
+
+Conventional tools usually provide just one of the three: benchmarking tools gather real data, modelling tools (R, Excel, GNU Plot) assume that data simply exists - analysis tools (R) have niche specialization.
+Moreover, conventional tools impose restrictions on what they provide: benchmarking tool gather real data, but it's chaotic and unstructured; modelling tools have niche specializations (R for statistics, Excel for office tables, GNU Plot for visualization), and what's even worse, no tool natively models entire behaviour of the system - that is, consistent structure of data probes evolving in time.
 
 
 
+Additionally, 
+2. Native extensibility using high-level programming language.
+3. High-level concepts.
 
 If you deal with a system that behaves as a function of multiple tunable parameters, and you want to explore its behaviour, FlexCartesian does it for you.
 Effectively, it answers the following questions for your system.
