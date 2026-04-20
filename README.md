@@ -5,7 +5,28 @@
 
 ---
 
-## What Is FlexCartesian For?
+# What Is It?
+
+# What Is It For?
+
+Most of the systems around us _are_ functions of parameters.
+
+The LLM you are using has inference parameters, and its functions are quality of response, responce time, and throughput.
+The cloud storage you are using has configuration parameters, and its functions are IOPS and throughput.
+Even the physical car you are driving has driving parameters, and its function is cost/kilometre.
+
+In any case, you want to tune parameters of the system to optimize its function.
+This leads to the fundamental questions.
+
+<p align="center">
+**HOW DO PARAMETERS INFLUENCE THE BEHAVIOUR OF THE SYSTEM?**
+</p>
+
+In particular:
+
+<p align="center">
+**WHAT IS THE ABSOLUTE BEST OPERATING MODE OF THE SYSTEM?**
+</p>
 
 If you deal with a system that behaves as a function of multiple tunable parameters, and you want to explore its behaviour, FlexCartesian does it for you.
 Effectively, it answers the following questions for your system.
