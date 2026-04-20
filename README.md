@@ -7,6 +7,8 @@
 
 # What Is It?
 
+FlexCartesian is a new approach for parameter space exploration. It introduces Parametric Behaviour Blueprinting paradigm, abbreviated BPP.
+
 # What Is It For?
 
 Most of the systems around us _are_ functions of parameters.<br/>
@@ -29,6 +31,12 @@ In particular:
 <p align="center">
 <b>WHAT IS THE ABSOLUTE BEST OPERATING MODE OF THE SYSTEM?</b>
 </p>
+
+FlexCartesian answers these two questions.<br/>
+It explores behaviour of your system and identifies optimal operating modes.<br/>
+
+
+
 
 If you deal with a system that behaves as a function of multiple tunable parameters, and you want to explore its behaviour, FlexCartesian does it for you.
 Effectively, it answers the following questions for your system.
