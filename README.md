@@ -7,7 +7,7 @@
 
 # What Is It?
 
-FlexCartesian is a new approach for parameter space exploration. It introduces Parametric Behaviour Blueprinting paradigm, abbreviated BPP.
+FlexCartesian is a new approach for parameter space analysis. It introduces Parametric Behaviour Blueprinting paradigm, abbreviated BPP.
 
 # What Is It For?
 
@@ -18,7 +18,7 @@ The cloud storage you are using has configuration parameters, and its functions 
 Even the car you are driving has driving parameters, and its function is cost per mile.<br/>
 
 In any case, system behaviour characterizes by its function - and you want to tune parameters of the system to optimize its function.<br/>
-This woould put the system to the absolute best operatind mode: least cost per mile - highest storage IOPS - lowest response time from LLM.
+This woould put the system to the absolute best operatind mode: lowest cost per mile - highest storage IOPS - lowest response time from LLM.
 
 Hence the fundamental questions.<br/>
 
