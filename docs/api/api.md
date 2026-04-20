@@ -25,7 +25,7 @@ flowchart TB
 
     subgraph Params ["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#parameter-space'><b>PARAMETER SPACE</b></a>"]
         direction LR
-        gP1["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost ~~~ PS["<b>Parameter Space</b><br/>initialize<br/>valid?<br/>levels<br/>dimensionality<br/>values<br/>dimensions<br/>names<br/>raw_size"] ~~~ gP2["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost
+        gP1["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost ~~~ PS["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#parameter-space'><b>Parameter Space</b></a><br/>initialize<br/>valid?<br/>levels<br/>dimensionality<br/>values<br/>dimensions<br/>names<br/>raw_size"] ~~~ gP2["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost
     end
 
     Analyzers ~~~ Core
