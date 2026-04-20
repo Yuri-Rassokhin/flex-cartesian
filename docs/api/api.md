@@ -10,7 +10,7 @@ flowchart TB
 
     subgraph Analyzers ["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#analyzers'><b>ANALYZERS</b></a>"]
         direction LR
-        gA1["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost ~~~ M["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#morris-analyzer'><b>Morris</b></a><br/>trajectories<br/>step<br/>seed<br/>analyze<br/>output"] ~~~ gA2["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost
+        gA1["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost ~~~ M["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#morris-analyzer'><b>Morris</b></a><br/>trajectories<br/>step<br/>seed<br/>analyze<br/>output"] ~~~ gA2["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost
     end
 
     subgraph Core ["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#basic-operations'><b>BASIC OPERATIONS</b></a>"]
