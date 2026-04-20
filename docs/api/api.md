@@ -18,9 +18,9 @@ flowchart TB
         DS["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#data-sources'><b>Data Sources</b></a><br/>data"] ~~~ UT["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#utilities'><b>Utilities</b></a><br/>size<br/>to_a<br/>vector_to"] ~~~ FN["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#functions'><b>Functions</b></a><br/>func<br/>function"] ~~~ IT["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#iterators'><b>Iterators</b></a><br/>cartesian"] ~~~ IO["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#io'><b>IO</b></a><br/>output<br/>import<br/>export<br/>visualize"]
     end
 
-    subgraph Cond ["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#space-conditions'><b>SPACE CONDITIONS</b></a>"]
+    subgraph Cond ["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#conditions'><b>CONDITIONS</b></a>"]
         direction LR
-        gC1["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost ~~~ C["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#conditions'><b>CONDITIONS</b></a><br/>cond"] ~~~ gC2["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost
+        gC1["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost ~~~ C["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#conditions'><b>Conditions</b></a><br/>cond"] ~~~ gC2["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost
     end
 
     subgraph Params ["<b>PARAMETER SPACE</b>"]
@@ -105,7 +105,7 @@ This is a low-level method; high-level `size` respects space conditions.
 
 
 
-### SPACE CONDITIONS
+### CONDITIONS
 
 Condition is a logical function defined in parameter space.
 Condition restricts the space to the subset of vectors that satisfy this condition.
