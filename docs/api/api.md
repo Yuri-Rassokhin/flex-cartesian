@@ -281,7 +281,7 @@ Visual style parameters:
 ### ANALYZERS
 
 An analyzer is a higher-level concept on top of functions.
-While value of a function is defined *locally* in a given vector, an anayzer introduces *global* calculations, where resulting value depends on *wider area* of the parameter space, including the entire space, particularly.
+While value of a function is defined *locally* in a given vector, an analyzer introduces *global* calculations, where resulting value depends on *wider area* of the parameter space, including the entire space, particularly.
 
 Analyzers are instumental in such global calculations as:
 
