@@ -19,13 +19,13 @@ In any case, you want to tune parameters of the system to optimize its function.
 This leads to the fundamental questions.<br/>
 
 <p align="center">
-**HOW DO PARAMETERS INFLUENCE THE BEHAVIOUR OF THE SYSTEM?**
+<b>HOW DO PARAMETERS INFLUENCE THE BEHAVIOUR OF THE SYSTEM?</b>
 </p>
 
 In particular:
 
 <p align="center">
-**WHAT IS THE ABSOLUTE BEST OPERATING MODE OF THE SYSTEM?**
+<b>WHAT IS THE ABSOLUTE BEST OPERATING MODE OF THE SYSTEM?</b>
 </p>
 
 If you deal with a system that behaves as a function of multiple tunable parameters, and you want to explore its behaviour, FlexCartesian does it for you.
