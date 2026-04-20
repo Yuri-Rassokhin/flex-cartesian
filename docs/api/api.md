@@ -8,9 +8,9 @@ flowchart TB
     classDef layer fill:#ffffff,stroke:#2c3e50,stroke-width:2px;
     classDef ghost fill:transparent,stroke:transparent,color:transparent;
 
-    subgraph Analyzers ["<b>ANALYZERS</b>"]
+    subgraph Analyzers ["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#analyzers'><b>ANALYZERS</b></a>"]
         direction LR
-        gA1["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost ~~~ M["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#morris-analyzer'>Morris</a><br/>trajectories<br/>step<br/>seed<br/>analyze<br/>output"] ~~~ gA2["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost
+        gA1["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost ~~~ M["<a href='https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/docs/api/api.md#morris-analyzer'><b>Morris</b></a><br/>trajectories<br/>step<br/>seed<br/>analyze<br/>output"] ~~~ gA2["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost
     end
 
     subgraph Core ["<b>BASIC OPERATIONS</b>"]
