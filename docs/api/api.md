@@ -25,7 +25,7 @@ flowchart TB
 
     subgraph Params ["<b>PARAMETER SPACE</b>"]
         direction LR
-        gP1["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost ~~~ PS["<b>Parameter Space</b><br/>initialize<br/>valid?<br/>levels<br/>dimensionality"] ~~~ gP2["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost
+        gP1["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost ~~~ PS["<b>Parameter Space</b><br/>initialize<br/>valid?<br/>levels<br/>dimensionality<br/>values<br/>dimensions<br/>names<br/>raw_size<br/>function"] ~~~ gP2["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost
     end
 
     Analyzers ~~~ Core
@@ -78,6 +78,41 @@ def dimensiality
 
 Return number of dimensions in the current space.
 
+```ruby
+def dimensions
+```
+
+Return hash of dimension name (key) referring to array of dimensional values.
+
+```ruby
+def names
+```
+
+Return array of dimension names.
+
+```ruby
+def levels
+```
+
+Return array of arrays of dimensional values.
+
+```ruby
+def raw_size
+```
+
+Return amount of all vectors in the parameter space, ignoring space conditions.
+This is a low-level method; high-level `size` respects space conditions.
+
+```ruby
+def function
+```
+
+Return function value in a given vector of the parameter space.
+
+- `vector` is the vector
+- `function` symbol referring to a function defined in the parameter space.
+- `substitute` = 0 what to return if the function is not defined in `vector` (that is, returns `nil`).
+
 ### SPACE CONDITIONS
 
 Condition is a logical function defined in parameter space.
@@ -98,5 +133,6 @@ Manage conditions in the space.
 - `command` `:print` prints active space conditions, `:set` adds new conditions as a block, `:unset` removes specific condition by its `index` or all conditions if `index` isn't specified
 - `index` identifies condition set in the space; index is assigned automatically, because conditions have no names (unlike functions)
 - `block` body of the condition being added; it must return either `true` or `false`
+
 
 
