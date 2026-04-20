@@ -13,9 +13,9 @@ flowchart TB
         gA1["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost ~~~ M["<b>Morris</b><br/>initialize<br/>sensitivity<br/>output"] ~~~ gA2["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]:::ghost
     end
 
-    subgraph Core ["<b>BASIC SPACE OPERATIONS</b>"]
+    subgraph Core ["<b>BASIC OPERATIONS</b>"]
         direction LR
-        DS["<b>Data Sources</b><br/>data"] ~~~ UT["<b>Utilities</b><br/>size<br/>to_a<br/>vector_to"] ~~~ FN["<b>Functions</b><br/>func"] ~~~ IT["<b>Iterators</b><br/>cartesian"] ~~~ IO["<b>Input / Output</b><br/>output<br/>import<br/>export<br/>visualize"]
+        DS["<b>Data Sources</b><br/>data"] ~~~ UT["<b>Utilities</b><br/>size<br/>to_a<br/>vector_to"] ~~~ FN["<b>Functions</b><br/>func<br/>function"] ~~~ IT["<b>Iterators</b><br/>cartesian"] ~~~ IO["<b>Input / Output</b><br/>output<br/>import<br/>export<br/>visualize"]
     end
 
     subgraph Cond ["<b>SPACE CONDITIONS</b>"]
@@ -103,15 +103,7 @@ def raw_size
 Return amount of all vectors in the parameter space, ignoring space conditions.
 This is a low-level method; high-level `size` respects space conditions.
 
-```ruby
-def function
-```
 
-Return function value in a given vector of the parameter space.
-
-- `vector` is the vector
-- `function` symbol referring to a function defined in the parameter space.
-- `substitute` = 0 what to return if the function is not defined in `vector` (that is, returns `nil`).
 
 ### SPACE CONDITIONS
 
@@ -134,5 +126,93 @@ Manage conditions in the space.
 - `index` identifies condition set in the space; index is assigned automatically, because conditions have no names (unlike functions)
 - `block` body of the condition being added; it must return either `true` or `false`
 
+
+
+### BASIC OPERATIONS
+
+#### Functions
+
+```ruby
+def func(command = :print, *names, hide: false, progress: false, title: "Computing function(s)", order: nil, &block)
+```
+
+- `command` `:print` print the list of defined functions (including their bodies), either all or specified by `names`,
+            `:add` add new function or functions defined by symbolic `names`,
+            `:del` delete function or functiosn given by `names`
+            `:run` calculate all or specified functions in the space
+- `names` list of function names
+- `hide` do no show specified function(s) being added in the `output` - this is useful for intermediate calculations, irrelevant for the final result
+- `progress` show or hide progress bar - this is useful for long-running computations of heavy functions on large space
+- `title` custom title for the progress bar
+- `order`: can be `:first` or `:last` to make the function calculate before or after all other functions
+- `block`: body of the function(s) being added
+
+Plese note that any functions returns `nil` unless it has been computed.
+Also, a function will return `nil` in the vector that doesn't satisfy space conditions.
+
+```ruby
+def function
+```
+
+Return function value in a given vector of the parameter space.
+As this method is used often (including conditions and custom code), it is intentionally separated from the wrapper method `func` for the sake of syntax brevity.
+
+- `vector` is the vector
+- `function` symbol referring to a function defined in the parameter space.
+- `substitute` = 0 what to return if the function is not defined in `vector` (that is, returns `nil`).
+
+This method can enforce `substitute` value if the functions has not been computed or is undefined in the `vector` due to space conditions.
+
+#### Iterators
+
+```ruby
+def cartesian(dims = nil, lazy: false, progress: false, title: "Iterating over parameter space")
+```
+
+- `dims` iterate over given description of the dimensions, if specified; by default, iterate over the current space
+- `lazy` whether or not materialize all vectors of the space in memory
+- `progress` show or hide progress bar
+- `title` custom title for the progress bar
+
+#### Data Sources
+
+```ruby
+def data(command, vector: nil, target: nil )
+```
+
+Manage tabular data source.
+Currently, it only supports access to the data source linked to the space using `source` flag during creation of the space.
+
+- `command` currently, only `:get` is supported to fetch data from the data source.
+            For a given `vector`, it returns the first line with the dimensional columns corresponding to `vector`.
+            At the surface, `:get` resembles MS Excel `lookup`. Given a tabular data, it searches the first line with specified values in specified columns, and then returns the value stored in another (specified) field of this line.
+- `vector` from the parameter space that is linked to the data source
+- `target` which column of the line to return
+
+The `data` method is very powerful for:
+- Creation of behavioural blueprints from external tabular sources, such as XLSX or CSV. It allows to extend FlexCartesian modelling capabilities to legacy data sources that hasn't been designed for it.
+- Saving and loading the entire blueprtins, including dimensions and computed functions with all their values. This allows for a stateful, cross-session use cases of FlexCartesian.
+
+#### Utilities
+
+```ruby
+def size
+```
+
+Return amount of of the vectors in the parameter space with respect to conditions.
+
+```ruby
+def to_a(vector = nil, limit: nil)
+```
+
+Converts `vector` from the space to array, or the first `limit` vectors to arrays, or the entire space to arrays.
+
+```ruby
+def vector_to(v, type)
+```
+
+Converts vector from the space to a different type. Currently, only `:hash` is supported.
+
+#### Input / Output
 
 
