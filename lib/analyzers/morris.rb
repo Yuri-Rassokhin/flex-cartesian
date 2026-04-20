@@ -4,7 +4,7 @@ class Morris < Analyzer
 
   attr_reader :trajectories, :step, :seed, :edges
 
-  def initialize(fc, trajectories:, step: 1, seed: nil)
+  def initialize(fc, trajectories:, step: 0.1, seed: nil)
     super(fc)
 
     @trajectories = trajectories
@@ -13,13 +13,14 @@ class Morris < Analyzer
     @rng          = seed ? Random.new(seed) : Random.new
     @points = []
     @edges  = []
+    @analysis = nil
 
     validate_trajectories!
     validate_step!
     build!
   end
 
-def sensitivity(func:)
+def analyze(func:)
   effects = Hash.new { |h, k| h[k] = [] }
 
   @edges.each do |edge|
@@ -42,7 +43,7 @@ def sensitivity(func:)
 
   # Итерируемся по names, чтобы учесть константные параметры, 
   # для которых не было вычислено ни одного эффекта
-  names.map do |name|
+res = names.map do |name|
     factor = name
     ees = effects[factor]
     n = ees.size
@@ -75,6 +76,8 @@ def sensitivity(func:)
       }
     end
   end.compact.sort_by { |row| -row[:"influence[#{func}]"] }
+  @analysis = res
+  res
 end
 
 def categorize(rows, function:)
@@ -155,7 +158,7 @@ end
   def output(func:, categorize: true, recommend: true, **opts)
     raise ArgumentError, "target function must be provided" unless func
     raise "Cannot execute #sensitivity as there are no functions defined in parameter space" if @space.derived.empty?
-    rows = sensitivity(func: func)
+    rows = @analysis.empty? analyze(func: func) : @analysis
     rows = self.categorize(rows, function: func) if categorize
     rows = self.recommend(rows, function: func) if recommend
     @space.output(rows, **opts)
