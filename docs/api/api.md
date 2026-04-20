@@ -296,7 +296,7 @@ All analyzers share the following methods:
 def analyzer(type, **opts)
 ```
 
-Returns new analyzer object attached to the current space.
+Return new analyzer object attached to the current space.
 
 - `type` of the analyzer; currently, only `:morris` is supported
 - `opts` are analyzer-specific options (see below)
@@ -304,25 +304,26 @@ Returns new analyzer object attached to the current space.
 ```ruby
 def name
 ```
-Human-readable name of the analyzer, ex.: "Morris sensitivity analysis".
+
+Return human-readable name of the analyzer, ex.: "Morris sensitivity analysis".
 
 ```ruby
 def description
 ```
 
-Extended description of the analyzer, ex.: "Morris method explores the parameter space by changing one parameter at a time across multiple trajectories, and quantifies rate and linearity of its influence on the target function".
+Return extended description of the analyzer, ex.: "Morris method explores the parameter space by changing one parameter at a time across multiple trajectories, and quantifies rate and linearity of its influence on the target function".
 
 ```ruby
 def complexity
 ```
 
-Computational complexity of the analyzer in textual form, ex.: "O( dimensions · trajectories )".
+Return computational complexity of the analyzer in textual form, ex.: "O( dimensions · trajectories )".
 
 ```ruby
 def category
 ```
 
-Wider category the analyzer belong to, ex.: "Sensitivity analysis".
+Return wider category the analyzer belong to, ex.: "Sensitivity analysis".
 
 ```ruby
 def url
@@ -343,13 +344,13 @@ These options remain available as accessors: `def trajectories`, `def step`, and
 def analyze(func:)
 ```
 
-Runs Morris analysis for the given function in the current space.
+Run Morris analysis for the given function in the current space.
 
 ```ruby
 def output(func:, categorize: true, recommend: true, **opts)
 ```
 
-Prints results of Morris analysis for the `func` function.
+Print results of Morris analysis for the `func` function.
 If this analyzer has performed this analysis before, then the results will be reused.
 Otherwise, this method will invoke `analyze` under the hood and store the result in the analyzer for the reuse in future outputs.
 
