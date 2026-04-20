@@ -9,14 +9,14 @@
 
 # What Is It For?
 
-Most of the systems around us _are_ functions of parameters.
+Most of the systems around us _are_ functions of parameters.<br/>
 
-The LLM you are using has inference parameters, and its functions are quality of response, responce time, and throughput.
-The cloud storage you are using has configuration parameters, and its functions are IOPS and throughput.
-Even the physical car you are driving has driving parameters, and its function is cost/kilometre.
+The LLM you are using has inference parameters, and its functions are quality of response, responce time, and throughput.<br/>
+The cloud storage you are using has configuration parameters, and its functions are IOPS and throughput.<br/>
+Even the physical car you are driving has driving parameters, and its function is cost/kilometre.<br/>
 
-In any case, you want to tune parameters of the system to optimize its function.
-This leads to the fundamental questions.
+In any case, you want to tune parameters of the system to optimize its function.<br/>
+This leads to the fundamental questions.<br/>
 
 <p align="center">
 **HOW DO PARAMETERS INFLUENCE THE BEHAVIOUR OF THE SYSTEM?**
