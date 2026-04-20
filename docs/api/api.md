@@ -215,4 +215,67 @@ Converts vector from the space to a different type. Currently, only `:hash` is s
 
 #### Input / Output
 
+```ruby
+def output(separator: " | ", colorize: false, align: true, format: :plain, limit: nil, file: nil)
+```
+
+A universal method that prints tabular data, such as function values in the space, or results produced by analyzers.
+This method is implemented for space, but higher-level objects extend it with their specific parameters.
+
+- `separator` the symbol separating columns in the tabular output; it will be validated for such formats as Markdown or CSV
+- `colorize` whether or not make the output colourful; it is automatically disabled if the output goes to file
+- `align` whether or not align content to make the columns look accurate
+- `format` how to structure output, one of `:plain`, `:csv`, or `:markdown`
+- `limit` for the number of lines in the output - useful with very large parameter spaces
+- `file` output to the file, if specified
+
+```ruby
+def import(path, format: :json)
+```
+
+For the current space, create its dimensions using their description in the file.
+
+- `path` the file storing description of the dimensions
+- `format` format of the description, either `:yaml` or `:json`
+
+```ruby
+def export(path, format: :json)
+```
+
+For the current space, save its dimensions to file.
+
+- `path` the file to store dimensions
+- `format` format of the description, either `:yaml` or `:json`
+
+```ruby
+def visualize(x:, y:, func:, output: nil, text: :dark, show_legend: false, show_z_title: true, show_grid: true, equal_axes: true, start_at_zero: true, show_plot_title: false, bg_color: 'transparent', font_color: nil, grid_color: nil, colorscale: 'Bluered')
+```
+
+Generate HTML with an interactive visualization of the blueprint.
+Currently, it only generates 2D-surfaces (that is, visualizes functions of 2 parameters).
+
+Basic parameters:
+
+- `x` symbolic name of the dimension that will be X-axis
+- `y` symbolic name of the dimension that will be Y-axis
+- `func` symbolic name, or an array of symbolic names, of the function(s) that will be visualized
+
+Output parameter:
+
+- `output` output file, defaults to stdout
+
+Visual style parameters:
+
+- `text` shade of textual information on the visualization, either `:dark` or `:light` - useful if you intend put the visualization on a customly colored backgound
+- `show_legend` show/hide color legend
+- `show_z_title` show/hide the title of Z-axis (the one with function results)
+- `show_grid` show/hide coordinate grid
+- `equal_axes` whether or not equalize the lengthes of all axes; usually, default equalization looks cool - but you may want to disable it to show true scale of the function results, for instance
+- `start_at_zero` enforce the axes to start from zero value, even if their dimensional values start from a different value; usually it is useful to keep this option enabled for the visual consistency
+- `show_plot_title` show title of the chart at the top in the form of a function of parameters
+- `bg_color` customize background color of the visualization
+- `font_color` enforce custom font color; in most cases, you don't need it as FlexCartesian will adapt the color itself
+- `grid_color` enforce custom grid color; in most cases, you don't need it as FlexCartesian will adapt the color itself
+- `colorscale` customize color gradient of the visualization
+
 
