@@ -278,7 +278,7 @@ Visual style parameters:
 - `grid_color` enforce custom grid color; in most cases, you don't need it as FlexCartesian will adapt the color itself
 - `colorscale` customize color gradient of the visualization
 
-#### Analyzers
+### ANALYZERS
 
 An analyzer is a higher-level concept on top of functions.
 While value of a function is defined *locally* in a given vector, an anayzer introduces *global* calculations, where resulting value depends on *wider area* of the parameter space, including the entire space, particularly.
@@ -330,11 +330,7 @@ def url
 
 URL containing description of the method implemented in the analyzer, ex.: "https://en.wikipedia.org/wiki/Morris_method".
 
-#### Specific Analyzers
-
-Currently, only one analyzer has been implemented.
-
-**Morris Analyzer**
+#### Morris Analyzer
 
 Specific options required to create Morris analyzer:
 - `trajectories` number of random trajectories in the parameter space. In the context of FlexCartesian, trajectories do respect space conditions. A trajectory tries its best to find a valid next step according to conditions, and give up trying only if there's no option to make any next step at all. This is not a bug, rather a feature of the modelling approach. Please note that too many conditions in the space may restrict trajectories too aggressively - in such case, Morris may provide impractical or misaligned assessments.
