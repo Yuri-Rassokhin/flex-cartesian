@@ -1036,6 +1036,7 @@ main {
   border: 0;
   background: transparent;
   box-shadow: none;
+  min-width: 0;
 }
 
 .code-section .feature-card h3 {
@@ -1046,6 +1047,7 @@ main {
   margin-top: 0;
   display: block; /* Убрали flex */
   width: 100%;
+  min-width: 0;
 }
 
 .code-section .code-card pre {
