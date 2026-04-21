@@ -171,6 +171,8 @@ body::before {
 html {
   scroll-behavior: smooth;
   scroll-snap-type: y proximity;
+  -webkit-text-size-adjust: 100%; /* Запрещаем iOS самовольно увеличивать шрифты */
+  text-size-adjust: 100%;
 }
 
 .brand-mobile {
@@ -1025,9 +1027,7 @@ main {
 }
 
 .code-section .feature-card {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+  display: block; /* Убрали flex и схлопывающуюся высоту */
   padding: 0;
   border: 0;
   background: transparent;
@@ -1040,15 +1040,13 @@ main {
 
 .code-section .code-card {
   margin-top: 0;
-  flex: 1;
-  display: flex;
+  display: block; /* Убрали flex */
   width: 100%;
 }
 
 .code-section .code-card pre {
-  flex: 1;
   margin: 0;
-  min-height: 0;
+  /* Убрали flex: 1 и min-height: 0 */
 }
 
 /* --- СТИЛИ ДЛЯ КАРТОЧЕК WHY FLEXCARTESIAN --- */
