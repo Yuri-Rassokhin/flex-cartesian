@@ -560,12 +560,14 @@ main {
   background: #050d18;
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
   overflow: hidden;
+  max-width: 100%;
 }
 
 .code-card pre {
   margin: 0;
   padding: 16px;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .code-card code,
@@ -573,6 +575,8 @@ main {
   font-family: "JetBrains Mono", monospace;
   font-size: 0.85rem;
   line-height: 1.5;
+  white-space: pre;
+  word-break: normal;
 }
 
 .code-large code,
