@@ -565,15 +565,16 @@ main {
 
 .code-card pre {
   margin: 0;
-  padding: 16px 0 16px 16px; 
+  padding: 16px 0; /* Оставляем у pre только отступы сверху и снизу */
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
 
 .code-card code {
-  display: inline-block;
-  min-width: 100%;
-  padding-right: 16px;
+  display: block;
+  width: fit-content; /* Заставляем блок стать шириной с самую длинную строку... */
+  min-width: 100%; /* ...но не меньше ширины экрана */
+  padding: 0 16px; /* И вот теперь задаем левый и правый отступы прямо здесь */
 }
 
 .code-card code,
