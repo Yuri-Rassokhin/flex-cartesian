@@ -36,7 +36,15 @@ FlexCartesian addresses both questions: it explores behaviour of your system and
 
 # Why Does It Exist?
 
-I created FlexCartesian to solve several issues of the parameter space analysis - specifically AI performance benchmarking in my case.
+I created FlexCartesian to solve several practical issues of the performance benchmarking.
+
+**What I experienced:** Data gathering is separated from the modelling. Specifiсally, modelling tools blindly assume that some data have been prepared somehow.
+****What I needed:** One tool to build the model of a system and to probe the data from the live system in a structured, consistent way, and in accordance with the model.
+
+**What I experienced:** Data fetched from the system were scatter, chaotic, unstructured, and incomplete. What's event worse, you never know in advance if/where there are gaps in the fetched data.
+****What I needed:** A tool that puts rigour mathematical model of the system at first place - and then gathers the data as the model requires to represent the system consistently.
+
+
 
 The problem consists of the three fields: COMPREHENSIVE data gathering from a real system => HOLISTIC modelling of the system => FLEXIBLE, EXTENSIBLE, and CONCISE analysis of the system.
 
