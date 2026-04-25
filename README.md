@@ -1,6 +1,6 @@
 <h1 align="center">FlexCartesian</h1>
 <p align="center">
-  <b>Model real systems as functions of parameters. Extract behavioural blueprints. Get insights with a few lines of code.</b>
+  <b>Model real systems as functions of parameters.<br>Extract behavioural blueprints.<br>Get insights with a few lines of code.</b>
 </p>
 
 ---
