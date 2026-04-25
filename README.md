@@ -34,15 +34,19 @@ FlexCartesian addresses both questions. It explores behaviour of your system and
 I created FlexCartesian to solve several practical issues of the performance benchmarking.
 
 **AS IS** Data gathering is separated from the modelling. Specifiсally, modelling tools blindly assume that some data have been prepared somehow.
+
 **THE NEED** One tool to build the model of a system and to probe the data from the live system in a structured, consistent way, and in accordance with the model.
 
 **AS IS** Data fetched from the system were scatter, chaotic, unstructured, and incomplete. What's event worse, you never know in advance if/where there are gaps in the fetched data.
+
 **THE NEED** A tool that puts rigour mathematical model of the system at first place - and then gathers the data as the model requires to represent the system consistently.
 
 **AS IS** Disconnected professional roles: System Engineer knows how to benchmark and gather data - Data Scientist knows how to explore the data - System Architect nows how to model the system.
+
 **THE NEED** System Architect has a tool to iteratively run this cycle, backing the system modelling with rock-solid data.
 
 **AS IS** Heavey-weight scripting to integrate specialized libraries to one tool.
+
 **THE NEED** High-level and concise DSL to gather data, explore the data, and model the parametric system.
 
 ## Essential Advantages
