@@ -5,11 +5,11 @@
 
 ---
 
-# What Is It?
+# What Is FlexCartesian
 
 FlexCartesian is a new approach for parameter space analysis. It introduces Parametric Behaviour Blueprinting paradigm, abbreviated BPP.
 
-# What Is It For?
+# What Is It For
 
 Most of the systems around us _are_ functions of parameters.<br/>
 
@@ -29,7 +29,7 @@ As a pattern, the behaviour of parameteric system behaviour characterizes by its
 
 FlexCartesian addresses both questions. It explores behaviour of your system and identifies optimal operating modes.
 
-# Why Does It Exist?
+# Why It Exists
 
 I created FlexCartesian to solve several practical issues of the performance benchmarking.
 
@@ -49,18 +49,14 @@ I created FlexCartesian to solve several practical issues of the performance ben
 
 FlexCartesian extends the paradigm known as **parameter space analysis** to the next level we call **Parametric Behaviour Blueprinting (PBB)**.
 
-1. You define input parameters of your system, and constraints, if any.
-2. You express behavioural functions of your system - this can be probes fetching metrics from your system, or built-in connectors to the data source storing metrics of your system.
-3. FlexCartesian builds multi-dimensional Cartesian space of the parameters, and computes behavioural functions in this space - with respect to constraints, if any.
-4. From now on, FlexCartesian holds Parametric Behavioural Blueprint of your system - and it gives you all the power of the BPP paradigm:
+Conventional parameter space analysis takes the existence of parameter values and system state for these values as granted - and it focuses on exploration of the system state (sensitivity, robustness, trade-offs, extrema, heatmaps, and so forth). PBB extends this scope further:
 
-- You can visualize interactive heatmaps of your system's behaviour
-- You can analyze influence of the parameters on the behaviour of the system
-- You can find sweet-spot combinations of parameter values
-- You can enrich your system by adding derived behavioural functions, and further explore its behaviour
-- You can keep the link between the blueprint and real system alive, so that the blueprint will evolve in time, just as real system does
+1. Gathering data from a real system (digital or physical). This is implemented by the _behavioural functions_.
+2. A live linkage to the real system maintains a _behavioural blueprint_ that evolves in time. This is implemented by the _data sources_ available for the behavioural functions, which enables behavioural functions for the live data gathering, and the fact temporal dimension is natively supported in the model.
+3. Maintaining the data gathered from the real system in a structured, consistent, and complete order. This is implemented by the mathematical model in the core of FlexCartesian: parameter space + conditions + behavioural functions. These three core concepts guarantee correctly described behaviour of the system for any valid combination of the parameters.
+4. FlexCartesian not only uses live linkage between parametric behavioural blueprint and the real system to gather data. It allows to use the linkage in reverse - effectively, using the behavioural blueprint sa a substitute of the real system. This creates new opportunities in the system modelling, testing, and integration. Particularly, it is useful in air-gapped systems, and for AI training where provision of a real system data isn't available or prohibitively expensive.     
 
-Effectively, FlexCartesian creates a live digital blueprint of your system, serving as the engine for mathematical modelling linked to real system.
+Additionally, FlexCartesian implements PBB in a very high-level DSL ib terms of Ruby. This enables expression of very powerful concepts in just one line of code. At the same time, FLexCartesian natively integrates all the flexibity and elegance of Ruby.   
 
 ## Example #1: Avoiding semantic shift in ChatGPT
 
@@ -193,6 +189,10 @@ Please have it [here](docs/api/api.md).
 ```bash
 gem install flex-cartesian
 ```
+
+## Status
+
+The project has been actively developed. Please [submit](https://github.com/Yuri-Rassokhin/flex-cartesian/issues) your feature requests or bug reports. 
 
 ## License
 
