@@ -33,23 +33,23 @@ FlexCartesian addresses both questions. It explores behaviour of your system and
 
 FlexCartesian addresses several practical gaps of the conventional benchmarking and parameter space analysis tools.
 
-**_Data gathering separated from data analysis._**
+**> _Data gathering separated from data analysis._**
 
-Specifiсally, benchmarking tools blindly provide raw data, while modelling tools blindly assume that some data have been prepared somehow.
+Specifiсally, benchmarking tools blindly provide raw data, while modelling tools blindly assume that some data has been prepared somehow.
 There's the need for one tool to build the model of a system and to probe the data from the live system in a structured, consistent way, and in accordance with the model.
 
-**_Data gathered from the system is scattered, inconsistent, unstructured, and incomplete._**
+**> _Data gathered from the system is scattered, inconsistent, unstructured, and incomplete._**
 
 What's event worse, you're not sure in advance if there are gaps in the fetched data, and where they may be.
 There's the need for the tool that puts rigour mathematical model of the system at first place - and then gathers the data as the model requires to represent the system consistently.
 
-**_System analysis spread across System Engineer, System Architect, and Data Scientist roles._**
+**> _System analysis spread across System Engineer, System Architect, and Data Scientist roles._**
 
 The first role knows how to benchmark and gather data. The second role understands the system. The third one knows how to explore the data.
 There's the need for a simple tool to enable any of the roles for the full cycle analysis without delay.
 For example, System Architect should be able to iteratively run the analysis, updating the data in the model quickly and independently.
 
-**_Heavey-weight scripting required for turning specialized libraries to end-user tool._**
+**> _Heavey-weight scripting required for turning specialized libraries to end-user tool._**
 
 There's the need for a high-level and concise DSL to gather data, explore the data, and model the parametric system.
 
