@@ -5,7 +5,7 @@
 
 ---
 
-# What Is FlexCartesian
+# What Is It
 
 FlexCartesian is a new approach for parameter space analysis. It introduces Parametric Behaviour Blueprinting paradigm, abbreviated BPP.
 
