@@ -202,6 +202,20 @@ gem install flex-cartesian
 
 This project is actively developed. Please [submit](https://github.com/Yuri-Rassokhin/flex-cartesian/issues) your feature requests or bug reports. 
 
+## Contributing
+
+Bug reports and pull requests are welcome on GitHub at [https://github.com/Yuri-Rassokhin/flex-cartesian](https://github.com/Yuri-Rassokhin/flex-cartesian).
+
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to standard open-source etiquette.
+
 ## License
 
 This project is licensed under the terms of the GNU General Public License v3.0. See [LICENSE](LICENSE) for more details.
