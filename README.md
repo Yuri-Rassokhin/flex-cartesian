@@ -17,22 +17,17 @@ The LLM you are using has inference parameters, and its functions are quality of
 The cloud storage you are using has configuration parameters, and its functions are IOPS and throughput.
 Even the car you are driving has driving parameters, and its function is cost per mile.
 
-In any case, system behaviour characterizes by its function - and you want to tune parameters of the system to optimize its function.
-This would put the system to the absolute best operatind mode: lowest cost per mile - highest storage IOPS - lowest response time from LLM.
-
-Hence the fundamental questions.<br/>
+As a pattern, the behaviour of parameteric system behaviour characterizes by its function - and you want to tune parameters to bring the function to the absolute best operating mode: lowest cost per mile - highest storage IOPS - lowest response time from LLM. Hence the fundamental problems:<br/>
 
 <p align="center">
-<b>HOW DO PARAMETERS INFLUENCE THE BEHAVIOUR OF THE SYSTEM?</b>
+<b>1. HOW DO PARAMETERS INFLUENCE THE BEHAVIOUR OF THE SYSTEM?</b>
 </p>
-
-In particular:
 
 <p align="center">
-<b>WHAT IS THE ABSOLUTE BEST OPERATING MODE OF THE SYSTEM?</b>
+<b>2. WHAT IS THE ABSOLUTE BEST OPERATING MODE OF THE SYSTEM?</b>
 </p>
 
-FlexCartesian addresses both questions: it explores behaviour of your system and identifies optimal operating modes.
+FlexCartesian addresses both questions. It explores behaviour of your system and identifies optimal operating modes.
 
 # Why Does It Exist?
 
