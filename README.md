@@ -7,17 +7,15 @@
 
 # What Is It
 
-FlexCartesian is a new approach for parameter space analysis. It introduces Parametric Behaviour Blueprinting paradigm, abbreviated BPP.
+FlexCartesian is a novel approach to parameter space analysis. It introduces the Parametric Behaviour Blueprinting paradigm, abbreviated as PBB.
 
 # What Is It For
 
-Most of the systems around us _are_ functions of parameters.<br/>
+Most systems around us are functions of parameters.<br/>
 
-The LLM you are using has inference parameters, and its functions are quality of response, responce time, and throughput.
-The cloud storage you are using has configuration parameters, and its functions are IOPS and throughput.
-Even the car you are driving has driving parameters, and its function is cost per mile.
+The LLM you use has inference parameters, and its functions are response quality, response time, and throughput. The cloud storage you use has configuration parameters, and its functions are IOPS and throughput. Even the car you drive has driving parameters, and its function is cost per mile.
 
-As a pattern, the behaviour of parameteric system behaviour characterizes by its function - and you want to tune parameters to bring the function to the absolute best operating mode: lowest cost per mile - highest storage IOPS - lowest response time from LLM. Hence the fundamental problems:<br/>
+As a rule, a parametric system's behavior is characterized by its function. Naturally, you want to tune those parameters to bring the system to its absolute best operating mode: the lowest cost per mile, the highest storage IOPS, or the lowest response time from an LLM. This leads to two fundamental questions:
 
 <p align="center">
 <b>HOW DO PARAMETERS INFLUENCE THE BEHAVIOUR OF THE SYSTEM?</b>
@@ -27,48 +25,50 @@ As a pattern, the behaviour of parameteric system behaviour characterizes by its
 <b>WHAT IS THE ABSOLUTE BEST OPERATING MODE OF THE SYSTEM?</b>
 </p>
 
-FlexCartesian addresses both questions. It explores behaviour of your system and identifies optimal operating modes.
+FlexCartesian addresses both questions. It explores the behavior of your system and identifies its optimal operating modes.
 
 # Why It Exists
 
-FlexCartesian addresses several practical gaps of the conventional benchmarking and parameter space analysis tools.
+FlexCartesian fills several practical gaps left by conventional benchmarking and parameter space analysis tools.
 
-**> _Data gathering separated from data analysis._**
+**> _Data gathering is separated from data analysis._**
 
-Specifiсally, benchmarking tools blindly provide raw data, while modelling tools blindly assume that some data has been prepared somehow.
-There's the need for one tool to build the model of a system and to probe the data from the live system in a structured, consistent way, and in accordance with the model.
+Specifically, benchmarking tools blindly provide raw data, while modeling tools blindly assume that data has already been prepared somehow.
+There is a need for a single tool that builds a model of a system and probes live data from it in a structured, consistent way that perfectly aligns with that model.
 
-**> _Data gathered from the system is scattered, inconsistent, unstructured, and incomplete._**
+**> _Data gathered from systems is often scattered, inconsistent, unstructured, and incomplete._**
 
-What's event worse, you're not sure in advance if there are gaps in the fetched data, and where they may be.
-There's the need for the tool that puts rigour mathematical model of the system at first place - and then gathers the data as the model requires to represent the system consistently.
+What's even worse, you rarely know in advance if there are gaps in the fetched data or where they might be.
+There is a need for a tool that establishes a rigorous mathematical model of the system first, and then gathers data exactly as the model requires to represent the system consistently.
 
-**> _System analysis spread across System Engineer, System Architect, and Data Scientist roles._**
+**> _System analysis is spread across System Engineer, System Architect, and Data Scientist roles._**
 
-The first role knows how to benchmark and gather data. The second role understands the system. The third one knows how to explore the data.
-There's the need for a simple tool to enable any of the roles for the full cycle analysis without delay.
-For example, System Architect should be able to iteratively run the analysis, updating the data in the model quickly and independently.
+The first role knows how to benchmark and gather data. The second role understands the system's architecture. The third knows how to explore the data. There is a need for a simple tool that enables any of these roles to conduct full-cycle analysis without delays. For example, a System Architect should be able to iteratively run an analysis, updating the data in the model quickly and independently.
 
-**> _Heavey-weight scripting required for turning specialized libraries to end-user tool._**
+**> _Heavy-weight scripting is required to turn specialized libraries into end-user tools._**
 
-There's the need for a high-level and concise DSL to gather data, explore the data, and model the parametric system.
+There is a need for a high-level, concise Domain-Specific Language (DSL) to gather data, explore it, and model the parametric system.
 
-## Essential Advantages
+# Essential Advantages
 
-FlexCartesian extends the paradigm known as **parameter space analysis** to the next level we call **Parametric Behaviour Blueprinting (PBB)**.
+FlexCartesian elevates the traditional parameter space analysis paradigm to the next level, which we call **Parametric Behaviour Blueprinting (PBB)**.
 
-Conventional parameter space analysis takes the existence of parameter values and system state for these values as granted - and it focuses on exploration of the system state (sensitivity, robustness, trade-offs, extrema, heatmaps, and so forth). PBB extends this scope further:
+Conventional parameter space analysis takes the existence of parameter values and system states for granted, focusing solely on exploring the state (sensitivity, robustness, trade-offs, extrema, heatmaps, etc.). PBB extends this scope further:
 
-1. Gathering data from a real system (digital or physical). This is implemented by the _behavioural functions_.
-2. A live linkage to the real system maintains a _behavioural blueprint_ that evolves in time. This is implemented by the _data sources_ available for the behavioural functions, which enables behavioural functions for the live data gathering, and the fact temporal dimension is natively supported in the model.
-3. Maintaining the data gathered from the real system in a structured, consistent, and complete order. This is implemented by the mathematical model in the core of FlexCartesian: parameter space + conditions + behavioural functions. These three core concepts guarantee correctly described behaviour of the system for any valid combination of the parameters.
-4. FlexCartesian not only uses live linkage between parametric behavioural blueprint and the real system to gather data. It allows to use the linkage in reverse - effectively, using the behavioural blueprint sa a substitute of the real system. This creates new opportunities in the system modelling, testing, and integration. Particularly, it is useful in air-gapped systems, and for AI training where provision of a real system data isn't available or prohibitively expensive.     
+**1. Live data gathering.** FlexCartesian fetches data directly from a real system (digital or physical) using defined `behavioural functions`.
+**2. Evolving blueprints.** A live linkage to the real system maintains a behavioural blueprint that evolves over time. This is driven by `data sources` feeding the behavioural functions, natively supporting the temporal dimension in the model.
+**3. Structured Consistency.** FlexCartesian maintains the data gathered from the real system in a structured, complete order. This is enforced by FlexCartesian's core mathematical model: `parameter space` + `conditions` + `behavioural functions`. These three concepts guarantee that the system's behavior is described correctly for any valid combination of parameters.
+**4. Reverse Linkage for Simulation.** FlexCartesian doesn't just use the live linkage to gather data; it allows you to use the blueprint as a substitute for the real system. This unlocks new opportunities in system modeling, testing, and integration. It is particularly useful for air-gapped systems or AI training, where providing real system data is unavailable or prohibitively expensive.
 
-Additionally, FlexCartesian implements PBB in a very high-level Ruby-based DSL. This enables very powerful concepts in just one line of code. At the same time, FLexCartesian natively integrates all the flexibity and elegance of Ruby.   
+Additionally, FlexCartesian implements PBB via a highly expressive Ruby-based DSL. This allows you to execute powerful concepts in just a single line of code, natively integrating all the flexibility and elegance of Ruby.  
 
 ## Example #1: Avoiding semantic shift in ChatGPT
 
-Perhaps, we want to find optimal operating mode of ChatGPT - specifically, the ranges of its temperature and tokens where ChatGPT gives stable and consistent answers to repeated question. The lack of such stability is called semantic shift, which is crucial to avoid in such fields as law or science, where AI assistant must provide very stable answers based on a given corpus of documents. While you can run [this example](https://github.com/Yuri-Rassokhin/flex-cartesian/tree/main/examples/13_chatgpt_semantic_shift) yourself, here's how FlexCartesian suggests ChatGPT's operating mode free from semantic shift, step by step.
+Suppose we want to find the optimal operating mode for ChatGPT—specifically, the ranges of `temperature` and `tokens` where the model gives stable, consistent answers to repeated questions. A lack of stability is known as _semantic shift,_ which is crucial to avoid in fields like law or science, where an AI assistant must provide reliable answers based on a strict corpus of documents.
+
+Perhaps, we want to find optimal operating mode of ChatGPT - specifically, the ranges of its temperature and tokens where ChatGPT gives stable and consistent answers to repeated question. The lack of such stability is called semantic shift, which is crucial to avoid in such fields as law or science, where AI assistant must provide very stable answers based on a given corpus of documents.
+
+While you can run [this example](https://github.com/Yuri-Rassokhin/flex-cartesian/tree/main/examples/13_chatgpt_semantic_shift) yourself, here's how FlexCartesian determines a semantic-shift-free operating mode, step by step.
 
 Enable FlexCartesian:
 
@@ -76,7 +76,7 @@ Enable FlexCartesian:
 require 'flex-cartesian'
 ```
 
-Define parameter space:
+Define the parameter space:
 
 ```ruby
 space = FlexCartesian.new({
@@ -84,7 +84,7 @@ space = FlexCartesian.new({
 		tokens: [20, 50, 100, 200, 400]})
 ```
 
-Define behavioural function `response` - for any combinations of parameters, it returns response given by ChatGPT to the same test question.
+Define the behavioural function `response`. For any combination of parameters, it returns the response given by ChatGPT to the same test question:
 
 ```ruby
 msg = [ { role: "system", content: "You are a precise and consistent assistant." },
@@ -93,51 +93,51 @@ msg = [ { role: "system", content: "You are a precise and consistent assistant."
 space.func(:add, :response) { |v| llm(temperature: v.temperature, max_tokens: v.tokens, messages: msg ) }
 ```
 
-Enrich the system by two more behavioural functions.
-For any answer provided by `response` function, the function `embedding` returns its vector embedding, and `semantic_drift` calculates how far the response drifts away from the very first answer (`anchor`) given by ChatGPT. The values of `semantic_shift` is precisely what we need!
+Enrich the system with two additional behavioural functions. For any answer provided by `response`, the `embedding` function returns its vector embedding. The `semantic_shift` function then calculates how far the response drifts away from the very first answer ("anchor") given by the model. This value is exactly what we need!
 
 ```ruby
 space.func(:add, :embedding) { |v| anchor ||= embed(v.response); embed(v.response) }
 space.func(:add, :semantic_shift) { |v| (1.0 - cosine(v.embedding, anchor)).round(2) }
 ```
 
-Then we compute all the functions in the entire parameter space.
-Behind the scene, FlexCartesian iterates each function over all combinations of parameters.
+Next, we compute all the functions across the entire parameter space.
+Behind the scenes, FlexCartesian iterates each function over all possible parameter combinations.
 
 ```ruby
 space.func(:run. progress: true)
 ```
 
-Upon completion, FlexCartesian holds PBB (Parametric Behavioural blueprint) of our system, ChatGPT.
-Now we can visualize PBB as a fancy 2D-heatmap showing how semantic of ChatGPT's answers depends on tokens and temperature.
+Upon completion, FlexCartesian holds the Parametric Behaviour Blueprint of our system.
+Now, we can visualize this PBB as a 2D heatmap showing how the semantics of ChatGPT's answers depend on `tokens` and `temperature`
 
 ```ruby
 space.visualize(x: :temperature, y: :tokens, func: :semantic_shift, output: "./viz.html")
 ```
 
-We can open this `./viz.html` in a browser.
-The semantic shift varies from 0.0 (the answer is identical to the first answer) to 1.0 (the answer is totally inconsistent from the first answer):
+When we open `./viz.html` in a browser, we see the semantic shift varying from `0.0` (identical to the first answer) to `1.0` (totally inconsistent):
 
 <p align="center">
 	<img src="docs/assets/viz/example-low-rate.gif" width="600"/>
 </p>
 
-The heatmap suggests the answer to the initial question. To avoid semantic shift completely, we should keep temperature not exceeding 0.2, while the number of tokens has no influence to the responses at all. By the way, even with the temperatures beyond 0.2, the answering is still respectably consistent - the semantic shift hardly reaches 0.2.
+The heatmap gives us our answer: to completely avoid semantic shift, we should keep the temperature at or below `0.2`.
+The number of tokens has no measurable influence on response stability.
+Notably, even at temperatures beyond `0.2`, the responses remain respectably consistent, with the shift barely reaching `0.2`.
 
-Finally, we want to assess the influence of each parameter on the semantic shift of ChatGPT's answers.
+Finally, we want to mathematically assess the influence of each parameter:
 
 ```ruby
 space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42).output(func: :semantic_shift, format: :markdown)
 ```
 
-This will produce Markdown table of the quantified influence and the nature of influence of the parameters:
+This produces a Markdown table quantifying the influence of the parameters:
 
 |parameter  |influence[semantic_shift]|deviation|probes|category|linearity        |recommendation                                                                                   |
 |-----------|-------------------------|---------|------|--------|-----------------|-------------------------------------------------------------------------------------------------|
 |tokens     |0.14                     |0.22     |10    |strong  |highly non-linear|critical parameter with complex interactions; prioritize for variance-based analysis (e.g. Sobol)|
 |temperature|0.09                     |0.19     |10    |strong  |highly non-linear|critical parameter with complex interactions; prioritize for variance-based analysis (e.g. Sobol)|
 
-This sensitivity table confirms strong influence of both parameters on the consistency of the answers, and most importantly, it categorizes their influence as highly non-linear. Therefore, we should NOT make decisions on these parameters based on a few probes - to the contrary, we have to build complete behavioural bluepring using entire parameter space - and find sweet area on it: "temperature <= 0.2, no matter the tokens".
+This sensitivity table confirms the strong influence of both parameters and, most importantly, categorizes their influence as highly non-linear. This means we cannot make decisions based on just a few isolated probes. Instead, we must build a complete behavioural blueprint across the entire parameter space and find the "sweet spot": temperature <= 0.2, regardless of tokens.
 
 ## Example #2: Sensitivity of AWS DynamoDB servers
 
