@@ -60,7 +60,7 @@ Conventional parameter space analysis takes the existence of parameter values an
 3. Maintaining the data gathered from the real system in a structured, consistent, and complete order. This is implemented by the mathematical model in the core of FlexCartesian: parameter space + conditions + behavioural functions. These three core concepts guarantee correctly described behaviour of the system for any valid combination of the parameters.
 4. FlexCartesian not only uses live linkage between parametric behavioural blueprint and the real system to gather data. It allows to use the linkage in reverse - effectively, using the behavioural blueprint sa a substitute of the real system. This creates new opportunities in the system modelling, testing, and integration. Particularly, it is useful in air-gapped systems, and for AI training where provision of a real system data isn't available or prohibitively expensive.     
 
-Additionally, FlexCartesian implements PBB in a very high-level DSL ib terms of Ruby. This enables expression of very powerful concepts in just one line of code. At the same time, FLexCartesian natively integrates all the flexibity and elegance of Ruby.   
+Additionally, FlexCartesian implements PBB in a very high-level Ruby-based DSL. This enables very powerful concepts in just one line of code. At the same time, FLexCartesian natively integrates all the flexibity and elegance of Ruby.   
 
 ## Example #1: Avoiding semantic shift in ChatGPT
 
