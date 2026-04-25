@@ -20,11 +20,11 @@ Even the car you are driving has driving parameters, and its function is cost pe
 As a pattern, the behaviour of parameteric system behaviour characterizes by its function - and you want to tune parameters to bring the function to the absolute best operating mode: lowest cost per mile - highest storage IOPS - lowest response time from LLM. Hence the fundamental problems:<br/>
 
 <p align="center">
-<b>1. HOW DO PARAMETERS INFLUENCE THE BEHAVIOUR OF THE SYSTEM?</b>
+<b>HOW DO PARAMETERS INFLUENCE THE BEHAVIOUR OF THE SYSTEM?</b>
 </p>
 
 <p align="center">
-<b>2. WHAT IS THE ABSOLUTE BEST OPERATING MODE OF THE SYSTEM?</b>
+<b>WHAT IS THE ABSOLUTE BEST OPERATING MODE OF THE SYSTEM?</b>
 </p>
 
 FlexCartesian addresses both questions. It explores behaviour of your system and identifies optimal operating modes.
