@@ -31,23 +31,27 @@ FlexCartesian addresses both questions. It explores behaviour of your system and
 
 # Why It Exists
 
-I created FlexCartesian to solve several practical issues of the performance benchmarking.
+FlexCartesian addresses several practical gaps of the conventional benchmarking and parameter space analysis tools.
 
-**AS IS** Data gathering is separated from the modelling. Specifiсally, modelling tools blindly assume that some data have been prepared somehow.
+**_Data gathering separated from data analysis._**
 
-**THE NEED** One tool to build the model of a system and to probe the data from the live system in a structured, consistent way, and in accordance with the model.
+Specifiсally, benchmarking tools blindly provide raw data, while modelling tools blindly assume that some data have been prepared somehow.
+There's the need for one tool to build the model of a system and to probe the data from the live system in a structured, consistent way, and in accordance with the model.
 
-**AS IS** Data fetched from the system were scatter, chaotic, unstructured, and incomplete. What's event worse, you never know in advance if/where there are gaps in the fetched data.
+**_Data gathered from the system is scattered, inconsistent, unstructured, and incomplete._**
 
-**THE NEED** A tool that puts rigour mathematical model of the system at first place - and then gathers the data as the model requires to represent the system consistently.
+What's event worse, you're not sure in advance if there are gaps in the fetched data, and where they may be.
+There's the need for the tool that puts rigour mathematical model of the system at first place - and then gathers the data as the model requires to represent the system consistently.
 
-**AS IS** Disconnected professional roles: System Engineer knows how to benchmark and gather data - Data Scientist knows how to explore the data - System Architect nows how to model the system.
+**_System analysis spread across System Engineer, System Architect, and Data Scientist roles._**
 
-**THE NEED** System Architect has a tool to iteratively run this cycle, backing the system modelling with rock-solid data.
+The first role knows how to benchmark and gather data. The second role understands the system. The third one knows how to explore the data.
+There's the need for a simple tool to enable any of the roles for the full cycle analysis without delay.
+For example, System Architect should be able to iteratively run the analysis, updating the data in the model quickly and independently.
 
-**AS IS** Heavey-weight scripting to integrate specialized libraries to one tool.
+**_Heavey-weight scripting required for turning specialized libraries to end-user tool._**
 
-**THE NEED** High-level and concise DSL to gather data, explore the data, and model the parametric system.
+There's the need for a high-level and concise DSL to gather data, explore the data, and model the parametric system.
 
 ## Essential Advantages
 
