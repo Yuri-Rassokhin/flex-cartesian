@@ -33,55 +33,21 @@ FlexCartesian addresses both questions. It explores behaviour of your system and
 
 I created FlexCartesian to solve several practical issues of the performance benchmarking.
 
-**What I experienced:** Data gathering is separated from the modelling. Specifiсally, modelling tools blindly assume that some data have been prepared somehow.
-****What I needed:** One tool to build the model of a system and to probe the data from the live system in a structured, consistent way, and in accordance with the model.
+**AS IS** Data gathering is separated from the modelling. Specifiсally, modelling tools blindly assume that some data have been prepared somehow.
+**THE NEED** One tool to build the model of a system and to probe the data from the live system in a structured, consistent way, and in accordance with the model.
 
-**What I experienced:** Data fetched from the system were scatter, chaotic, unstructured, and incomplete. What's event worse, you never know in advance if/where there are gaps in the fetched data.
-****What I needed:** A tool that puts rigour mathematical model of the system at first place - and then gathers the data as the model requires to represent the system consistently.
+**AS IS** Data fetched from the system were scatter, chaotic, unstructured, and incomplete. What's event worse, you never know in advance if/where there are gaps in the fetched data.
+**THE NEED** A tool that puts rigour mathematical model of the system at first place - and then gathers the data as the model requires to represent the system consistently.
 
+**AS IS** Disconnected professional roles: System Engineer knows how to benchmark and gather data - Data Scientist knows how to explore the data - System Architect nows how to model the system.
+**THE NEED** System Architect has a tool to iteratively run this cycle, backing the system modelling with rock-solid data.
 
-
-The problem consists of the three fields: COMPREHENSIVE data gathering from a real system => HOLISTIC modelling of the system => FLEXIBLE, EXTENSIBLE, and CONCISE analysis of the system.
-
-Conventional tools usually provide just one of the three: benchmarking tools gather real data, modelling tools (R, Excel, GNU Plot) assume that data simply exists - analysis tools (R) have niche specialization.
-Moreover, conventional tools impose restrictions on what they provide: benchmarking tool gather real data, but it's chaotic and unstructured; modelling tools have niche specializations (R for statistics, Excel for office tables, GNU Plot for visualization), and what's even worse, no tool natively models entire behaviour of the system - that is, consistent structure of data probes evolving in time.
-
-
-
-Additionally, 
-2. Native extensibility using high-level programming language.
-3. High-level concepts.
-
-If you deal with a system that behaves as a function of multiple tunable parameters, and you want to explore its behaviour, FlexCartesian does it for you.
-Effectively, it answers the following questions for your system.
-
-- What parameters are the most influential?
-- Is the influence of parameters linear or chaotic?
-- What parameters can be ignored as negligible?
-- Which parameters are independent and which ones are inter-correlated?
-- How does the system's behaviour evolve in time?
-
-Fundamentally, this exploration conveys an answer to one fundamental question: ***"what is the absolute best operating mode of my system?"*** This is precisely the core value of FlexCartesian - it finds the best operating mode for your system for any target metric you want, be it highest throughput, highest semantic consistency, lowest latency, or anything else.
-
-## What Systems Can FlexCartesian Explore?
-
-Any system can be explored, as long as you can measure its behaviour.
-For example, FlexCartesian has been used for the following systems in real-world large-scale projects.
-
-| System Explored | Research Question | Answer Conveyed |
-| --------------- | ----------------- | --------------- |
-| LLM (ChatGPT, Cohere, LLAMA, Qwen, JAIS) | What temperature/token combinations are optimal for maintaining stable and consistent LLM's answers to repeated questions? | Tier-1 LLMs are very stable with the temperature <= 0.2 and ~1,000 tokens, at least |
-| Vision models (YOLO, Detectron) | Which architecture leads by performance/ratio for 100,000,000 detections/day, GPU or ARM? | Surprisingly, it's ARM in many use cases |
-| Semantic search (FAISS and lots of embedding models) | Should semantic index be preloaded to memory, and which one - CPU or GPU? | Preloading makes difference. Suprisingly, preloading to cheaper CPU RAM often brings nearly the same acceleration as limited and costly GPU RAM |
-| Cloud storage tuning | What is time gap of AI training on OCI using local NVMe versus network-attached block volumes? | It's less than 20%, often ~10% |
-
-In general, FlexCartesian brings value in any use case where you need to systematically explore the entire parameter space of viable values of input parameters. These are performance benchmarking of infrastructure; tuning of AI/ML models; generating simulations in physics or bioinformatics; generating API stress-tests; generating full-coverate test scripts, and many more.
-
-Any field involving ***iteration over multi-dimensional parameter space*** benefits from FlexCartesian.
+**AS IS** Heavey-weight scripting to integrate specialized libraries to one tool.
+**THE NEED** High-level and concise DSL to gather data, explore the data, and model the parametric system.
 
 ## Essential Advantages
 
-FlexCartesian takes the paradigm known as **parameter space analysis** to the next level we call **Parametric Behaviour Blueprinting (PBB)**.
+FlexCartesian extends the paradigm known as **parameter space analysis** to the next level we call **Parametric Behaviour Blueprinting (PBB)**.
 
 1. You define input parameters of your system, and constraints, if any.
 2. You express behavioural functions of your system - this can be probes fetching metrics from your system, or built-in connectors to the data source storing metrics of your system.
