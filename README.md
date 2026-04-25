@@ -104,7 +104,7 @@ Next, we compute all the functions across the entire parameter space.
 Behind the scenes, FlexCartesian iterates each function over all possible parameter combinations.
 
 ```ruby
-space.func(:run. progress: true)
+space.func(:run, progress: true)
 ```
 
 Upon completion, FlexCartesian holds the Parametric Behaviour Blueprint of our system.
@@ -141,10 +141,9 @@ This sensitivity table confirms the strong influence of both parameters and, mos
 
 ## Example #2: Sensitivity of AWS DynamoDB servers
 
-Let's take [another example](https://github.com/Yuri-Rassokhin/flex-cartesian/tree/main/examples/09_ping_visualize).
-If we ping AWS DynamoDB, how do ping parameters influence ping time?
-For the sake of example, let's take IP address and packet size.
-Here's full code, showing how FlexCartesian gives the answer.
+Let's look at [another example](https://github.com/Yuri-Rassokhin/flex-cartesian/tree/main/examples/09_ping_visualize). If we ping AWS DynamoDB, how do specific parameters influence the ping time? For this example, let's analyze geographic IP address and packet size.
+
+Here is the full code showing how FlexCartesian finds the answer:
 
 ```ruby
 # enable FlexCartesian
@@ -178,19 +177,20 @@ space.func(:run, progress: true)
 space.visualize(x: :size, y: :target, func: [ :time, :cap ], output: "./viz.html")
 ```
 
-Just run this code, and you'll get an interactive HTML heatmap `./viz.html` showing how geography and packet size influence ping to DynamoDB.
-As you can see, FlexCartesian enables very high-level and powerful DSL, packing complex operations to one-liners.
-If you need mathematically rigorous assessment of the parameter influence, you just add yet another one-liner:
+By running this code, you'll generate an interactive HTML heatmap `./viz.html` illustrating how geography and packet size affect ping times to DynamoDB.
+
+As you can see, FlexCartesian's expressive DSL packs complex system profiling into simple one-liners.
+If you need a mathematically rigorous assessment of these parameters, simply add one more line:
 
 ```ruby
 space.analyzer(:morris, trajectories: 10, step: 0.1, seed: 42).output(func: :time)
 ```
 
-This one-liner applies [Morris sensitivity analysis](https://en.wikipedia.org/wiki/Morris_method) to the behavioural blueprint extracted by FlexCartesian.
+This applies [Morris sensitivity analysis](https://en.wikipedia.org/wiki/Morris_method) directly to the behavioural blueprint extracted by FlexCartesian.
 
 ## API Documentation
 
-Please have it [here](docs/api/api.md).
+Detailed API documentation is available [here](docs/api/api.md).
 
 ## Installation
 
@@ -200,7 +200,7 @@ gem install flex-cartesian
 
 ## Status
 
-The project has been actively developed. Please [submit](https://github.com/Yuri-Rassokhin/flex-cartesian/issues) your feature requests or bug reports. 
+This project is actively developed. Please [submit](https://github.com/Yuri-Rassokhin/flex-cartesian/issues) your feature requests or bug reports. 
 
 ## License
 
