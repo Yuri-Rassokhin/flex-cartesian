@@ -158,7 +158,7 @@ end
   def output(func:, categorize: true, recommend: true, **opts)
     raise ArgumentError, "target function must be provided" unless func
     raise "Cannot execute #sensitivity as there are no functions defined in parameter space" if @space.derived.empty?
-    rows = @analysis.empty? analyze(func: func) : @analysis
+    rows = @analysis.nil? ? analyze(func: func) : @analysis
     rows = self.categorize(rows, function: func) if categorize
     rows = self.recommend(rows, function: func) if recommend
     @space.output(rows, **opts)

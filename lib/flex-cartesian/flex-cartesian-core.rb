@@ -164,7 +164,7 @@ def cartesian(dims = nil, lazy: false, progress: false, title: "Iterating over p
   space = lazy ? enum.lazy : enum
 
   # visualize progress bar, if requested
-  bar = progress ? ProgressBar.create(title: title, total: @size, format: '%t [%B] %p%% %e') : nil
+  bar = progress ? ProgressBar.create(title: title, total: self.size, format: '%t [%B] %p%% %e') : nil
 
   space.each do |combination|
     # create current vector as Struct
