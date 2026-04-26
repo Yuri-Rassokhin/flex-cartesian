@@ -6,8 +6,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Yury Rassokhin"]
   spec.email         = ["yuri.rassokhin@gmail.com"]
 
-  spec.summary       = "Operations on Cartesian product for Ruby"
-  spec.description   = "Operations on Cartesian product for Ruby. Provides user-defined functions and conditions; DoE (design of experiment) methods such as assessment of the influence of Cartesian parameters on the target function; dimensionality-agnostic and dimensionality-aware iterators; named dimensions; tabular output; lazy/eager evaluation; progress bar; import from JSON/YAML; export to Markdown/CSV. Code example: https://github.com/Yuri-Rassokhin/flex-cartesian/blob/main/README.md#example"
+  spec.summary       = "Parametric system analysis as operations on Cartesian product for Ruby"
+  spec.description   = "A Ruby DSL for operations on Cartesian multidimensional spaces. Features user-defined functions, space conditions, dimensionality-agnostic and dimensionality-aware iterators; named dimensions; tabular output; lazy/eager evaluation; progress bar; import from JSON/YAML/CSV/XLSX; export to Markdown/CSV; DoE with Parametric Behaviour Blueprinting (PBB) to create blueprints of real systems; and visual heatmaps to model and optimize real systems effortlessly. Code examples: https://github.com/Yuri-Rassokhin/flex-cartesian/tree/main/examples/13_chatgpt_semantic_shift/example.rb"
   spec.homepage      = "https://github.com/Yuri-Rassokhin/flex-cartesian"
   spec.license       = "GPL-3.0-only"
 
