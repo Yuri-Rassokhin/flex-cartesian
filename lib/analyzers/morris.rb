@@ -41,8 +41,8 @@ def analyze(func:)
     effects[edge.factor] << ee
   end
 
-  # Итерируемся по names, чтобы учесть константные параметры, 
-  # для которых не было вычислено ни одного эффекта
+  # Iterate over names to consider constant parameters -
+  # the ones that has had no effect whatsoever
 res = names.map do |name|
     factor = name
     ees = effects[factor]
@@ -83,38 +83,38 @@ end
 def categorize(rows, function:)
   return rows if rows.nil? || rows.empty?
 
-  # 1. Вычисляем общий размах целевой функции (Y_max - Y_min)
-  # Собираем все результаты для данной функции из кэша
+  # Calculate general deviation of the target function, Y_max - Y_min
+  # Gather all the results for this function from cash
   all_y_values = indexed_results.values.map { |r| r[function] }.compact
   
   y_range = if all_y_values.empty?
-              1.0 # Защита от деления на ноль, если данных нет
+              1.0 # Protection from division by zero, if no data
             else
               max_y = all_y_values.max
               min_y = all_y_values.min
               range = max_y - min_y
-              range.zero? ? 1.0 : range # Защита, если функция вернула константу
+              range.zero? ? 1.0 : range # Protection from constant function
             end
 
   rows.map do |row|
     imp   = row[:"influence[#{function}]"]
     sigma = row[:deviation]
 
-    # Категоризация силы влияния (доля от размаха функции)
+    # Categorization of the influence is RELATIVE to the general deviation of the function
     influence_ratio = imp / y_range.to_f
     strength =
-      if influence_ratio >= 0.10      # Влияет более чем на 10% размаха
+      if influence_ratio >= 0.10      # adds >= 10% of the deviation
         "strong"
-      elsif influence_ratio >= 0.02   # Влияет от 2% до 10%
+      elsif influence_ratio >= 0.02   # 2% to 10%
         "moderate"
-      else                            # Менее 2%
+      else                            # less than 2%
         "negligible"
       end
 
-    # Категоризация линейности (отношение сигмы к мю)
+    # Categorization of linearity (sigma / mu)
     linearity = "undefined"
     
-    # Считать линейность имеет смысл только для значимых параметров
+    # If the parameter is neglifible, there's no point in calculating its linearity
     if strength != "negligible" && imp > 0
       ratio = sigma / imp
       linearity =
@@ -174,20 +174,20 @@ end
 
 private
 
-  # Метод для динамического расчета шага в индексах для конкретного параметра
+  # Dynamic calculation of the stride in terms of the index for a given parameter
   def index_step_for(dim_idx)
     levels_count = levels[dim_idx].size
-    # Если параметр константный (одно значение) - шаг равен 0
+    # Edge case: constant parameter ==> stride = 0
     return 0 if levels_count <= 1
 
-    # Количество доступных интервалов (прыжков)
+    # Amount of available hops (note the edges of the space as well as space conditions, if any
     intervals = levels_count - 1
 
-    # Считаем количество индексов для шага на основе процента (@step)
+    # Relative nature of the stride: number of indices as a percentage (@step)
     calculated_step = (intervals * @step).round
 
-    # Шаг должен быть минимум 1 (иначе стоим на месте),
-    # но не больше максимального количества интервалов
+    # The stride must be >= 1, otherwise we get stuck,
+    # but not exceeding the maximum amount of intervals 
     [[calculated_step, 1].max, intervals].min
   end
 
@@ -216,22 +216,22 @@ private
     from_idx = add_point(current_indices)
     return unless from_idx
 
-    # Берем только те параметры, у которых достаточно значений для шага (хотя бы 2 значения)
+    # We only pick those parameters that have enough dimensional values to take at least one step (that is, >= 2 values)
     active_factors = (0...names.size).select { |i| index_step_for(i) > 0 }
     factor_order = active_factors.shuffle(random: @rng)
 
     factor_order.each do |factor_idx|
       next_indices = current_indices.dup
 
-      # Получаем индивидуальный дискретный шаг для текущего фактора
+      # Finally, we get individual discrete stride 
       step_size = index_step_for(factor_idx)
       next_indices[factor_idx] += step_size
 
       to_idx = add_point(next_indices)
       next unless to_idx
 
-      # СЧИТАЕМ ОТНОСИТЕЛЬНУЮ ДЕЛЬТУ: какая доля от всего диапазона была пройдена.
-      # Именно это значение пойдет в знаменатель при расчете элементарного эффекта.
+      # DETERMINE RELATIVE DELTA: how much of the entire range has been passed
+      # This value will form the denominator in the calculation of the elementary effect
       intervals = levels[factor_idx].size - 1
       relative_delta = step_size.to_f / intervals
 
@@ -239,7 +239,7 @@ private
         from_idx: from_idx,
         to_idx: to_idx,
         factor: names[factor_idx],
-        step: relative_delta # Сохраняем % сдвига, а не индексы
+        step: relative_delta # We store % of the shirt, NOT indices 
       )
 
       current_indices = next_indices
@@ -265,8 +265,8 @@ private
       max_start = factor_levels.size - 1 - step_size
 
       if max_start < 0 || step_size == 0
-        # Если не можем сделать шаг (или параметр константа) -
-        # берем случайное доступное значение
+        # If the parameter is constart, and we can't take a step,
+        # We just take random value
         @rng.rand(0...factor_levels.size)
       else
         @rng.rand(0..max_start)
@@ -275,7 +275,7 @@ private
   end
 
   def validate_step!
-    # Теперь step - это процент (например, 0.1 для 10%)
+    # Now the step is % (thus, 0.1 stands for 10%)
     unless @step.is_a?(Numeric) && @step > 0 && @step <= 1
       raise ArgumentError, "step must be a relative float between 0.0 and 1.0 (e.g., 0.1 for 10%)"
     end

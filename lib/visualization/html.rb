@@ -3,15 +3,13 @@ module FlexCartesianVisualization
   require "json"
   require "tempfile"
 
-  # Добавлен параметр theme: :dark. 
-  # font_color и grid_color теперь по умолчанию nil, они вычисляются на основе темы.
   def visualize(format: :html, x:, y:, func:, output: nil, text: :dark, show_legend: false, show_z_title: true, show_grid: true, equal_axes: true, start_at_zero: true, show_plot_title: false, bg_color: 'transparent', font_color: nil, grid_color: nil, colorscale: 'Bluered')
     raise "X-axis of visualization cannot be empty" unless x
     
     funcs = Array(func).map(&:to_s)
     raise "Functions of visualization cannot be empty" if funcs.empty?
 
-    # Логика тем: если цвета не заданы вручную, выбираем их исходя из флага theme
+    # if colors aren't specified, we'll pick them based on theme
     actual_font_color = font_color || (text == :dark ? '#333333' : '#edf5ff')
     actual_grid_color = grid_color || (text == :dark ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.15)')
 

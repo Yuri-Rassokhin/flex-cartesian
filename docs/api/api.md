@@ -361,7 +361,7 @@ Also, it keeps analysis result identical across repeated output.
 If you need to update analysis result, just use `analyze`.
 
 - `func` symbolic name of the function in the parameter space
-- `categorize` show or hide categorization of the parameters of the function by their influence and linearity
+- `categorize` show or hide categorization of the parameters of the function by their influence and linearity. The algorithms distinguishes three categories, for practical convenience: `strong` if the influence adds at least 10% to the range of the function values; `moderate` if the parameter adds from 2% to 10%, otherwise `negligible`.
 - `recommend` show or hide recommended next steps based on categorization of the parameters
 - `opts` generic options of `output` as it is defined in parameter space
 
