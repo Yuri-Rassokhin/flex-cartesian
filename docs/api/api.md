@@ -333,7 +333,7 @@ URL containing description of the method implemented in the analyzer, ex.: "http
 
 #### Morris Analyzer
 
-The ![Morris method](https://en.wikipedia.org/wiki/Morris_method) for global sensitivity analysis determines the influence of each parameter of a given function to the values of this function.
+The [Morris method](https://en.wikipedia.org/wiki/Morris_method) for global sensitivity analysis determines the influence of each parameter of a given function to the values of this function.
 Please note that the Morris method has its limitations.
 Particularly, the method measures non-linearity of a parameter very well - however, it does NOT distinguish between true non-linearity (the parameter itself causes non-linear behaviour of the function) and false non-linearuty (the parameter's influence is entangled with the influence of some other parameter, which looks as an unexpected noise coming from the parameter A).
 Methods for the exploraton of the nature of non-linearity, as well as exploration of the parameter entaglement, are on the roadmap of FlexCartesian.
