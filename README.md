@@ -204,7 +204,7 @@ This project is actively developed. Please [submit](https://github.com/Yuri-Rass
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at [https://github.com/Yuri-Rassokhin/flex-cartesian](https://github.com/Yuri-Rassokhin/flex-cartesian).
+Bug reports and pull requests are welcome on [GitHub](https://github.com/Yuri-Rassokhin/flex-cartesian](https://github.com/Yuri-Rassokhin/flex-cartesian).
 
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
 
