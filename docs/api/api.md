@@ -333,6 +333,11 @@ URL containing description of the method implemented in the analyzer, ex.: "http
 
 #### Morris Analyzer
 
+The ![Morris method](https://en.wikipedia.org/wiki/Morris_method) for global sensitivity analysis determines the influence of each parameter of a given function to the values of this function.
+Please note that the Morris method has its limitations.
+Particularly, the method measures non-linearity of a parameter very well - however, it does NOT distinguish between true non-linearity (the parameter itself causes non-linear behaviour of the function) and false non-linearuty (the parameter's influence is entangled with the influence of some other parameter, which looks as an unexpected noise coming from the parameter A).
+Methods for the exploraton of the nature of non-linearity, as well as exploration of the parameter entaglement, are on the roadmap of FlexCartesian.
+
 Specific options required to create Morris analyzer:
 - `trajectories` number of random trajectories in the parameter space. In the context of FlexCartesian, trajectories do respect space conditions. A trajectory tries its best to find a valid next step according to conditions, and give up trying only if there's no option to make any next step at all. This is not a bug, rather a feature of the modelling approach. Please note that too many conditions in the space may restrict trajectories too aggressively - in such case, Morris may provide impractical or misaligned assessments.
 - `step` width of a step in the trajectory, defaults to 0.1. It must be decimal from (0..1) range, interpreted as a percentage of the number of values in a dimension. Such relativity is critical for the Morris algorithm to treat all dimensions fairly. Otherwise, scarce dimensions would have been investigated disproportionally scarcely.
