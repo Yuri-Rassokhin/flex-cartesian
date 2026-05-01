@@ -56,8 +56,11 @@ FlexCartesian elevates the traditional parameter space analysis paradigm to the 
 Conventional parameter space analysis takes the existence of parameter values and system states for granted, focusing solely on exploring the state (sensitivity, robustness, trade-offs, extrema, heatmaps, etc.). PBB extends this scope further:
 
 **1. Live data gathering.** FlexCartesian fetches data directly from a real system (digital or physical) using defined `behavioural functions`.
+
 **2. Evolving blueprints.** A live linkage to the real system maintains a behavioural blueprint that evolves over time. This is driven by `data sources` feeding the behavioural functions, natively supporting the temporal dimension in the model.
+
 **3. Structured Consistency.** FlexCartesian maintains the data gathered from the real system in a structured, complete order. This is enforced by FlexCartesian's core mathematical model: `parameter space` + `conditions` + `behavioural functions`. These three concepts guarantee that the system's behavior is described correctly for any valid combination of parameters.
+
 **4. Reverse Linkage for Simulation.** FlexCartesian doesn't just use the live linkage to gather data; it allows you to use the blueprint as a substitute for the real system. This unlocks new opportunities in system modeling, testing, and integration. It is particularly useful for air-gapped systems or AI training, where providing real system data is unavailable or prohibitively expensive.
 
 Additionally, FlexCartesian implements PBB via a highly expressive Ruby-based DSL. This allows you to execute powerful concepts in just a single line of code, natively integrating all the flexibility and elegance of Ruby.  
