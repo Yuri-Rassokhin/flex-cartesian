@@ -43,7 +43,7 @@ class Morris < Analyzer
 
     # Iterate over names to consider constant parameters -
     # the ones that has had no effect whatsoever
-    res = @names.map do |factor|
+    res = names.map do |factor|
       ees = effects[factor]
       n = ees.size
 
@@ -170,9 +170,9 @@ class Morris < Analyzer
 
   private
 
-  # Теперь обращаемся к @dimensions напрямую по имени измерения
+  # Теперь обращаемся к dimensions напрямую по имени измерения
   def index_step_for(dimension_name)
-    levels_count = @dimensions[dimension_name].size
+    levels_count = dimensions[dimension_name].size
     return 0 if levels_count <= 1
 
     intervals = levels_count - 1
@@ -194,7 +194,7 @@ class Morris < Analyzer
     return unless from_idx
 
     # Выбираем факторы, по которым возможен хотя бы один шаг
-    active_factors = @names.select { |dim| index_step_for(dim) > 0 }
+    active_factors = names.select { |dim| index_step_for(dim) > 0 }
     factor_order = active_factors.shuffle(random: @rng)
 
     factor_order.each do |factor|
@@ -205,7 +205,7 @@ class Morris < Analyzer
       next if new_dim_value.nil?
 
       # Собираем новый вектор, заменяя значение только для текущего фактора
-      next_values = @names.map do |dim|
+      next_values = names.map do |dim|
         dim == factor ? new_dim_value : current_v.public_send(dim)
       end
       next_v = @struct.new(*next_values)
@@ -213,7 +213,7 @@ class Morris < Analyzer
       to_idx = add_point(next_v)
       next unless to_idx
 
-      intervals = @dimensions[factor].size - 1
+      intervals = dimensions[factor].size - 1
       relative_delta = step_size.to_f / intervals
 
       @edges << Edge.new(
@@ -230,8 +230,8 @@ class Morris < Analyzer
 
   # Формирует сразу готовый начальный вектор, а не индексы
   def random_start_point
-    values = @names.map do |dim|
-      levels = @dimensions[dim]
+    values = names.map do |dim|
+      levels = dimensions[dim]
       step_size = index_step_for(dim)
       max_start = levels.size - 1 - step_size
 

@@ -21,6 +21,10 @@ class Analyzer
     @space.dimensions
   end
 
+  def vector(**opts)
+    @space.vector(**opts)
+  end
+
   def names
     @space.names
   end

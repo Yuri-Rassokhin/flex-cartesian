@@ -4,21 +4,25 @@ module FlexCartesianUtilities
 
   # TODO: .index is O(N), better optimize it using intermediate Hash
   # vector commands
-  def vector(command:, vector: v, dimension: nil, offset: 1)
+  def vector(command:, vector:, dimension: nil, offset: 1)
     case command
     when :index
       unless dimension
-        @names.map { |dim| vector(command, v, dim) }
+        @names.map { |dim| vector(command: command, vector: vector, dimension: dim) }
       else
-        levels = @dimensions[opts[:dimension]]
+        levels = @dimensions[dimension]
         raise "Incorrect dimension name" unless levels
-        levels.index(v.dimension)
+        puts levels.inspect
+        puts vector.inspect
+        puts vector.class
+        puts dimension.inspect
+        levels.index(vector[dimension])
       end
     when :shift
       # vector = vector_to(v, :hash)
       return nil if dimension.nil?
-      index = vector(:index, v, dimension)
-      index ? @dimensions[ops[:dimension]][index + offset] : nil
+      index = vector(command: :index, vector: vector, dimension: dimension)
+      index ? @dimensions[dimension][index + offset] : nil
     else
       raise "Incorrect vector command #{command}"
     end
