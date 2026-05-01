@@ -4,7 +4,7 @@ module FlexCartesianUtilities
 
   # TODO: .index is O(N), better optimize it using intermediate Hash
   # vector commands
-  def vector(command:, vector: v, dimension: nil)
+  def vector(command:, vector: v, dimension: nil, offset: 1)
     case command
     when :index
       unless dimension
@@ -15,28 +15,14 @@ module FlexCartesianUtilities
         levels.index(v.dimension)
       end
     when :shift
-#      TODO
+      # vector = vector_to(v, :hash)
+      return nil if dimension.nil?
+      index = vector(:index, v, dimension)
+      index ? @dimensions[ops[:dimension]][index + offset] : nil
     else
       raise "Incorrect vector command #{command}"
     end
   end
-
-# shifts vector along given dimension by `stride` elements
-# negative stride moves backward, positive stride moves forward
-def vector_shift(v, dimension:, offset: 1)
-  valid?(v)
-
-  vector = vector_to(v, :hash)
-
-#  TODO
-  #  current_dimensional_value = vector[dimension]
-# current_position = vector.keys.index[dimension]
-# new_position = vector.keys[current_position + offset]
-
-# dimensional_values = @names[dimension]
-# current_position = vector_to(v, :hash).keys.index[]
-# new_dimensional_value = @names[dimension
-end
 
 # obtain value of the given function on a given vector from parameter space
 # modes:
