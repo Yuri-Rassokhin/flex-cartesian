@@ -12,10 +12,6 @@ module FlexCartesianUtilities
       else
         levels = @dimensions[dimension]
         raise "Incorrect dimension name" unless levels
-        puts levels.inspect
-        puts vector.inspect
-        puts vector.class
-        puts dimension.inspect
         levels.index(vector[dimension])
       end
     when :shift
