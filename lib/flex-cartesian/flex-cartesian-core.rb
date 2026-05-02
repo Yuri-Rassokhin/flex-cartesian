@@ -1,70 +1,20 @@
 module FlexCartesianCore
 
-  attr_reader :function_results, :derived, :names, :dimensiality, :dimensions, :struct, :levels, :index_show, :log
+attr_reader :function_results, :derived, :names, :dimensiality, :dimensions, :struct, :levels, :index_show, :log
 
 def index_show
   @index
 end
 
 def initialize(dims = nil, path: nil, format: :json, logger: nil, log_level: Logger::WARN, source: nil, uri: nil, dimensions: nil, separator: ',')
-    @logger = logger || Logger.new($stdout)
-    @logger.level = log_level
+  init_logger(logger: logger, log_level: log_level)
 
-    @logger.formatter = proc do |severity, _datetime, _progname, msg|
-      "#{severity}: #{msg}\n"
-    end
+  init_dimensions(dims, path: path, format: format, source: source, uri: uri, dimensions: dimensions, separator: separator)
 
-    # internal structure that allows us to quickly check if we're adding new or existing dimensional value
-    # such hash is O(1) to the contrast with straightforward .include? which is O(n) and VERY slow on huge tables
-    @dimensions_hash = Hash.new { |h, k| h[k] = {} }
-
-    # get hash of dimensions: name => array of dimensional values
-    if dims && path
-      raise "Cannot specify both dimensions and path to dimensions"
-    elsif dims
-      @dimensions = dims
-    elsif path
-      import(path, format: format)
-    else
-      # finally, we read entire space from URI
-      raise "Missing data source type" if source.empty?
-      raise "Missing data URI" if uri.empty?
-      raise "Missing data dimensions" if dimensions.empty?
-      index(source: source, uri: uri, dimensions: dimensions, separator: separator)
-    end
-
-    @dimensions = normalize_dimensions(@dimensions)
-    # array of arrays of dimension values (not a Cartesian product yet)
-    @levels = dimension_values(@dimensions)
-    # total size of Cartesian space (number of vectors, that is, ALL combinations, ignoring conditions)
-    @raw_size = @levels.map(&:size).inject(:*)
-    # array of dimension names
-    @names = @dimensions.keys
-    # internal structure: for each dimension, minimal textual width that fits all values in this dimension - required for table output
-    @dimension_widths = @names.zip(dimension_widths).to_h
-    @default_width = 10
-
-    # define class for a vector represented as Struct, to be able to access its elements using `.<dimension_name>`
-    # NOTE: this class must be unique - otherwise, Struct objects as Hash keys won't coincide for different Struct classes
-    # even if fields of such structs are identical
-    @struct = Struct.new(*@names).tap { |sc| sc.include(FlexOutput) }
-
-    # number of dimensions of parameter space
-    @dimensiality = @names.size
-
-    # array of conditions for valid vectors in parameter space
-    @conditions = []
-
-    # functions in parameter space
-    @derived = {}
-    # ordering of the functions
-    @order = { first: nil, last: nil }
-
-    # Hash: instance of @struct vector => { fname => value }
-    @function_results = {}
-
-    @function_hidden = Set.new
-  end
+  update_dimensional_structures
+  update_conditional_structures
+  update_functional_structures
+end
 
   def cond(command = :print, index: nil, &block)
     case command
@@ -301,9 +251,90 @@ end
     end
   end
 
+def dim(command, dims)
+  case command
+  when :add
+    raise "Incorrect description of the dimensions #{dims.inspect}, must be Hash" unless dims.is_a?(Hash)
+    @dimensions.update(dims)
+    update_dimensional_structures
+#  when :del
+    # TODO
+    #dims.each { |dim| del_dimension(dim) }
+  else
+    raise "Incorrect dimension command: #{command}"
+  end
+end
+
 
 
 private
+
+def init_logger(logger:, log_level:)
+  @logger = logger || Logger.new($stdout)
+  @logger.level = log_level
+
+  @logger.formatter = proc do |severity, _datetime, _progname, msg|
+    "#{severity}: #{msg}\n"
+  end
+end
+
+def init_dimensions(dims, path:, format:, source:, uri:, dimensions:, separator:)
+  # get hash of dimensions: name => array of dimensional values
+  if dims && path
+    raise "Cannot specify both dimensions and path to dimensions"
+  elsif dims
+    @dimensions = dims
+  elsif path
+    import(path, format: format)
+  else
+    # finally, we read entire space from URI
+    raise "Missing data source type" if source.empty?
+    raise "Missing data URI" if uri.empty?
+    raise "Missing data dimensions" if dimensions.empty?
+    index(source: source, uri: uri, dimensions: dimensions, separator: separator)
+  end
+end
+
+def update_dimensional_structures
+  @dimensions = normalize_dimensions(@dimensions)
+
+  # internal structure that allows us to quickly check if we're adding new or existing dimensional value
+  # such hash is O(1) to the contrast with straightforward .include? which is O(n) and VERY slow on huge tables
+  @dimensions_hash = Hash.new { |h, k| h[k] = {} }
+
+  # array of arrays of dimension values (not a Cartesian product yet)
+  @levels = dimension_values(@dimensions)
+  # total size of Cartesian space (number of vectors, that is, ALL combinations, ignoring conditions)
+  @raw_size = @levels.map(&:size).inject(:*)
+  # array of dimension names
+  @names = @dimensions.keys
+  # internal structure: for each dimension, minimal textual width that fits all values in this dimension - required for table output
+  @dimension_widths = @names.zip(dimension_widths).to_h
+  @default_width = 10
+
+  # define class for a vector represented as Struct, to be able to access its elements using `.<dimension_name>`
+  # NOTE: this class must be unique - otherwise, Struct objects as Hash keys won't coincide for different Struct classes
+  # even if fields of such structs are identical
+  @struct = Struct.new(*@names).tap { |sc| sc.include(FlexOutput) }
+  
+  # number of dimensions of parameter space
+  @dimensiality = @names.size
+end
+
+def update_conditional_structures
+  # array of conditions for valid vectors in parameter space
+  @conditions = []
+end
+
+def update_functional_structures
+  # functions in parameter space
+  @derived = {}
+  # ordering of the functions
+  @order = { first: nil, last: nil }
+  # Hash: instance of @struct vector => { fname => value }
+  @function_results = {}
+  @function_hidden = Set.new
+end
 
 # create tabular widths for basic dimensions (that is, excluding functions)
 def dimension_widths
@@ -432,6 +463,11 @@ end
     raise "Incorrect vector dimensions #{v.keys.inspect}" unless @names.to_set == vector_to_hash!(v).keys.to_set
     true
   end
+
+def add_dimension(dim)
+  raise "Incorrect description of the dimension #{dim.inspect}, Hash required" unless dim.is_a(Hash)
+  @dimensions << dim
+end
 
 end
 
