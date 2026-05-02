@@ -251,15 +251,20 @@ end
     end
   end
 
-def dim(command, dims)
+def dim(command, *dims)
   case command
   when :add
-    raise "Incorrect description of the dimensions #{dims.inspect}, must be Hash" unless dims.is_a?(Hash)
-    @dimensions.update(dims)
+    dims.each do |d|
+      raise ArgumentError, "Incorrect description of the dimensions #{dims.inspect}, must be Hash" unless d.is_a?(Hash)
+      @dimensions.update(d)
+    end
     update_dimensional_structures
-#  when :del
-    # TODO
-    #dims.each { |dim| del_dimension(dim) }
+  when :del
+    dims.each do |dim|
+      raise ArgumentError, "Incorrect dimension name #{dim.inspect}, must be Symbol" unless dim.is_a?(Symbol)
+      @dimensions.delete(dim)
+    end
+    update_dimensional_structures
   else
     raise "Incorrect dimension command: #{command}"
   end

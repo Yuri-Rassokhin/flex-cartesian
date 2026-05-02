@@ -15,6 +15,10 @@ s.output
 dims = { dim4: [3, 4], dim5: ['a', 'b'] }
 s.dim(:add, dims)
 
-puts "\nSpace updated:"
+puts "\nTwo dimensions added to the space:"
 s.output
 
+s.dim(:del, :dim4)
+
+puts "\nOne dimension removed from the space:"
+s.output
