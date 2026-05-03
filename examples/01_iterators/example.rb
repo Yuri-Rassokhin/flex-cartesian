@@ -33,6 +33,6 @@ s.output(format: :markdown, colorize: true)
 # Show progress bar while iterating, useful for large parameter spaces
 s.cartesian(progress: true, title: "Testing"){ |v| do_something(v) }
 
-# Iterate in lazy moode without materializing entire Cartesian product in memory, useful for large parameter spaces
+# Iterate in lazy mode without materializing entire Cartesian product in memory, useful for large parameter spaces
 s.cartesian(lazy: true).take(2).each { |v| puts v.to_a.inspect }
 

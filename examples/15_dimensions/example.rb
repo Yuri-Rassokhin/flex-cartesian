@@ -12,8 +12,7 @@ puts "\nSpace created:"
 s.output
 
 # dynamically add new dimensions
-dims = { dim4: [3, 4], dim5: ['a', 'b'] }
-s.dim(:add, dims)
+s.dim(:add, { dim4: [3, 4], dim5: ['a', 'b'] })
 
 puts "\nTwo dimensions added to the space:"
 s.output

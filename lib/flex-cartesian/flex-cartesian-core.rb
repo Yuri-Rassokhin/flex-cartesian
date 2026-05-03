@@ -36,7 +36,7 @@ end
     end
   end
 
-def func(command = :print, *names, hide: false, progress: false, title: "Computing function(s)", order: nil, &block)
+def func(command = :print, *names, hide: false, progress: false, title: "Computing function(s)", order: nil, mode: :lazy, &block)
   case command
 
   when :add
