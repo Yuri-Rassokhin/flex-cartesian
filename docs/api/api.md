@@ -44,7 +44,7 @@ Parameter space is a space formed as multi-dimensional Cartesian product of the 
 Let's suppose we analyze the response `latency` of an object recognition model running on CPU, and want to capture its dependence on two parameters - number of `processes` from 1 to 100, and number of concurrent `requests` from 1 to 100.
 These parameters form the parameter space that looks like a square, and the `latency` later will be a function in a column above this square:
 
-![Parameter Space](docs/api/parameter_space.png)
+![Parameter Space](parameter_space.png)
 
 
 
