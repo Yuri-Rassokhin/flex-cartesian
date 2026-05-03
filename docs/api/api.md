@@ -45,7 +45,9 @@ Let's suppose we analyze the response `latency` of an object recognition model r
 These parameters form the parameter space that looks like a square, and the `latency` later will be a function in a column above this square:
 
 <p align="center">
-![Parameter Space](parameter_space.png)
+<img src="parameter_space.png" alt="Parameter Space" />
+  <br>
+  <em>Parameters `requsests` and `processes` form parameter space</em>
 </p>
 
 ```ruby
