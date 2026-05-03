@@ -47,7 +47,7 @@ These parameters form the parameter space that looks like a square, and the `lat
 <p align="center">
 <img src="parameter_space.png" alt="Parameter Space" />
   <br>
-  <em>Parameters `requsests` and `processes` form parameter space</em>
+  <em>Parameters `requsests` and `processes` form square parameter space</em>
 </p>
 
 ```ruby
