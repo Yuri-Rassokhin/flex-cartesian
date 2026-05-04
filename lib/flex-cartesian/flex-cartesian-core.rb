@@ -337,17 +337,17 @@ end
 
 def update_conditional_structures
   # array of conditions for valid vectors in parameter space
-  @conditions = []
+  @conditions ||= []
 end
 
 def update_functional_structures
   # functions in parameter space
-  @derived = {}
+  @derived ||= {}
   # ordering of the functions
-  @order = { first: nil, last: nil }
+  @order ||= { first: nil, last: nil }
   # Hash: instance of @struct vector => { fname => value }
-  @function_results = {}
-  @function_hidden = Set.new
+  @function_results ||= {}
+  @function_hidden ||= Set.new
 end
 
 # create tabular widths for basic dimensions (that is, excluding functions)
@@ -367,7 +367,12 @@ def ensure_dimension_width(name, value = nil)
 
   if value == nil # adding new dynamic dimension with default width, if not added before
     @dimension_widths[name] = @default_width unless @dimension_widths[name]
-  elsif value.to_s.size > @dimension_widths[name] # adding new value of a dynamic dimension
+    else
+      puts "1: #{value.to_s.size}"
+      puts "2: #{@dimension_widths[name]}"
+      puts "3: #{name}"
+      puts @dimension_widths.inspect
+      value.to_s.size > @dimension_widths[name] # adding new value of a dynamic dimension
     @dimension_widths[name] = value.to_s.size
   end
 end
