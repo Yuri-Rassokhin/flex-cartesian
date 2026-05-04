@@ -11,9 +11,7 @@ def initialize(dims = nil, path: nil, format: :json, logger: nil, log_level: Log
 
   init_dimensions(dims, path: path, format: format, source: source, uri: uri, dimensions: dimensions, separator: separator)
 
-  update_dimensional_structures
-  update_conditional_structures
-  update_functional_structures
+  update_space_structures
 end
 
   def cond(command = :print, index: nil, &block)
@@ -267,13 +265,13 @@ def dim(command, *dims)
       raise ArgumentError, "Incorrect description of the dimensions #{dims.inspect}, must be Hash" unless d.is_a?(Hash)
       @dimensions.update(d)
     end
-    update_dimensional_structures
+    update_space_structures
   when :del
     dims.each do |dim|
       raise ArgumentError, "Incorrect dimension name #{dim.inspect}, must be Symbol" unless dim.is_a?(Symbol)
       @dimensions.delete(dim)
     end
-    update_dimensional_structures
+    update_space_structures
   else
     raise "Incorrect dimension command: #{command}"
   end
@@ -282,6 +280,16 @@ end
 
 
 private
+
+def update_space_structures
+  puts "1" + @dimension_widths.inspect
+  update_dimensional_structures
+  puts "2" + @dimension_widths.inspect
+  update_conditional_structures
+  puts "3" + @dimension_widths.inspect
+  update_functional_structures
+  puts "4" + @dimension_widths.inspect
+end 
 
 def init_logger(logger:, log_level:)
   @logger = logger || Logger.new($stdout)
@@ -314,7 +322,7 @@ def update_dimensional_structures
 
   # internal structure that allows us to quickly check if we're adding new or existing dimensional value
   # such hash is O(1) to the contrast with straightforward .include? which is O(n) and VERY slow on huge tables
-  @dimensions_hash = Hash.new { |h, k| h[k] = {} }
+  @dimensions_hash ||= Hash.new { |h, k| h[k] = {} }
 
   # array of arrays of dimension values (not a Cartesian product yet)
   @levels = dimension_values(@dimensions)
@@ -368,10 +376,6 @@ def ensure_dimension_width(name, value = nil)
   if value == nil # adding new dynamic dimension with default width, if not added before
     @dimension_widths[name] = @default_width unless @dimension_widths[name]
     else
-      puts "1: #{value.to_s.size}"
-      puts "2: #{@dimension_widths[name]}"
-      puts "3: #{name}"
-      puts @dimension_widths.inspect
       value.to_s.size > @dimension_widths[name] # adding new value of a dynamic dimension
     @dimension_widths[name] = value.to_s.size
   end
