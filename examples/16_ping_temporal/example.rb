@@ -23,4 +23,6 @@ s.dim(:add, { timeline: [*1..4] } )
 s.func(:add, :blueprint_timestamp, order: :first) { |v| time ||= Time.now.strftime("%H:%M:%S - %d-%m-%Y"); time }
 
 counter = 1
-s.func(:run)
+s.func(:run, mode: :enforce)
+
+s.output

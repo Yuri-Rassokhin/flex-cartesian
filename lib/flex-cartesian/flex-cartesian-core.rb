@@ -282,13 +282,9 @@ end
 private
 
 def update_space_structures
-  puts "1" + @dimension_widths.inspect
   update_dimensional_structures
-  puts "2" + @dimension_widths.inspect
   update_conditional_structures
-  puts "3" + @dimension_widths.inspect
   update_functional_structures
-  puts "4" + @dimension_widths.inspect
 end 
 
 def init_logger(logger:, log_level:)
@@ -330,9 +326,17 @@ def update_dimensional_structures
   @raw_size = @levels.map(&:size).inject(:*)
   # array of dimension names
   @names = @dimensions.keys
-  puts "DEBUG: #{@names}"
+  puts "DEBUG-0: #{@dimension_widths.inspect}"
   # internal structure: for each dimension, minimal textual width that fits all values in this dimension - required for table output
-  @dimension_widths = @names.zip(dimension_widths).to_h
+  # the width is determined for each actual dimension and for each function
+  if @dimension_widths.nil?
+    @dimension_widths = @names.zip(dimension_widths).to_h
+  else
+    @dimension_widths.update(@names.zip(dimension_widths).to_h)
+  end
+  # however, we must remove widths of removed dimensions or functions
+#  @dimension_widths.keep_if { |k,_| @dimensions.key?(k) || @derived.key?(k) }
+  puts "DEBUG-0: #{@dimension_widths.inspect}"
   @default_width = 10
 
   # define class for a vector represented as Struct, to be able to access its elements using `.<dimension_name>`
@@ -350,6 +354,7 @@ def update_conditional_structures
 end
 
 def update_functional_structures
+  puts "DEBUG-2: #{@dimension_widths.inspect}"
   # functions in parameter space
   @derived ||= {}
   # ordering of the functions
@@ -357,6 +362,7 @@ def update_functional_structures
   # Hash: instance of @struct vector => { fname => value }
   @function_results ||= {}
   @function_hidden ||= Set.new
+  puts "DEBUG-2: #{@dimension_widths.inspect}"
 end
 
 # create tabular widths for basic dimensions (that is, excluding functions)
