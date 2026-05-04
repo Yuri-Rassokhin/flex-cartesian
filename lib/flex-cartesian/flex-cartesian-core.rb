@@ -91,7 +91,16 @@ def func(command = :print, *names, hide: false, progress: false, title: "Computi
     cartesian(progress: progress, title: title) do |v|
       @function_results[v] ||= {}
       functions_found.each do |fname, block|
-        value = block.call(v)
+        case mode
+        when :enforce
+          value = block.call(v)
+        when :reuse
+          value
+        when :lazy
+          value.nil? ? value = block.call(v) : value
+        else
+          raise ArgumentError, "Incorrect computing mode: #{mode.inspect}"
+        end
         @function_results[v][fname] = value
         ensure_dimension_width(fname, value)
       end
