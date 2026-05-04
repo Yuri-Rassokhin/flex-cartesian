@@ -330,6 +330,7 @@ def update_dimensional_structures
   @raw_size = @levels.map(&:size).inject(:*)
   # array of dimension names
   @names = @dimensions.keys
+  puts "DEBUG: #{@names}"
   # internal structure: for each dimension, minimal textual width that fits all values in this dimension - required for table output
   @dimension_widths = @names.zip(dimension_widths).to_h
   @default_width = 10
