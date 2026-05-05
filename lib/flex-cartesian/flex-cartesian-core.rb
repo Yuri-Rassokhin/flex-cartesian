@@ -84,25 +84,8 @@ def func(command = :print, *names, hide: false, progress: false, title: "Computi
     raise "No function(s) defined: #{functions_missing.join(', ')}" unless functions_missing.empty?
 
     functions_found = names.empty? ? @derived : @derived.slice(*names)
-    @function_results = {}
-
-    cartesian(progress: progress, title: title) do |v|
-      @function_results[v] ||= {}
-      functions_found.each do |fname, block|
-        case mode
-        when :enforce
-          value = block.call(v)
-        when :reuse
-          value
-        when :lazy
-          value.nil? ? value = block.call(v) : value
-        else
-          raise ArgumentError, "Incorrect computing mode: #{mode.inspect}"
-        end
-        @function_results[v][fname] = value
-        ensure_dimension_width(fname, value)
-      end
-    end
+    # @function_results ||= {} # probably exccessive
+    cartesian(progress: progress, title: title) { |v| functions_update_value(vector: v, functions: functions_found, mode: mode) }
   else
     raise ArgumentError, "Unknown command for function: #{command.inspect}"
   end
@@ -280,6 +263,36 @@ end
 
 
 private
+
+# For a given subset of space functions, update their values in a given vector
+def functions_update_value(vector: , functions: , mode: )
+  @function_results[vector] ||= {}
+
+  functions.each do |fname, block|
+    @function_results[vector] ||= {}
+    results = @function_results[vector]
+
+    case mode
+    when :enforce
+      results[fname] = block.call(vector)
+
+    when :reuse
+      unless results.key?(fname)
+        raise ArgumentError, "Compute mode #{mode} requires function #{fname} to have value in #{vector.inspect}"
+      end
+
+    when :lazy
+      unless results.key?(fname)
+        results[fname] = block.call(vector)
+      end
+
+    else
+      raise ArgumentError, "Incorrect computing mode #{mode.inspect}"
+    end
+
+    ensure_dimension_width(fname, results[fname])
+  end
+end
 
 def update_space_structures
   update_dimensional_structures

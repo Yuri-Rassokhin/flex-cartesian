@@ -27,4 +27,5 @@ counter = 1
 s.func(:run)
 
 s.output
-s.cartesian { |v| puts v.inspect }
+s.cartesian { |v| puts "#{v.inspect} ==> #{s.function(v, :time)}" }
+
