@@ -60,7 +60,7 @@ def cartesian_output(separator: "|", colorize: true, format: :plain, limit: nil,
 
   # print rows
   cartesian do |vector|
-    values = vector.members.map { |m| vector.send(m) } + visible_func_names.map { |f| @function_results&.dig(vector, f) }
+    values = vector.members.map { |m| vector.send(m) } + visible_func_names.map { |f| @function_results&.dig(vector_to(vector, :hash), f) }
     line = headers.zip(values).map.with_index { |(dim, val), i| fmt_cell(val, file: file, colorize: colorize, width: widths[i]) }.join(sep)
     case format
     when :plain

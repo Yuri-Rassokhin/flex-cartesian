@@ -143,7 +143,7 @@ def fit?(v)
 end
 
 def function(vector, function, substitute: 0)
-  unless (@function_results[vector] and @function_results[vector][function])
+  unless @function_results.key?(vector) and @function_results[vector].key?(function)
     return substitute
   end
   @function_results[vector][function]
@@ -264,13 +264,41 @@ end
 
 private
 
+# if dimensions were changed, update hash of function results, accordingly
+def function_results_immerse
+  return if @function_results.empty?
+
+  # check if dimensions were added or removed
+  change = @function_results.first.key.size - @dimensiality
+
+  return if change == 0
+  
+  if change > 0
+    # dimensions were removed
+    # TODO
+  else
+    # dimensions were added
+    # as hash elements are added in order, to the end of hash, we take the `change` of last elements in @dimensiality
+    # and - by agreement - we take the first dimensional values for each added dimension
+    new_dimensions = @names - @function_results.first.key
+    # this is a hash of added dimensions with only first dimensional value for each dimension
+    new_first_values = @dimensions.slice(*new_dimensions).transform_values!(&:first)
+
+    # Immerse existing vectors to higher-dimensiality space by adding new dimensions with their first values
+    # Note: this implies that existing functions will be defined in the immerse sub-space, and nil in the rest of the new space
+    @function_results.transform_keys! { |vector| vector.merge(new_first_values) }
+  end
+end
+
 # For a given subset of space functions, update their values in a given vector
 def functions_update_value(vector: , functions: , mode: )
-  @function_results[vector] ||= {}
+  v = vector_to(vector, :hash)
+  puts "Vector: #{v.inspect}"
+  @function_results[v] ||= {}
 
   functions.each do |fname, block|
-    @function_results[vector] ||= {}
-    results = @function_results[vector]
+    @function_results[v] ||= {}
+    results = @function_results[v]
 
     case mode
     when :enforce
@@ -278,7 +306,7 @@ def functions_update_value(vector: , functions: , mode: )
 
     when :reuse
       unless results.key?(fname)
-        raise ArgumentError, "Compute mode #{mode} requires function #{fname} to have value in #{vector.inspect}"
+        raise ArgumentError, "Compute mode #{mode} requires function #{fname} to have value in #{vector_to(vector, :array).inspect}"
       end
 
     when :lazy
@@ -374,6 +402,7 @@ def update_functional_structures
   @order ||= { first: nil, last: nil }
   # Hash: instance of @struct vector => { fname => value }
   @function_results ||= {}
+  function_results_immerse
   @function_hidden ||= Set.new
   puts "DEBUG-2: #{@dimension_widths.inspect}"
 end
