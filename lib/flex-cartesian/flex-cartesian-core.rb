@@ -269,21 +269,25 @@ def function_results_immerse
   return if @function_results.empty?
 
   # check if dimensions were added or removed
-  change = @function_results.first.key.size - @dimensiality
+  puts "HERE: #{@function_results.first.first.inspect}"
+  change = @function_results.first.first.size - @dimensiality
 
   return if change == 0
   
   if change > 0
     # dimensions were removed
-    # TODO
+    removed_dimensions = @function_results.first.first.keys - @names
+    # NOTE: When we reduce dimensiality, then vectors as keys of function_results cease to be unique!
+    # NOTE: As a new-unique vector key appear, Ruby just silently rewrite the same hash entry
+    # NOTE: Having said this, only the _last_ function value will survive!
+    @function_results.transform_keys! { |vector| vector.except!(*removed_dimensions) }
   else
     # dimensions were added
     # as hash elements are added in order, to the end of hash, we take the `change` of last elements in @dimensiality
     # and - by agreement - we take the first dimensional values for each added dimension
-    new_dimensions = @names - @function_results.first.key
+    new_dimensions = @names - @function_results.first.first.keys
     # this is a hash of added dimensions with only first dimensional value for each dimension
     new_first_values = @dimensions.slice(*new_dimensions).transform_values!(&:first)
-
     # Immerse existing vectors to higher-dimensiality space by adding new dimensions with their first values
     # Note: this implies that existing functions will be defined in the immerse sub-space, and nil in the rest of the new space
     @function_results.transform_keys! { |vector| vector.merge(new_first_values) }
