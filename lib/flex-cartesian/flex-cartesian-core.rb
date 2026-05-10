@@ -264,6 +264,62 @@ end
 
 private
 
+# For a given array of dimension names, return those that are used in `block` as fields of its iterator
+# This method provides a correctness check in the case we're removing dimensions
+# It allows to determine the functions broken by the dimension removal
+# NOTE: this check will miss any dependencies if executed from IRB
+
+def func_check_dimension_deps(dimension_names)
+  @derived.each { |func, body| f_check_dimension_deps(body, dimension_names) }
+end
+
+def f_check_dimension_deps(block, dimension_names)
+  require 'ast'
+
+  # Get AST of the function body
+  ast = RubyVM::AbstractSyntaxTree.of(block)
+  return [] unless ast
+
+  # Get the name of iterator based on parameters of the block
+  # block.parameters returns something like [[:opt, :v]] or [[:req, :vector]]
+  # We simply take the first argument
+  iterator_var_name = block.parameters.first&.last 
+  return [] unless iterator_var_name
+
+  found_dimensions = []
+
+  # Traverse the AST recursively
+  search = ->(node) do
+    return unless node.is_a?(RubyVM::AbstractSyntaxTree::Node)
+
+    # We are interested in :call only
+    if node.type == :CALL
+      receiver = node.children[0]     # Object called
+      method_name = node.children[1]  # What method is called , such as :size
+
+      # Main criteria:
+      # - Object of the call exists
+      # - It is a local variable :LVAR
+      # - Its name is identical to the iterator's name, such as :v
+      is_iterator_receiver = receiver && 
+                             receiver.is_a?(RubyVM::AbstractSyntaxTree::Node) && 
+                             receiver.type == :LVAR && 
+                             receiver.children[0] == iterator_var_name
+
+      if is_iterator_receiver && dimension_names.include?(method_name)
+        found_dimensions << method_name
+      end
+    end
+
+    # Recursively traverse nested nodes
+    node.children.each { |child| search.call(child) }
+  end
+
+  # Search and return unique findings
+  search.call(ast)
+  found_dimensions.uniq
+end
+
 # if dimensions were changed, update hash of function results, accordingly
 def function_results_immerse
   return if @function_results.empty?
@@ -277,6 +333,7 @@ def function_results_immerse
   if change > 0
     # dimensions were removed
     removed_dimensions = @function_results.first.first.keys - @names
+    func_check_dimension_deps(removed_dimensions)
     # NOTE: When we reduce dimensiality, then vectors as keys of function_results cease to be unique!
     # NOTE: As a new-unique vector key appear, Ruby just silently rewrite the same hash entry
     # NOTE: Having said this, only the _last_ function value will survive!

@@ -19,6 +19,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "method_source", "~> 1.0"
   spec.add_dependency "csv"
   spec.add_dependency "roo"
+  spec.add_dependency "ast"
 
   spec.required_ruby_version = '>= 3.0'
 
