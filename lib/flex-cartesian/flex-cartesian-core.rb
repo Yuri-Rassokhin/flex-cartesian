@@ -270,10 +270,13 @@ private
 # NOTE: this check will miss any dependencies if executed from IRB
 
 def func_check_dimension_deps(dimension_names)
-  @derived.each { |func, body| f_check_dimension_deps(body, dimension_names) }
+  @derived.each do |func, body|
+    deps = f_dimension_deps(body, dimension_names)
+    @logger.error "Function `#{func}` depends on removed dimension(s): #{deps.join(', ')}" unless deps.empty?
+  end
 end
 
-def f_check_dimension_deps(block, dimension_names)
+def f_dimension_deps(block, dimension_names)
   require 'ast'
 
   # Get AST of the function body
@@ -303,7 +306,7 @@ def f_check_dimension_deps(block, dimension_names)
       # - Its name is identical to the iterator's name, such as :v
       is_iterator_receiver = receiver && 
                              receiver.is_a?(RubyVM::AbstractSyntaxTree::Node) && 
-                             receiver.type == :LVAR && 
+                             [:LVAR, :DVAR].include?(receiver.type) && 
                              receiver.children[0] == iterator_var_name
 
       if is_iterator_receiver && dimension_names.include?(method_name)
@@ -317,6 +320,7 @@ def f_check_dimension_deps(block, dimension_names)
 
   # Search and return unique findings
   search.call(ast)
+
   found_dimensions.uniq
 end
 
@@ -325,7 +329,6 @@ def function_results_immerse
   return if @function_results.empty?
 
   # check if dimensions were added or removed
-  puts "HERE: #{@function_results.first.first.inspect}"
   change = @function_results.first.first.size - @dimensiality
 
   return if change == 0
@@ -337,7 +340,7 @@ def function_results_immerse
     # NOTE: When we reduce dimensiality, then vectors as keys of function_results cease to be unique!
     # NOTE: As a new-unique vector key appear, Ruby just silently rewrite the same hash entry
     # NOTE: Having said this, only the _last_ function value will survive!
-    @function_results.transform_keys! { |vector| vector.except!(*removed_dimensions) }
+    @function_results.transform_keys! { |vector| vector.except(*removed_dimensions) }
   else
     # dimensions were added
     # as hash elements are added in order, to the end of hash, we take the `change` of last elements in @dimensiality
@@ -354,7 +357,6 @@ end
 # For a given subset of space functions, update their values in a given vector
 def functions_update_value(vector: , functions: , mode: )
   v = vector_to(vector, :hash)
-  puts "Vector: #{v.inspect}"
   @function_results[v] ||= {}
 
   functions.each do |fname, block|
@@ -396,6 +398,13 @@ def init_logger(logger:, log_level:)
   @logger.formatter = proc do |severity, _datetime, _progname, msg|
     "#{severity}: #{msg}\n"
   end
+
+  # make this logger instance kill the program if severity is error or worse
+  def @logger.add(severity, message = nil, progname = nil, &block)
+    super
+    raise SystemExit.new(1, message || progname) if severity >= Logger::ERROR
+  end
+
 end
 
 def init_dimensions(dims, path:, format:, source:, uri:, dimensions:, separator:)
@@ -428,7 +437,6 @@ def update_dimensional_structures
   @raw_size = @levels.map(&:size).inject(:*)
   # array of dimension names
   @names = @dimensions.keys
-  puts "DEBUG-0: #{@dimension_widths.inspect}"
   # internal structure: for each dimension, minimal textual width that fits all values in this dimension - required for table output
   # the width is determined for each actual dimension and for each function
   if @dimension_widths.nil?
@@ -438,7 +446,6 @@ def update_dimensional_structures
   end
   # however, we must remove widths of removed dimensions or functions
 #  @dimension_widths.keep_if { |k,_| @dimensions.key?(k) || @derived.key?(k) }
-  puts "DEBUG-0: #{@dimension_widths.inspect}"
   @default_width = 10
 
   # define class for a vector represented as Struct, to be able to access its elements using `.<dimension_name>`
@@ -456,7 +463,6 @@ def update_conditional_structures
 end
 
 def update_functional_structures
-  puts "DEBUG-2: #{@dimension_widths.inspect}"
   # functions in parameter space
   @derived ||= {}
   # ordering of the functions
@@ -465,7 +471,6 @@ def update_functional_structures
   @function_results ||= {}
   function_results_immerse
   @function_hidden ||= Set.new
-  puts "DEBUG-2: #{@dimension_widths.inspect}"
 end
 
 # create tabular widths for basic dimensions (that is, excluding functions)
