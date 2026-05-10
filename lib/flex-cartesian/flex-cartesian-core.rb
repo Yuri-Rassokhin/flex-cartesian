@@ -269,14 +269,21 @@ private
 # It allows to determine the functions broken by the dimension removal
 # NOTE: this check will miss any dependencies if executed from IRB
 
-def func_check_dimension_deps(dimension_names)
+def check_dimension_deps(dimension_names)
   @derived.each do |func, body|
-    deps = f_dimension_deps(body, dimension_names)
+    deps = dimension_deps(body, dimension_names)
     @logger.error "Function `#{func}` depends on removed dimension(s): #{deps.join(', ')}" unless deps.empty?
+  end
+
+  @conditions.each_with_index do |body, index|
+    deps = dimension_deps(body, dimension_names)
+    @logger.error "Condition ##{index} depends on removed dimension(s): #{deps.join(', ')}" unless deps.empty?
   end
 end
 
-def f_dimension_deps(block, dimension_names)
+
+
+def dimension_deps(block, dimension_names)
   require 'ast'
 
   # Get AST of the function body
@@ -336,7 +343,7 @@ def function_results_immerse
   if change > 0
     # dimensions were removed
     removed_dimensions = @function_results.first.first.keys - @names
-    func_check_dimension_deps(removed_dimensions)
+    check_dimension_deps(removed_dimensions)
     # NOTE: When we reduce dimensiality, then vectors as keys of function_results cease to be unique!
     # NOTE: As a new-unique vector key appear, Ruby just silently rewrite the same hash entry
     # NOTE: Having said this, only the _last_ function value will survive!
