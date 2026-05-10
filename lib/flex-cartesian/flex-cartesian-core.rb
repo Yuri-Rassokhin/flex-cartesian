@@ -217,13 +217,13 @@ def index(source:, uri:, dimensions:, separator: ',')
 end
 
 # TODO: Dimensions can be omitted - in this case, automatically fetch all dimensions from CSV header
-def data(command, vector: nil, target: nil )
+def source(command, vector: nil, target: nil )
   case command
-    when :get
+    when :read
       return nil if (vector.size == 0 or target.nil?)
       lookup(vector, target)
     else
-      raise "Unknown data command #{command}"
+      @logger.error "Unknown data command `#{command}`"
   end
 end
 

@@ -24,7 +24,7 @@ timestamp = {}
 # For convenience, we'll add a unique timestamp to each point at the timeline
 s.func(:add, :timestamp, order: :first) { |v| timestamp[v.iteration] ||= Time.now.strftime("%H:%M:%S-%d:%m:%Y") }
 
-s.dim(:del, :count)
+#s.dim(:del, :count)
 
 counter = 1
 s.func(:run)
