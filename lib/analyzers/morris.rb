@@ -27,8 +27,8 @@ class Morris < Analyzer
       to_v   = @points[edge.to_idx]
 
       # Используем уже готовый хэш results из родительского контекста
-      from_res = results[from_v]
-      to_res   = results[to_v]
+      from_res = results[from_v.to_h]
+      to_res   = results[to_v.to_h]
 
       next unless from_res && to_res
 

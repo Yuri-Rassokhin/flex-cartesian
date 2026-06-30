@@ -143,11 +143,21 @@ def fit?(v)
 end
 
 def function(vector, function, substitute: 0)
-  unless @function_results.key?(vector) and @function_results[vector].key?(function)
+  v_hash = vector_to(vector, :hash)
+  
+  unless @function_results.key?(v_hash) and @function_results[v_hash].key?(function)
     return substitute
   end
-  @function_results[vector][function]
+  
+  @function_results[v_hash][function]
 end
+
+#def function(vector, function, substitute: 0)
+#  unless @function_results.key?(vector) and @function_results[vector].key?(function)
+#    return substitute
+#  end
+#  @function_results[vector][function]
+#end
 
 # reads from target column using data source created by `data` method
 def lookup(vector, target)
