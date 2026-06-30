@@ -3,9 +3,9 @@ require_relative 'models'
 
 space = FlexCartesian.new(source: :csv, separator: ';', uri: "./examples/14_storing_space/chatgpt.csv", dimensions: [:tokens, :temperature] )
 
-anchor = embed(space.data(:get, vector: { tokens: "20", temperature: "0.0" }, target: "response"))
+anchor = embed(space.source(:read, vector: { tokens: "20", temperature: "0.0" }, target: "response"))
 
-space.func(:add, :response) { |v| space.data(:get, vector: v, target: "response") }
+space.func(:add, :response) { |v| space.source(:read, vector: v, target: "response") }
 space.func(:add, :embedding, hide: true) { |v| embed(v.response) }
 space.func(:add, :semantic_shift) { |v| (1.0 - cosine(v.embedding, anchor)).round(2) }
 

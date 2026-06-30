@@ -28,8 +28,8 @@ module FlexCartesianUtilities
 # modes:
 # :enforce - recompute function value
 # :reuse - fetch previously computed value or drop error if there isn't one
-# :increment - recompute if there's no precomputed value or reuse if there's one
-def value(v, function:, mode: :increment)
+# :lazy - recompute if there's no precomputed value or reuse if there's one
+def value(v, function:, mode: :lazy)
   v_struct = vector_to(v, :struct)
   v_hash = vector_to(v, :hash)
 
@@ -43,7 +43,7 @@ def value(v, function:, mode: :increment)
     new_res = @derived[function].call(v_struct)
     @results[v_struct][function] = new_res
     return new_res
-  when :increment
+  when :lazy
     new_res = res.nil? ? @derived[function].call(v_struct) : res
     @results[v_struct][function] = new_res
     return new_res

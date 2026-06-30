@@ -3,7 +3,7 @@ require 'net/http'
 require 'json'
 require 'uri'
 
-OPENAI_TOKEN = ENV["OPENAI_TOKEN"]
+OPENAI_TOKEN = ENV["OPENAI_API_KEY"]
 
 def llm(model: "gpt-4.1-mini", temperature:, messages:, max_tokens:)
   raise "Missing OPENAI_TOKEN environment variable, please set it for your OpenAI API" unless OPENAI_TOKEN
