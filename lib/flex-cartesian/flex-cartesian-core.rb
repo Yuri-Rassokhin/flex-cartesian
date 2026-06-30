@@ -8,9 +8,12 @@ end
 
 def initialize(dims = nil, path: nil, format: :json, logger: nil, log_level: Logger::WARN, source: nil, uri: nil, dimensions: nil, separator: ',')
   init_logger(logger: logger, log_level: log_level)
-
+  
+  # guarantee existence of the cache from the data gets loaded from index/import
+  @dimensions_hash = Hash.new { |h, k| h[k] = {} }
+  
   init_dimensions(dims, path: path, format: format, source: source, uri: uri, dimensions: dimensions, separator: separator)
-
+  
   update_space_structures
 end
 
@@ -151,13 +154,6 @@ def function(vector, function, substitute: 0)
   
   @function_results[v_hash][function]
 end
-
-#def function(vector, function, substitute: 0)
-#  unless @function_results.key?(vector) and @function_results[vector].key?(function)
-#    return substitute
-#  end
-#  @function_results[vector][function]
-#end
 
 # reads from target column using data source created by `data` method
 def lookup(vector, target)
