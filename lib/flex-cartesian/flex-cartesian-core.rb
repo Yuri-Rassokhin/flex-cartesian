@@ -271,7 +271,7 @@ def dim(command, *dims)
   end
 end
 
-def fold(*dims_to_fold, mode: :flat, functions: nil, &block)
+def fold(*dims_to_fold, mode: :flat, func: nil, &block)
   raise ArgumentError, "Block required for fold" unless block_given?
   raise ArgumentError, "No dimensions specified for fold" if dims_to_fold.empty?
 
@@ -279,7 +279,7 @@ def fold(*dims_to_fold, mode: :flat, functions: nil, &block)
   missing_dims = dims_to_fold - @names
   raise ArgumentError, "Dimensions not found: #{missing_dims.join(', ')}" unless missing_dims.empty?
 
-  targets = functions ? Array(functions).map(&:to_sym) : @derived.keys
+  targets = func ? Array(func).map(&:to_sym) : @derived.keys
   missing_funcs = targets - @derived.keys
   raise ArgumentError, "Functions not found: #{missing_funcs.join(', ')}" unless missing_funcs.empty?
 
@@ -287,7 +287,7 @@ def fold(*dims_to_fold, mode: :flat, functions: nil, &block)
   if mode == :cascade
     current_space = self
     dims_to_fold.each do |dim_name|
-      current_space = current_space.fold(dim_name, mode: :flat, functions: targets, &block)
+      current_space = current_space.fold(dim_name, mode: :flat, func: targets, &block)
     end
     return current_space
   end
@@ -299,15 +299,19 @@ def fold(*dims_to_fold, mode: :flat, functions: nil, &block)
   grouped_data = {}
 
   # Traverse the space and group the data
-  cartesian(progress: false) do |vector|
-    v_hash = vector_to(vector, :hash)
+  # NOTE: we intentionally use manual iteration instead of standard .cartesian
+  # As the matter, .cartesian slows things down because of its checks
+  # While we don't need the checks actually, given that we inherit new space from
+  # the parent space which has already been checked in itself
+  @function_results.each do |v_hash, funcs_data|
+    # v_hash is a ready-to-use hash {dim1: val1, dim2: val2, ...}
     remaining_key = v_hash.slice(*remaining_dims_keys)
 
     grouped_data[remaining_key] ||= Hash.new { |h, k| h[k] = [] }
 
     targets.each do |func|
-      # Aggregate values for each function (materialized ones are supported, too)
-      val = @derived[func] == :materialized ? @function_results[v_hash][func] : vector.send(func)
+      # take already computed value that has already been stored in memory
+      val = funcs_data[func]
       grouped_data[remaining_key][func] << val
     end
   end
