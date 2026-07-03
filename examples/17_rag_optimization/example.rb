@@ -41,21 +41,21 @@ TRUTH_EMBED = embed(GROUND_TRUTH, "text-embedding-3-small")
 
 # Initialize an empty PBB space for our RAG
 space = FlexCartesian.new({
-  chunk_size: [50, 100, 150, 200, 250, 300], # size of text chunk (it influences the context-awareness)
-  chunk_overlap: [0, 10, 20, 30, 40, 50], # overlapping (it influences the coherence of the entire chain of chunks)
+  chunk_size: [50, 100, 200, 300], # size of text chunk (it influences the context-awareness)
+  chunk_overlap: [0, 20, 40, 50], # overlapping (it influences the coherence of the entire chain of chunks)
   top_k: [1, 2, 3, 4, 5],           # number of retrieved chunks
+  top_k: [1],
+  iteration: 1..4,
 #  embedding_model: ["all-MiniLM-L6-v2", "text-embedding-3-small"]
 })
 
 # 1. Split the knowledge corpus to chunks
 space.func(:add, :chunks, hide: true) { |v| chunk_text(CORPUS, v.chunk_size, v.chunk_overlap) }
-
 # 2. Find relevant context
 space.func(:add, :retrieved_context, hide: true) do |v|
   retrieve(QUERY, v.chunks, "text-embedding-3-small", v.top_k)
 #  retrieve(QUERY, v.chunks, v.embedding_model, v.top_k)
 end
-
 # 3. Generate LLM response for this context
 space.func(:add, :llm_response, hide: true) do |v|
   prompt = "Use the following context to answer the query in Russian.\nContext: #{v.retrieved_context}\nQuery: #{QUERY}"
@@ -65,28 +65,29 @@ space.func(:add, :llm_response, hide: true) do |v|
   ]
   llm(model: "gpt-4o-mini", temperature: 0.5, messages: msg)
 end
-
 # 4. Quality assessment: vectorize the response and compared to the golden response
 space.func(:add, :eval_embedding, hide: true) { |v| embed(v.llm_response, "text-embedding-3-small") }
 space.func(:add, :accuracy) { |v| cosine(v.eval_embedding, TRUTH_EMBED).round(4) }
-
 # 5. Compute the cose: how many symbols/tokens are we feeding to prompt?
 space.func(:add, :context_length) { |v| v.retrieved_context.length }
 
 # Compute the entire PBB
-space.func(:run, progress: true, title: "Profiling RAG Pipeline")
+space.func(:run, progress: true, title: "Profiling RAG in #{space.size} runs")
+space.output(format: :csv, file: "./examples/17_rag_optimization/space.csv")
+space.output
 
-# Visualize the heatmap: how do the chunk size and top_k influence the accuracy?
-space.visualize(
+report = space.fold(:iteration, func: :accuracy) { |v| Stdlib.average(v).round(2) }
+
+report.visualize(
   x: :chunk_size, 
-  y: :top_k, 
-  func: :accuracy, 
+  y: :chunk_overlap,
+  func: :accuracy,
   output: "./rag_tuning_viz.html"
 )
 
 puts "Heatmap saved to ./rag_tuning_viz.html"
 
-#space.dim(:del, :embedding_model)
-
+report.output
 # Morris analysis: which parameter influences RAG accuracy most - model, chunk size, or top_k?
-space.analyzer(:morris, trajectories: 10, step: 0.4, seed: 42).output(func: :accuracy, format: :markdown)
+report.analyzer(:morris, trajectories: 10, step: 0.4, seed: 42).output(func: :accuracy, format: :markdown)
+

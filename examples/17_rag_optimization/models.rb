@@ -20,7 +20,7 @@ def embed(text, model)
   vector
 end
 
-def llm(model: "gpt-4o", temperature: 0.1, messages:)
+def llm(model: "gpt-4o-mini", temperature: 0.1, messages:)
   uri = URI("https://api.openai.com/v1/chat/completions")
   http = Net::HTTP.new(uri.host, uri.port)
   http.use_ssl = true
