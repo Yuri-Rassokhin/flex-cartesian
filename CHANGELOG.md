@@ -1,7 +1,16 @@
 # Changelog
 
+## 2.0.0.beta - 2026-06-30
+### Fixed
+- Performance scalability on large spaces
+## Added
+- Dynamic dimensions (adding/removing)
+- Interactive HTML heatmaps
+- Connecting parameter space to external data sources
+- Enhanced and more robust Morris analysis
+
 ## 1.3.1 - 2025-09-03
-## Fixed
+### Fixed
 - CSV format expects separator to be one of ";" or "," otherwise enforces ";"
 
 ## 1.3.0 - 2025-08-19
