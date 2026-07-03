@@ -13,6 +13,7 @@ require_relative 'flex-cartesian/flex-cartesian-utilities'
 require_relative 'flex-cartesian/flex-cartesian-analyzer'
 require_relative 'flex-cartesian/flex-cartesian-deprecations'
 require_relative 'visualization/html'
+require_relative 'stdlib/stdlib'
 
 
 
@@ -24,6 +25,7 @@ class FlexCartesian
   include FlexCartesianAnalyzer
   include FlexCartesianDeprecations
   include FlexCartesianVisualization
+  include Stdlib
 
 end
 
