@@ -65,8 +65,13 @@ def func(command = :print, *names, hide: false, progress: false, title: "Computi
       functions_missing = names.empty? ? [] : names - @derived.keys
 
       functions_found.each do |fname, fblock|
-        source = fblock.source rescue '(source unavailable)'
-        body = source.sub(/^.*?\s(?=(\{|\bdo\b))/, '').strip
+        if fblock == :materialized
+          body = "[MATERIALIZED AGGREGATE]"
+        else
+          source = fblock.source rescue '(source unavailable)'
+          body = source.sub(/^.*?\s(?=(\{|\bdo\b))/, '').strip
+        end
+
         order = ""
         if @order.value?(fname.to_sym)
           case @order.key(fname.to_sym)
@@ -264,6 +269,67 @@ def dim(command, *dims)
   else
     raise "Incorrect dimension command: #{command}"
   end
+end
+
+def fold(*dims_to_fold, mode: :flat, functions: nil, &block)
+  raise ArgumentError, "Block required for fold" unless block_given?
+  raise ArgumentError, "No dimensions specified for fold" if dims_to_fold.empty?
+
+  dims_to_fold.map!(&:to_sym)
+  missing_dims = dims_to_fold - @names
+  raise ArgumentError, "Dimensions not found: #{missing_dims.join(', ')}" unless missing_dims.empty?
+
+  targets = functions ? Array(functions).map(&:to_sym) : @derived.keys
+  missing_funcs = targets - @derived.keys
+  raise ArgumentError, "Functions not found: #{missing_funcs.join(', ')}" unless missing_funcs.empty?
+
+  # MODE: CASCADE
+  if mode == :cascade
+    current_space = self
+    dims_to_fold.each do |dim_name|
+      current_space = current_space.fold(dim_name, mode: :flat, functions: targets, &block)
+    end
+    return current_space
+  end
+
+  raise ArgumentError, "Unknown mode: #{mode}" unless mode == :flat
+
+  # MODE: FLAT
+  remaining_dims_keys = @names - dims_to_fold
+  grouped_data = {}
+
+  # Traverse the space and group the data
+  cartesian(progress: false) do |vector|
+    v_hash = vector_to(vector, :hash)
+    remaining_key = v_hash.slice(*remaining_dims_keys)
+
+    grouped_data[remaining_key] ||= Hash.new { |h, k| h[k] = [] }
+
+    targets.each do |func|
+      # Aggregate values for each function (materialized ones are supported, too)
+      val = @derived[func] == :materialized ? @function_results[v_hash][func] : vector.send(func)
+      grouped_data[remaining_key][func] << val
+    end
+  end
+
+  # Calculate the aggregates using the block
+  new_function_results = {}
+  grouped_data.each do |rem_key, funcs_hash|
+    new_function_results[rem_key] = {}
+    targets.each do |func|
+      # Pass array of values and function name to the block
+      new_function_results[rem_key][func] = yield(funcs_hash[func], func)
+    end
+  end
+
+  # Create new FlexCartesian object
+  remaining_dims_hash = @dimensions.slice(*remaining_dims_keys)
+  child_space = self.class.new(remaining_dims_hash, logger: @logger, log_level: @logger.level)
+
+  # Inject the materialized data into the object
+  child_space.send(:inject_materialized_data!, new_function_results)
+
+  child_space
 end
 
 
@@ -618,6 +684,31 @@ end
 def add_dimension(dim)
   raise "Incorrect description of the dimension #{dim.inspect}, Hash required" unless dim.is_a(Hash)
   @dimensions << dim
+end
+
+def inject_materialized_data!(data_hash)
+  @function_results = data_hash
+  
+  # Unless the space is empty, take function keys from the first vector
+  return if data_hash.empty?
+  
+  functions = data_hash.first.last.keys
+  
+  functions.each do |func_name|
+    # mark the function as static, so that AST checker and print methods would know why the function has no body
+    @derived[func_name] = :materialized
+    @function_hidden.delete(func_name)
+    
+    # initialize column widths for the future output
+    ensure_dimension_width(func_name)
+  end
+
+  # apply column widths
+  data_hash.each do |_vector, funcs|
+    funcs.each do |f_name, f_val|
+      ensure_dimension_width(f_name, f_val)
+    end
+  end
 end
 
 end
