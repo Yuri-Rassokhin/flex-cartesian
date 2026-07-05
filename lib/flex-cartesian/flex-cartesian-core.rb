@@ -274,6 +274,7 @@ end
 def fold(*dims_to_fold, mode: :flat, func: nil, &block)
   raise ArgumentError, "Block required for fold" unless block_given?
   raise ArgumentError, "No dimensions specified for fold" if dims_to_fold.empty?
+  raise ArgumentError, "Unknown folding mode `#{mode}`" unless [:flat, :cascade, :hash].include?(mode)
 
   dims_to_fold.map!(&:to_sym)
   missing_dims = dims_to_fold - @names
@@ -292,9 +293,7 @@ def fold(*dims_to_fold, mode: :flat, func: nil, &block)
     return current_space
   end
 
-  raise ArgumentError, "Unknown mode: #{mode}" unless mode == :flat
-
-  # MODE: FLAT
+  # MODES: FLAT OR HASH
   remaining_dims_keys = @names - dims_to_fold
   grouped_data = {}
 
@@ -304,33 +303,41 @@ def fold(*dims_to_fold, mode: :flat, func: nil, &block)
   # While we don't need the checks actually, given that we inherit new space from
   # the parent space which has already been checked in itself
   @function_results.each do |v_hash, funcs_data|
-    # v_hash is a ready-to-use hash {dim1: val1, dim2: val2, ...}
     remaining_key = v_hash.slice(*remaining_dims_keys)
+    
+    # If it's :hash mode, we take the folded dimensions strictly in the order they specified in the call
+    folded_coords = dims_to_fold.map { |d| v_hash[d] } if mode == :hash
 
-    grouped_data[remaining_key] ||= Hash.new { |h, k| h[k] = [] }
+    grouped_data[remaining_key] ||= {}
 
-    targets.each do |func|
-      # take already computed value that has already been stored in memory
-      val = funcs_data[func]
-      grouped_data[remaining_key][func] << val
+    targets.each do |f|
+      if mode == :hash
+        grouped_data[remaining_key][f] ||= {}
+        # Save to hash: ['us', :premium] => 120.0 } where keys are folded dimensions, and value is value of the function
+        grouped_data[remaining_key][f][folded_coords] = funcs_data[f]
+      else
+        # If :flat then we just add it to flat array
+        grouped_data[remaining_key][f] ||= []
+        grouped_data[remaining_key][f] << funcs_data[f]
+      end
     end
   end
 
-  # Calculate the aggregates using the block
+  # Calculate the aggregates via the block
   new_function_results = {}
   grouped_data.each do |rem_key, funcs_hash|
     new_function_results[rem_key] = {}
-    targets.each do |func|
-      # Pass array of values and function name to the block
-      new_function_results[rem_key][func] = yield(funcs_hash[func], func)
+    targets.each do |f|
+      # We pass either Array (if :flat) or Hash (if :hash) to the block
+      new_function_results[rem_key][f] = yield(funcs_hash[f], f)
     end
   end
 
-  # Create new FlexCartesian object
+  # Create child space, FlexCartesian
   remaining_dims_hash = @dimensions.slice(*remaining_dims_keys)
   child_space = self.class.new(remaining_dims_hash, logger: @logger, log_level: @logger.level)
 
-  # Inject the materialized data into the object
+  # Inject the materialized data to the child space
   child_space.send(:inject_materialized_data!, new_function_results)
 
   child_space
