@@ -1,0 +1,14 @@
+#!/usr/bin/bash
+
+# Check OPENAI_API_KEY - it's required for some examples
+if [ -z "$OPENAI_API_KEY" ]; then
+  echo "Environment variable OPENAI_API_KEY is not set, please set it to your OpenAI API token"
+  exit 1
+fi
+
+type="basic practical"
+for p in $type; do
+	path="examples/$p"
+	for i in $(ls $path); do echo && echo "EXAMPLE: $path/$i" && ruby $path/$i/example.rb; done
+done
+

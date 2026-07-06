@@ -20,6 +20,6 @@ s.func(:run, title: "Pinging #{s.size} times")
 
 report = s
           .where( target: "8.8.8.8")
-          .fold(:iteration, func: :time) { |v| (v.map(&:to_f).sum / v.size).round(2) }
+          .fold(:iteration, func: :time) { |v| Stdlib.average(v).round(2) }
           .output(format: :markdown)
 
