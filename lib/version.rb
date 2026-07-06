@@ -1,3 +1,3 @@
 module FlexCartesian
-  VERSION = "2.0.1.beta"
+  VERSION = "2.1.0.beta"
 end
