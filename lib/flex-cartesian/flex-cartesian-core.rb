@@ -99,7 +99,7 @@ def func(command = :print, *names, hide: false, progress: false, title: "Computi
   end
 end
 
-def cartesian(dims = nil, lazy: false, progress: false, title: "Iterating over parameter space")
+def cartesian(dims = nil, lazy: false, progress: false, title: nil)
 
   # process edge cases and initialize data structures
   return to_enum(:cartesian, dims, lazy: lazy) unless block_given?
@@ -111,8 +111,15 @@ def cartesian(dims = nil, lazy: false, progress: false, title: "Iterating over p
   enum = Enumerator.product(*values) 
   space = lazy ? enum.lazy : enum
 
+  # title, if specified, automatically enables progress bar
+  if title.nil?
+    progress_flag = progress
+  else
+    progress_flag = true
+  end
+
   # visualize progress bar, if requested
-  bar = progress ? ProgressBar.create(title: title, total: self.size, format: '%t [%B] %p%% %e') : nil
+  bar = progress_flag ? ProgressBar.create(title: title, total: self.size, format: '%t [%B] %p%% %e') : nil
 
   space.each do |combination|
     # create current vector as Struct
@@ -338,6 +345,77 @@ def fold(*dims_to_fold, mode: :flat, func: nil, &block)
   child_space = self.class.new(remaining_dims_hash, logger: @logger, log_level: @logger.level)
 
   # Inject the materialized data to the child space
+  child_space.send(:inject_materialized_data!, new_function_results)
+
+  child_space
+end
+
+# create a child space as a slice of given dimensions (that is, same dimensions but reduced values on given dimensions)
+def where(**filters)
+  raise ArgumentError, "No filters provided for .where" if filters.empty?
+
+  filters = filters.transform_keys(&:to_sym)
+  missing_dims = filters.keys - @names
+  raise ArgumentError, "Dimensions not found: #{missing_dims.join(', ')}" unless missing_dims.empty?
+
+  new_function_results = {}
+
+  # Step 1: slice function values
+  @function_results.each do |v_hash, funcs_data|
+    # Check the vector against all the filters
+    match = filters.all? do |dim, condition|
+      val = v_hash[dim]
+      
+      case condition
+      when Range
+        # Attempt to compare as numbers, otherwise as strings
+        val_numeric = Float(val) rescue nil
+        val_numeric ? condition.cover?(val_numeric) : condition.cover?(val.to_s)
+      when Array
+        # Convert to string for a safe search
+        condition.map(&:to_s).include?(val.to_s)
+      when Proc
+        # Execute user-defined lambda
+        condition.call(val)
+      else
+        # Check conventional strict equality
+        val.to_s == condition.to_s
+      end
+    end
+
+    # If the vector has passed the checks, add it to the slice
+    new_function_results[v_hash] = funcs_data.dup if match
+  end
+
+  # Step #2: slice dimensional values
+  new_dimensions = {}
+  @dimensions.each do |dim_name, values|
+    if filters.key?(dim_name)
+      condition = filters[dim_name]
+      # We keep only those dimensional values that have passed the filters
+      new_dimensions[dim_name] = values.select do |val|
+        case condition
+        when Range
+          val_numeric = Float(val) rescue nil
+          val_numeric ? condition.cover?(val_numeric) : condition.cover?(val.to_s)
+        when Array
+          condition.map(&:to_s).include?(val.to_s)
+        when Proc
+          condition.call(val)
+        else
+          val.to_s == condition.to_s
+        end
+      end
+    else
+      # If there was no applicable filter for this value, we just keep it
+      new_dimensions[dim_name] = values.dup
+    end
+  end
+
+  # Create a child space with THE SAME dimensions
+  child_space = self.class.new(new_dimensions, logger: @logger, log_level: @logger.level)
+  
+  # Inject all the checked functions to the new space
   child_space.send(:inject_materialized_data!, new_function_results)
 
   child_space

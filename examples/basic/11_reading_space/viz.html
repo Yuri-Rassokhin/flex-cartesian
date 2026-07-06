@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Surface Plot</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    html, body {
+      background-color: transparent !important;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: Arial, sans-serif;
+    }
+    #chart {
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <div id="chart"></div>
+  <script>
+    const data = [{"type":"surface","name":"semantic_shift","x":[0.0,0.2,0.4,0.6,0.8,1.0],"y":[20,50,100,200,400],"z":[[0.0,0.08,0.0,0.08,0.08,0.08],[0.17,0.17,0.22,0.23,0.24,0.19],[0.17,0.17,0.23,0.17,0.24,0.12],[0.17,0.17,0.17,0.15,0.15,0.17],[0.17,0.23,0.23,0.23,0.23,0.18]],"opacity":0.85,"hovertemplate":"temperature: %{x}<br>tokens: %{y}<br>semantic_shift: %{z}<extra></extra>","connectgaps":false,"showscale":false,"colorscale":"Bluered","contours":{"x":{"show":true,"color":"#ffffff","width":1},"y":{"show":true,"color":"#ffffff","width":1}}}];
+
+    const layout = {
+      title: '',
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      font: { color: '#333333' }, // Применяется ко всему тексту (заголовок, названия осей, значения)
+      scene: {
+      aspectmode: 'cube',
+        xaxis: {
+          title: "temperature",
+          showgrid: true,
+          zeroline: true,
+          gridcolor: 'rgba(0,0,0,0.15)', // Цвет линий сетки
+          zerolinecolor: 'rgba(0,0,0,0.15)', // Цвет нулевой линии
+          linecolor: 'rgba(0,0,0,0.15)', // Цвет линии самой оси
+          rangemode: 'tozero',
+        },
+        yaxis: {
+          title: "tokens",
+          showgrid: true,
+          zeroline: true,
+          gridcolor: 'rgba(0,0,0,0.15)',
+          zerolinecolor: 'rgba(0,0,0,0.15)',
+          linecolor: 'rgba(0,0,0,0.15)',
+          rangemode: 'tozero',
+        },
+        zaxis: {
+          title: "semantic_shift",
+          showgrid: true,
+          zeroline: true,
+          gridcolor: 'rgba(0,0,0,0.15)',
+          zerolinecolor: 'rgba(0,0,0,0.15)',
+          linecolor: 'rgba(0,0,0,0.15)',
+          rangemode: 'tozero',
+        }
+      },
+      margin: { l: 0, r: 0, b: 0, t: 50 }
+    };
+
+    Plotly.newPlot("chart", data, layout, { responsive: true });
+  </script>
+</body>
+</html>

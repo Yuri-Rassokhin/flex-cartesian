@@ -1,0 +1,271 @@
+model      ;temperature;prompt                                   ;tokens;response       
+gpt-4.1    ;0.0        ;Explain quantum mechanics in one sentence;20    ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales
+gpt-4.1    ;0.0        ;Explain quantum mechanics in one sentence;50    ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit both wave-like and particle-like properties and outcomes are fundamentally probabilistic.
+gpt-4.1    ;0.0        ;Explain quantum mechanics in one sentence;100   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit both wave-like and particle-like properties and outcomes are fundamentally probabilistic.
+gpt-4.1    ;0.0        ;Explain quantum mechanics in one sentence;200   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit both wave-like and particle-like properties and outcomes are fundamentally probabilistic.
+gpt-4.1    ;0.0        ;Explain quantum mechanics in one sentence;400   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit both wave-like and particle-like properties and outcomes are fundamentally probabilistic.
+gpt-4.1    ;0.0        ;Write a quatrain about war               ;20    ;steel clashes loud beneath a blood-red sky   the cries of hope are drowned by cannon’s roar
+gpt-4.1    ;0.0        ;Write a quatrain about war               ;50    ;steel clashes loud beneath a blood-red sky   the hopes of many drowned in battle’s roar.   brave hearts and dreams alike are doomed to die   when war’s grim shadow darkens every door.
+gpt-4.1    ;0.0        ;Write a quatrain about war               ;100   ;steel clashes loud beneath a blood-red sky   the hopes of many drowned in battle’s roar.   brave hearts and dreams together live and die   while silent tears remember peace before.
+gpt-4.1    ;0.0        ;Write a quatrain about war               ;200   ;steel clashes loud beneath a blood-red sky   the cries of hope are drowned by cannon’s roar.   in fields where dreams and innocence now lie   the seeds of sorrow bloom forevermore.
+gpt-4.1    ;0.0        ;Write a quatrain about war               ;400   ;steel clashes loud beneath a blood-red sky   the cries of hope are drowned by cannon’s roar.   in fields where dreams and innocence now lie   the seeds of sorrow bloom forevermore.
+gpt-4.1    ;0.0        ;Solve 2+2                                ;20    ;2 + 2 = 4      
+gpt-4.1    ;0.0        ;Solve 2+2                                ;50    ;2 + 2 = 4      
+gpt-4.1    ;0.0        ;Solve 2+2                                ;100   ;2 + 2 = 4      
+gpt-4.1    ;0.0        ;Solve 2+2                                ;200   ;2 + 2 = 4      
+gpt-4.1    ;0.0        ;Solve 2+2                                ;400   ;2 + 2 = 4      
+gpt-4.1    ;0.2        ;Explain quantum mechanics in one sentence;20    ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales
+gpt-4.1    ;0.2        ;Explain quantum mechanics in one sentence;50    ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit both wave-like and particle-like properties and outcomes are fundamentally probabilistic.
+gpt-4.1    ;0.2        ;Explain quantum mechanics in one sentence;100   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit both wave-like and particle-like properties and outcomes are fundamentally probabilistic.
+gpt-4.1    ;0.2        ;Explain quantum mechanics in one sentence;200   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit both wave-like and particle-like properties and outcomes are fundamentally probabilistic.
+gpt-4.1    ;0.2        ;Explain quantum mechanics in one sentence;400   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit both wave-like and particle-like properties and outcomes are fundamentally probabilistic.
+gpt-4.1    ;0.2        ;Write a quatrain about war               ;20    ;steel clashes loud beneath a blood-red sky   the cries of hope are drowned by cannon’s roar
+gpt-4.1    ;0.2        ;Write a quatrain about war               ;50    ;steel clashes loud beneath a blood-red sky   the earth is scarred where hope and fury meet.   in shadows march the dreams that men deny   while silence mourns the fallen at their feet.
+gpt-4.1    ;0.2        ;Write a quatrain about war               ;100   ;steel clashes loud beneath a blood-red sky   the earth is scarred where silent shadows fall.   in war’s grim dance the innocent ask why—   yet hope endures defying every wall.
+gpt-4.1    ;0.2        ;Write a quatrain about war               ;200   ;steel clashes loud where shadows fall and creep   the earth is scarred by sorrow blood and flame.   beneath the banners mothers wake and weep—   for war remembers none but knows each name.
+gpt-4.1    ;0.2        ;Write a quatrain about war               ;400   ;steel clashes loud beneath a blood-red sky   the cries of hope are drowned by cannon’s roar.   in fields where dreams and innocence now lie   the seeds of sorrow bloom forevermore.
+gpt-4.1    ;0.2        ;Solve 2+2                                ;20    ;2 + 2 = 4      
+gpt-4.1    ;0.2        ;Solve 2+2                                ;50    ;2 + 2 = 4      
+gpt-4.1    ;0.2        ;Solve 2+2                                ;100   ;2 + 2 = 4      
+gpt-4.1    ;0.2        ;Solve 2+2                                ;200   ;2 + 2 = 4      
+gpt-4.1    ;0.2        ;Solve 2+2                                ;400   ;2 + 2 = 4      
+gpt-4.1    ;0.4        ;Explain quantum mechanics in one sentence;20    ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales
+gpt-4.1    ;0.4        ;Explain quantum mechanics in one sentence;50    ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit both wave-like and particle-like properties and outcomes are fundamentally probabilistic.
+gpt-4.1    ;0.4        ;Explain quantum mechanics in one sentence;100   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit both wave-like and particle-like properties and outcomes are fundamentally probabilistic.
+gpt-4.1    ;0.4        ;Explain quantum mechanics in one sentence;200   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit both wave-like and particle-like properties and outcomes are fundamentally probabilistic.
+gpt-4.1    ;0.4        ;Explain quantum mechanics in one sentence;400   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit both wave-like and particle-like properties and outcomes are fundamentally probabilistic.
+gpt-4.1    ;0.4        ;Write a quatrain about war               ;20    ;steel clashes loud where shadows stain the ground   the sky is torn by cries that never cease.
+gpt-4.1    ;0.4        ;Write a quatrain about war               ;50    ;steel clashes loud beneath a blood-red sky   young dreams are shattered in the cannon’s roar.   the earth remembers every anguished cry—   no vict’ry mends the broken heart of war.
+gpt-4.1    ;0.4        ;Write a quatrain about war               ;100   ;steel clashes loud beneath a blood-red sky   the cries of valor lost in dust and flame   each hope and dream condemned to fade and die   while war devours all mercy in its name.
+gpt-4.1    ;0.4        ;Write a quatrain about war               ;200   ;steel clashes loud beneath a blood-red sky   the hopes of youth are scattered on the ground.   blind fury reigns while grieving mothers cry   and peace seems lost where war’s harsh drums resound.
+gpt-4.1    ;0.4        ;Write a quatrain about war               ;400   ;steel clashes loud beneath a blood-red sky   the earth is scarred by sorrow smoke and flame.   in war’s grim shadow countless dreamers die—   yet hope endures though nothing stays the same.
+gpt-4.1    ;0.4        ;Solve 2+2                                ;20    ;2 + 2 = 4      
+gpt-4.1    ;0.4        ;Solve 2+2                                ;50    ;2 + 2 = 4      
+gpt-4.1    ;0.4        ;Solve 2+2                                ;100   ;2 + 2 = 4      
+gpt-4.1    ;0.4        ;Solve 2+2                                ;200   ;2 + 2 = 4      
+gpt-4.1    ;0.4        ;Solve 2+2                                ;400   ;2 + 2 = 4      
+gpt-4.1    ;0.6        ;Explain quantum mechanics in one sentence;20    ;quantum mechanics is the branch of physics that describes the behavior of matter and energy on the atomic and sub
+gpt-4.1    ;0.6        ;Explain quantum mechanics in one sentence;50    ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit both wave-like and particle-like properties and outcomes are fundamentally probabilistic.
+gpt-4.1    ;0.6        ;Explain quantum mechanics in one sentence;100   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles can exist in multiple states simultaneously and their properties are fundamentally probabilistic.
+gpt-4.1    ;0.6        ;Explain quantum mechanics in one sentence;200   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit both wave-like and particle-like properties and outcomes are fundamentally probabilistic.
+gpt-4.1    ;0.6        ;Explain quantum mechanics in one sentence;400   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit both wave-like and particle-like properties and outcomes are fundamentally probabilistic.
+gpt-4.1    ;0.6        ;Write a quatrain about war               ;20    ;steel clashes loud beneath a crimson sky   young dreams are shattered in the thunder’s roar.
+gpt-4.1    ;0.6        ;Write a quatrain about war               ;50    ;steel clashes loud where shadows meet the sun   the earth is scarred by fury’s iron hand.   young dreams are shattered ere their course is run   and hope lies buried deep within the land.
+gpt-4.1    ;0.6        ;Write a quatrain about war               ;100   ;steel clashes loud beneath a crimson sky   the earth is scarred by sorrow and by flame.   in every cry the dreams of children die—   the cost of war: a loss without a name.
+gpt-4.1    ;0.6        ;Write a quatrain about war               ;200   ;steel clashes loud as thunder splits the night   fields turn to ashes hope consumed by flame.   beneath the banners courage yields to fright   and every victory whispers sorrow’s name.
+gpt-4.1    ;0.6        ;Write a quatrain about war               ;400   ;steel clashes loud beneath a crimson sky   the earth is scarred by fury’s ruthless hand.   for honor’s name too many brave men die   and dreams lie broken on a bloodstained land.
+gpt-4.1    ;0.6        ;Solve 2+2                                ;20    ;2 + 2 = 4      
+gpt-4.1    ;0.6        ;Solve 2+2                                ;50    ;2 + 2 = 4      
+gpt-4.1    ;0.6        ;Solve 2+2                                ;100   ;2 + 2 = 4      
+gpt-4.1    ;0.6        ;Solve 2+2                                ;200   ;2 + 2 = 4      
+gpt-4.1    ;0.6        ;Solve 2+2                                ;400   ;2 + 2 = 4      
+gpt-4.1    ;0.8        ;Explain quantum mechanics in one sentence;20    ;quantum mechanics is the branch of physics that describes the behavior and interactions of energy and matter at the smallest
+gpt-4.1    ;0.8        ;Explain quantum mechanics in one sentence;50    ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit both wave-like and particle-like properties and their states are fundamentally probabilistic.
+gpt-4.1    ;0.8        ;Explain quantum mechanics in one sentence;100   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit both wave-like and particle-like properties and outcomes are fundamentally probabilistic.
+gpt-4.1    ;0.8        ;Explain quantum mechanics in one sentence;200   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit both wave-like and particle-like properties and outcomes are fundamentally probabilistic.
+gpt-4.1    ;0.8        ;Explain quantum mechanics in one sentence;400   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles can exist in superpositions of states and outcomes are fundamentally probabilistic.
+gpt-4.1    ;0.8        ;Write a quatrain about war               ;20    ;steel clashes loud beneath a blood-red sky   young voices lost where silent shadows creep.   the
+gpt-4.1    ;0.8        ;Write a quatrain about war               ;50    ;steel clashes loud where shadows fall and creep   the cries of hope are drowned by cannon’s roar   fields once alive now wear a silence deep   war paints its sorrow staining evermore.
+gpt-4.1    ;0.8        ;Write a quatrain about war               ;100   ;war’s shadow creeps across the trembling land   a thunder forged by fury not by light   where hope is drowned beneath a crimson hand   and peace lies hidden cowering from the night.
+gpt-4.1    ;0.8        ;Write a quatrain about war               ;200   ;steel clashes loud where shadows cross the land   the silence broken by the cannons’ roar   dreams scattered like the dust beneath the sand   and hearts grow heavy longing for no more.
+gpt-4.1    ;0.8        ;Write a quatrain about war               ;400   ;steel clashes loud amid the crimson rain   dreams lost to dust where silent shadows fall.   beneath the banners hope and hatred reign—   war’s bitter toll remembered by us all.
+gpt-4.1    ;0.8        ;Solve 2+2                                ;20    ;2 + 2 = 4      
+gpt-4.1    ;0.8        ;Solve 2+2                                ;50    ;2 + 2 = 4      
+gpt-4.1    ;0.8        ;Solve 2+2                                ;100   ;2 + 2 = 4      
+gpt-4.1    ;0.8        ;Solve 2+2                                ;200   ;2 + 2 = 4      
+gpt-4.1    ;0.8        ;Solve 2+2                                ;400   ;2 + 2 = 4      
+gpt-4.1    ;1.0        ;Explain quantum mechanics in one sentence;20    ;quantum mechanics is the branch of physics that describes the bizarre probabilistic behavior of matter and energy at
+gpt-4.1    ;1.0        ;Explain quantum mechanics in one sentence;50    ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit both wave-like and particle-like properties governed by probabilities rather than certainties.
+gpt-4.1    ;1.0        ;Explain quantum mechanics in one sentence;100   ;quantum mechanics is the branch of physics that describes the behavior and interactions of energy and matter at the smallest scales where particles exhibit both wave-like and particle-like properties and outcomes are fundamentally probabilistic.
+gpt-4.1    ;1.0        ;Explain quantum mechanics in one sentence;200   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles can exist in multiple states simultaneously and their properties are fundamentally probabilistic.
+gpt-4.1    ;1.0        ;Explain quantum mechanics in one sentence;400   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit both wave-like and particle-like properties and outcomes are fundamentally probabilistic.
+gpt-4.1    ;1.0        ;Write a quatrain about war               ;20    ;steel clashes steel beneath a blood-red sky   the drum of boots resounds from shore to shore
+gpt-4.1    ;1.0        ;Write a quatrain about war               ;50    ;a hundred banners flutter in the dust   the sky grows dark with thunderous reply   war turns bright men to iron hope to rust   and songs of peace are swallowed by the cry.
+gpt-4.1    ;1.0        ;Write a quatrain about war               ;100   ;the drums of war resound across the land   their thunder drowns the gentle song of peace   where hope once bloomed now scarlet sorrows stand   and dreams are silenced longing for release.
+gpt-4.1    ;1.0        ;Write a quatrain about war               ;200   ;upon the field where shadows fiercely spread   the drumbeat calls with sorrow in its sound   steel rings and echoes bitter words unsaid   while dreams are trampled on the blood-stained ground.
+gpt-4.1    ;1.0        ;Write a quatrain about war               ;400   ;steel clatters loud beneath a crimson sky   the cries of men are swallowed by the smoke   on broken fields the dreams of ages lie   all hope undone with every cannon’s stroke.
+gpt-4.1    ;1.0        ;Solve 2+2                                ;20    ;2 + 2 = 4      
+gpt-4.1    ;1.0        ;Solve 2+2                                ;50    ;2 + 2 = 4      
+gpt-4.1    ;1.0        ;Solve 2+2                                ;100   ;2 + 2 = 4      
+gpt-4.1    ;1.0        ;Solve 2+2                                ;200   ;2 + 2 = 4      
+gpt-4.1    ;1.0        ;Solve 2+2                                ;400   ;2 + 2 = 4      
+gpt-4o     ;0.0        ;Explain quantum mechanics in one sentence;20    ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales
+gpt-4o     ;0.0        ;Explain quantum mechanics in one sentence;50    ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and exist in probabilistic states until measured.
+gpt-4o     ;0.0        ;Explain quantum mechanics in one sentence;100   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and are governed by probabilities rather than deterministic laws.
+gpt-4o     ;0.0        ;Explain quantum mechanics in one sentence;200   ;quantum mechanics is a fundamental theory in physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and exist in probabilistic states until measured.
+gpt-4o     ;0.0        ;Explain quantum mechanics in one sentence;400   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and are governed by probabilities rather than deterministic laws.
+gpt-4o     ;0.0        ;Write a quatrain about war               ;20    ;in fields where silence once held sway   the echoes of the past now play.   with courage
+gpt-4o     ;0.0        ;Write a quatrain about war               ;50    ;in fields where silence once held sway   the echoes of the past now play.   with shadows cast by fire's light   war paints the day and haunts the night.
+gpt-4o     ;0.0        ;Write a quatrain about war               ;100   ;in fields where shadows stretch and silence weeps   the echoes of the past in whispers tread   where valor's flame in crimson memory keeps   the cost of peace in silent tears is read.
+gpt-4o     ;0.0        ;Write a quatrain about war               ;200   ;in fields where silence once held sway   the echoes of the cannons play.   a crimson sun sets on the land   where peace and hope make their last stand.
+gpt-4o     ;0.0        ;Write a quatrain about war               ;400   ;in fields where silence once held sway   the echoes of the cannons play.   a crimson sun sets on the land   where peace and hope make their last stand.
+gpt-4o     ;0.0        ;Solve 2+2                                ;20    ;2 + 2 equals 4.
+gpt-4o     ;0.0        ;Solve 2+2                                ;50    ;2 + 2 equals 4.
+gpt-4o     ;0.0        ;Solve 2+2                                ;100   ;2 + 2 equals 4.
+gpt-4o     ;0.0        ;Solve 2+2                                ;200   ;2 + 2 equals 4.
+gpt-4o     ;0.0        ;Solve 2+2                                ;400   ;2 + 2 equals 4.
+gpt-4o     ;0.2        ;Explain quantum mechanics in one sentence;20    ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales
+gpt-4o     ;0.2        ;Explain quantum mechanics in one sentence;50    ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and exist in probabilistic states until measured.
+gpt-4o     ;0.2        ;Explain quantum mechanics in one sentence;100   ;quantum mechanics is the branch of physics that studies the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and are governed by probabilities rather than deterministic laws.
+gpt-4o     ;0.2        ;Explain quantum mechanics in one sentence;200   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and are governed by probabilities rather than deterministic laws.
+gpt-4o     ;0.2        ;Explain quantum mechanics in one sentence;400   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and are governed by probabilities rather than deterministic laws.
+gpt-4o     ;0.2        ;Write a quatrain about war               ;20    ;in fields where shadows stretch and silence breaks   the drums of war resound with mournful cries
+gpt-4o     ;0.2        ;Write a quatrain about war               ;50    ;in fields where shadows stretch and silence weeps   the echoes of the past in whispers tread.   where valor's flame in crimson memory keeps   the cost of peace is written in the dead.
+gpt-4o     ;0.2        ;Write a quatrain about war               ;100   ;in fields where silence once held sway   the echoes of the past now play.   a crimson sun sets low and wide   as dreams of peace in shadows hide.
+gpt-4o     ;0.2        ;Write a quatrain about war               ;200   ;in fields where silence once held sway   now echoes clash with steel's fierce cry   the earth bears scars of battle's fray   as weary souls beneath smoke lie.
+gpt-4o     ;0.2        ;Write a quatrain about war               ;400   ;in fields where silence once held sway   the echoes of the past now play.   a dance of shadows fierce and grim   where peace once reigned now chaos swims.
+gpt-4o     ;0.2        ;Solve 2+2                                ;20    ;2 + 2 equals 4.
+gpt-4o     ;0.2        ;Solve 2+2                                ;50    ;2 + 2 equals 4.
+gpt-4o     ;0.2        ;Solve 2+2                                ;100   ;2 + 2 equals 4.
+gpt-4o     ;0.2        ;Solve 2+2                                ;200   ;2 + 2 equals 4.
+gpt-4o     ;0.2        ;Solve 2+2                                ;400   ;2 + 2 equals 4.
+gpt-4o     ;0.4        ;Explain quantum mechanics in one sentence;20    ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales
+gpt-4o     ;0.4        ;Explain quantum mechanics in one sentence;50    ;quantum mechanics is the branch of physics that studies the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and probabilistic behavior.
+gpt-4o     ;0.4        ;Explain quantum mechanics in one sentence;100   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and are governed by probabilities rather than deterministic laws.
+gpt-4o     ;0.4        ;Explain quantum mechanics in one sentence;200   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and probabilities govern outcomes.
+gpt-4o     ;0.4        ;Explain quantum mechanics in one sentence;400   ;quantum mechanics is a fundamental theory in physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and exist in superpositions of states until measured.
+gpt-4o     ;0.4        ;Write a quatrain about war               ;20    ;in fields where silence once held sway   now echoes clash with cries of war.   the earth
+gpt-4o     ;0.4        ;Write a quatrain about war               ;50    ;in fields where silence used to reign   now echoes clash with cries of pain.   the earth once fertile stained with red   a testament to lives now shed.
+gpt-4o     ;0.4        ;Write a quatrain about war               ;100   ;in fields where shadows stretch and silence breaks   the drums of war resound with thunder's might.   the earth a canvas painted with heartaches   bears witness to the endless futile fight.
+gpt-4o     ;0.4        ;Write a quatrain about war               ;200   ;in fields where shadows stretch and silence weeps   the drums of war resound through shattered skies.   innocence lost where once the heartland sleeps   hope flickers dim beneath the soldiers' cries.
+gpt-4o     ;0.4        ;Write a quatrain about war               ;400   ;in fields where shadows stretch and silence weeps   the echoes of the past in whispers soar.   where courage walks the ground in sorrow keeps   a tale of valor etched in scars of war.
+gpt-4o     ;0.4        ;Solve 2+2                                ;20    ;the solution to \(2 + 2\) is \(4\).
+gpt-4o     ;0.4        ;Solve 2+2                                ;50    ;2 + 2 equals 4.
+gpt-4o     ;0.4        ;Solve 2+2                                ;100   ;2 + 2 equals 4.
+gpt-4o     ;0.4        ;Solve 2+2                                ;200   ;2 + 2 equals 4.
+gpt-4o     ;0.4        ;Solve 2+2                                ;400   ;2 + 2 equals 4.
+gpt-4o     ;0.6        ;Explain quantum mechanics in one sentence;20    ;quantum mechanics is the branch of physics that studies the behavior of matter and energy at the smallest scales
+gpt-4o     ;0.6        ;Explain quantum mechanics in one sentence;50    ;quantum mechanics is a fundamental theory in physics that describes the behavior and interactions of matter and energy at the smallest scales where particles exhibit wave-like properties and exist in states of probability rather than definite positions or velocities.
+gpt-4o     ;0.6        ;Explain quantum mechanics in one sentence;100   ;quantum mechanics is the branch of physics that deals with the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and are governed by probabilities rather than deterministic laws.
+gpt-4o     ;0.6        ;Explain quantum mechanics in one sentence;200   ;quantum mechanics is the branch of physics that deals with the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and exist in probabilistic states until measured.
+gpt-4o     ;0.6        ;Explain quantum mechanics in one sentence;400   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and exist in probabilistic states rather than definite ones.
+gpt-4o     ;0.6        ;Write a quatrain about war               ;20    ;in fields where echoes of the past remain   the drums of war beat on a haunting strain
+gpt-4o     ;0.6        ;Write a quatrain about war               ;50    ;in fields where echoes of the past reside   the drums of war beat with relentless might.   beneath the smoke where countless dreams have died   hope flickers dim yet yearns to find the light.
+gpt-4o     ;0.6        ;Write a quatrain about war               ;100   ;in fields where shadows dance with fire's breath   the echoes of the past in silence weep.   through scarlet skies the drums of war bring death   yet still the seeds of peace in courage sleep.
+gpt-4o     ;0.6        ;Write a quatrain about war               ;200   ;in fields where silence once held sway   the echoes of the cannons play.   a crimson dawn on weary eyes   as hope and sorrow intertwine.
+gpt-4o     ;0.6        ;Write a quatrain about war               ;400   ;in fields where silence used to reign so clear   the echoes of the past now faintly roar.   yet still the cost of courage draws a tear   for peace is what the heart is longing for.
+gpt-4o     ;0.6        ;Solve 2+2                                ;20    ;\(2 + 2 = 4\). 
+gpt-4o     ;0.6        ;Solve 2+2                                ;50    ;2 + 2 equals 4.
+gpt-4o     ;0.6        ;Solve 2+2                                ;100   ;2 + 2 equals 4.
+gpt-4o     ;0.6        ;Solve 2+2                                ;200   ;2 + 2 equals 4.
+gpt-4o     ;0.6        ;Solve 2+2                                ;400   ;the result of \(2 + 2\) is \(4\).
+gpt-4o     ;0.8        ;Explain quantum mechanics in one sentence;20    ;quantum mechanics is the branch of physics that studies the behavior of matter and energy at the smallest scales
+gpt-4o     ;0.8        ;Explain quantum mechanics in one sentence;50    ;quantum mechanics is the branch of physics that studies the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and probabilities rather than deterministic laws govern outcomes.
+gpt-4o     ;0.8        ;Explain quantum mechanics in one sentence;100   ;quantum mechanics is the branch of physics that studies the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and exist in probabilistic states until measured.
+gpt-4o     ;0.8        ;Explain quantum mechanics in one sentence;200   ;quantum mechanics is a fundamental theory in physics that describes the behavior of matter and energy at very small scales where particles exhibit both wave-like and particle-like properties.
+gpt-4o     ;0.8        ;Explain quantum mechanics in one sentence;400   ;quantum mechanics is the branch of physics that studies the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality superposition and entanglement.
+gpt-4o     ;0.8        ;Write a quatrain about war               ;20    ;in fields where shadows dance with fire's breath   the echoes of the past lament their song.
+gpt-4o     ;0.8        ;Write a quatrain about war               ;50    ;amidst the clash where echoes roar   the ground is stained with tales of yore.   in silent cries the shadows weep   as peace lies buried wrapped in sleep.
+gpt-4o     ;0.8        ;Write a quatrain about war               ;100   ;amidst the clash of steel and shrouded night   the echoes of a thousand voices cry   with valor's flame they march into the fight   yet dreams of peace still linger in the sky.
+gpt-4o     ;0.8        ;Write a quatrain about war               ;200   ;in fields where silence once held sway   now echoes clash with cries of war.   the skies ablaze at break of day   yet peace remains the heart's true shore.
+gpt-4o     ;0.8        ;Write a quatrain about war               ;400   ;in fields where silence once held sway   the drums of war begin to play.   through smoke and fire hopes entwine   yet peace remains a distant sign.
+gpt-4o     ;0.8        ;Solve 2+2                                ;20    ;2 + 2 equals 4.
+gpt-4o     ;0.8        ;Solve 2+2                                ;50    ;2 + 2 equals 4.
+gpt-4o     ;0.8        ;Solve 2+2                                ;100   ;the solution to \(2 + 2\) is \(4\).
+gpt-4o     ;0.8        ;Solve 2+2                                ;200   ;2 + 2 equals 4.
+gpt-4o     ;0.8        ;Solve 2+2                                ;400   ;2 + 2 equals 4.
+gpt-4o     ;1.0        ;Explain quantum mechanics in one sentence;20    ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales
+gpt-4o     ;1.0        ;Explain quantum mechanics in one sentence;50    ;quantum mechanics is a fundamental theory in physics that describes the behavior of matter and energy at the smallest scales where particles exhibit both wave-like and particle-like properties and probabilities govern outcomes.
+gpt-4o     ;1.0        ;Explain quantum mechanics in one sentence;100   ;quantum mechanics is the branch of physics that deals with the behavior and interactions of particles at the atomic and subatomic levels where the principles of superposition entanglement and uncertainty fundamentally challenge classical intuitions.
+gpt-4o     ;1.0        ;Explain quantum mechanics in one sentence;200   ;quantum mechanics is the branch of physics that deals with the behavior of matter and energy at the smallest scales such as atoms and subatomic particles where phenomena like superposition entanglement and uncertainty are fundamental.
+gpt-4o     ;1.0        ;Explain quantum mechanics in one sentence;400   ;quantum mechanics is a fundamental theory in physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and probabilistic behaviors.
+gpt-4o     ;1.0        ;Write a quatrain about war               ;20    ;in fields where shadows stretch and cannons roar   the cries of loss and valor intertwine
+gpt-4o     ;1.0        ;Write a quatrain about war               ;50    ;upon the fields where shadows dance and play   the echoes of the past in silence lay.   a crimson sun sets where hopes were torn   yet whispers promise peace with every morn.
+gpt-4o     ;1.0        ;Write a quatrain about war               ;100   ;fields once green now echo cries and blare   soldiers march on under banners that dare.   a dance of shadows fires paint the night   in war's cruel grasp hope dims from sight.
+gpt-4o     ;1.0        ;Write a quatrain about war               ;200   ;courage flows like an endless stream   as shadows clash in fields afar   a whispered wish for peace's dream   yet still we march beneath the star.
+gpt-4o     ;1.0        ;Write a quatrain about war               ;400   ;in fields where silence used to reign   now echoes of the guns remain.   amidst the cries and smoke-filled air   loss and courage intermingle there.
+gpt-4o     ;1.0        ;Solve 2+2                                ;20    ;the answer to 2 + 2 is 4.
+gpt-4o     ;1.0        ;Solve 2+2                                ;50    ;2 + 2 equals 4.
+gpt-4o     ;1.0        ;Solve 2+2                                ;100   ;2 + 2 equals 4.
+gpt-4o     ;1.0        ;Solve 2+2                                ;200   ;2 + 2 equals 4.
+gpt-4o     ;1.0        ;Solve 2+2                                ;400   ;the solution to \(2 + 2\) is \(4\).
+gpt-4o-mini;0.0        ;Explain quantum mechanics in one sentence;20    ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales
+gpt-4o-mini;0.0        ;Explain quantum mechanics in one sentence;50    ;quantum mechanics is a fundamental theory in physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and are governed by probabilistic rather than deterministic laws.
+gpt-4o-mini;0.0        ;Explain quantum mechanics in one sentence;100   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and are governed by probabilistic rather than deterministic laws.
+gpt-4o-mini;0.0        ;Explain quantum mechanics in one sentence;200   ;quantum mechanics is a fundamental theory in physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and are governed by probabilistic rather than deterministic laws.
+gpt-4o-mini;0.0        ;Explain quantum mechanics in one sentence;400   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and are governed by probabilistic rather than deterministic laws.
+gpt-4o-mini;0.0        ;Write a quatrain about war               ;20    ;in fields where shadows stretch and fade   the echoes of the fallen call   with every clash
+gpt-4o-mini;0.0        ;Write a quatrain about war               ;50    ;in fields where shadows stretch and fade   the echoes of the fallen call   with every clash a price is paid   in silence peace awaits us all.
+gpt-4o-mini;0.0        ;Write a quatrain about war               ;100   ;in fields where shadows stretch and fade   the echoes of the fallen call   with every clash a price is paid   in silence peace awaits us all.
+gpt-4o-mini;0.0        ;Write a quatrain about war               ;200   ;in fields where shadows stretch and fade   the echoes of the fallen call   with every clash a price is paid   in silence peace awaits us all.
+gpt-4o-mini;0.0        ;Write a quatrain about war               ;400   ;in fields where shadows stretch and fade   the echoes of the fallen call   with every clash a price is paid   in silence peace awaits us all.
+gpt-4o-mini;0.0        ;Solve 2+2                                ;20    ;2 + 2 equals 4.
+gpt-4o-mini;0.0        ;Solve 2+2                                ;50    ;2 + 2 equals 4.
+gpt-4o-mini;0.0        ;Solve 2+2                                ;100   ;2 + 2 equals 4.
+gpt-4o-mini;0.0        ;Solve 2+2                                ;200   ;2 + 2 equals 4.
+gpt-4o-mini;0.0        ;Solve 2+2                                ;400   ;2 + 2 equals 4.
+gpt-4o-mini;0.2        ;Explain quantum mechanics in one sentence;20    ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales
+gpt-4o-mini;0.2        ;Explain quantum mechanics in one sentence;50    ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and are governed by probabilistic rather than deterministic laws.
+gpt-4o-mini;0.2        ;Explain quantum mechanics in one sentence;100   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and are governed by probabilistic rather than deterministic laws.
+gpt-4o-mini;0.2        ;Explain quantum mechanics in one sentence;200   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and are governed by probabilistic rather than deterministic laws.
+gpt-4o-mini;0.2        ;Explain quantum mechanics in one sentence;400   ;quantum mechanics is a fundamental theory in physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and are governed by probabilistic rather than deterministic laws.
+gpt-4o-mini;0.2        ;Write a quatrain about war               ;20    ;in fields where shadows stretch and fade   the echoes of the fallen call   with every clash
+gpt-4o-mini;0.2        ;Write a quatrain about war               ;50    ;in fields where shadows stretch and fade   the echoes of the fallen call   with every clash a price is paid   in silence peace awaits us all.
+gpt-4o-mini;0.2        ;Write a quatrain about war               ;100   ;in fields where shadows stretch and fade   the echoes of the fallen call   with every clash a price is paid   in silence peace awaits us all.
+gpt-4o-mini;0.2        ;Write a quatrain about war               ;200   ;in fields where shadows stretch and fade   the echoes of the fallen call   with dreams of peace in silence laid   yet thunder roars where empires fall.
+gpt-4o-mini;0.2        ;Write a quatrain about war               ;400   ;in fields where shadows stretch and fall   the echoes of the brave recall   with courage forged in fire and pain   they stand as one though all is slain.
+gpt-4o-mini;0.2        ;Solve 2+2                                ;20    ;2 + 2 equals 4.
+gpt-4o-mini;0.2        ;Solve 2+2                                ;50    ;2 + 2 equals 4.
+gpt-4o-mini;0.2        ;Solve 2+2                                ;100   ;2 + 2 equals 4.
+gpt-4o-mini;0.2        ;Solve 2+2                                ;200   ;2 + 2 equals 4.
+gpt-4o-mini;0.2        ;Solve 2+2                                ;400   ;2 + 2 equals 4.
+gpt-4o-mini;0.4        ;Explain quantum mechanics in one sentence;20    ;quantum mechanics is a fundamental theory in physics that describes the behavior of matter and energy at the smallest scales
+gpt-4o-mini;0.4        ;Explain quantum mechanics in one sentence;50    ;quantum mechanics is a fundamental theory in physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and are governed by probabilistic rather than deterministic laws.
+gpt-4o-mini;0.4        ;Explain quantum mechanics in one sentence;100   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and are governed by probabilistic rather than deterministic laws.
+gpt-4o-mini;0.4        ;Explain quantum mechanics in one sentence;200   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and are governed by probabilistic rather than deterministic laws.
+gpt-4o-mini;0.4        ;Explain quantum mechanics in one sentence;400   ;quantum mechanics is a fundamental theory in physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and are governed by probabilistic rather than deterministic laws.
+gpt-4o-mini;0.4        ;Write a quatrain about war               ;20    ;in fields where shadows dance with dread   the echoes of the fallen cry   with every clash
+gpt-4o-mini;0.4        ;Write a quatrain about war               ;50    ;in fields where shadows dance with dread   the echoes of the fallen call   with courage forged in tears we've shed   yet peace remains the dream for all.
+gpt-4o-mini;0.4        ;Write a quatrain about war               ;100   ;in fields where shadows stretch and fade   the echoes of the brave cascade   with hearts of steel and dreams of peace   yet from the strife no sorrows cease.
+gpt-4o-mini;0.4        ;Write a quatrain about war               ;200   ;in fields where shadows stretch and fall   the echoes of the battle call   with courage forged in fire and strife   we seek the cost of peace and life.
+gpt-4o-mini;0.4        ;Write a quatrain about war               ;400   ;in fields where shadows stretch and linger long   the clash of steel and cries of hearts grown strong   yet in the smoke the dreams of peace are sown   for every battle fought a price is known.
+gpt-4o-mini;0.4        ;Solve 2+2                                ;20    ;2 + 2 equals 4.
+gpt-4o-mini;0.4        ;Solve 2+2                                ;50    ;2 + 2 equals 4.
+gpt-4o-mini;0.4        ;Solve 2+2                                ;100   ;2 + 2 equals 4.
+gpt-4o-mini;0.4        ;Solve 2+2                                ;200   ;2 + 2 equals 4.
+gpt-4o-mini;0.4        ;Solve 2+2                                ;400   ;2 + 2 equals 4.
+gpt-4o-mini;0.6        ;Explain quantum mechanics in one sentence;20    ;quantum mechanics is a fundamental theory in physics that describes the behavior of matter and energy at the smallest scales
+gpt-4o-mini;0.6        ;Explain quantum mechanics in one sentence;50    ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and are governed by probabilistic rather than deterministic laws.
+gpt-4o-mini;0.6        ;Explain quantum mechanics in one sentence;100   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and are governed by probabilistic rather than deterministic laws.
+gpt-4o-mini;0.6        ;Explain quantum mechanics in one sentence;200   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality superposition and entanglement challenging classical intuitions about reality.
+gpt-4o-mini;0.6        ;Explain quantum mechanics in one sentence;400   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and are governed by probabilistic rather than deterministic laws.
+gpt-4o-mini;0.6        ;Write a quatrain about war               ;20    ;in shadows cast by thunder's roar   brave hearts collide on blood-soaked ground
+gpt-4o-mini;0.6        ;Write a quatrain about war               ;50    ;in fields where shadows dance with pain   the echoes of the lost remain   with every cry a tale untold   of courage forged in hearts so bold.
+gpt-4o-mini;0.6        ;Write a quatrain about war               ;100   ;in fields where shadows dance with dread   the echoes of the fallen call   with every tear a story spread   in silence peace awaits us all.
+gpt-4o-mini;0.6        ;Write a quatrain about war               ;200   ;in fields where shadows dance with dread   the echoes of the fallen call   with whispered tales of hope and dread   in war's embrace we rise and fall.
+gpt-4o-mini;0.6        ;Write a quatrain about war               ;400   ;in shadows deep where echoes cry   the clash of steel the desperate sigh   for honor lost and dreams laid bare   in war's cruel dance none find repair.
+gpt-4o-mini;0.6        ;Solve 2+2                                ;20    ;2 + 2 equals 4.
+gpt-4o-mini;0.6        ;Solve 2+2                                ;50    ;2 + 2 = 4.     
+gpt-4o-mini;0.6        ;Solve 2+2                                ;100   ;2 + 2 equals 4.
+gpt-4o-mini;0.6        ;Solve 2+2                                ;200   ;2 + 2 equals 4.
+gpt-4o-mini;0.6        ;Solve 2+2                                ;400   ;2 + 2 equals 4.
+gpt-4o-mini;0.8        ;Explain quantum mechanics in one sentence;20    ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales
+gpt-4o-mini;0.8        ;Explain quantum mechanics in one sentence;50    ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and their properties are fundamentally probabilistic.
+gpt-4o-mini;0.8        ;Explain quantum mechanics in one sentence;100   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exist in probabilistic states and exhibit wave-particle duality.
+gpt-4o-mini;0.8        ;Explain quantum mechanics in one sentence;200   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality superposition and entanglement leading to phenomena that defy classical intuition.
+gpt-4o-mini;0.8        ;Explain quantum mechanics in one sentence;400   ;quantum mechanics is a fundamental theory in physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and are governed by probabilistic rules rather than deterministic laws.
+gpt-4o-mini;0.8        ;Write a quatrain about war               ;20    ;in fields where shadows whisper low   the cries of valor blend with woe   for honor
+gpt-4o-mini;0.8        ;Write a quatrain about war               ;50    ;in shadows cast by cannons' roar   where dreams of peace lie stained with gore   brave hearts once bound by hope and trust   now wander lost in ash and dust.
+gpt-4o-mini;0.8        ;Write a quatrain about war               ;100   ;in fields where shadows stretch and sigh   the clash of steel the mournful cry   brave hearts are torn and dreams are laid   in war's grim dance hope's light does fade.
+gpt-4o-mini;0.8        ;Write a quatrain about war               ;200   ;in fields where shadows dance with dread   the cries of valor mix with the dead   beneath the banners hope and sorrow blend   in echoes of conflict peace seems to bend.
+gpt-4o-mini;0.8        ;Write a quatrain about war               ;400   ;in shadows cast by thunder's roar   brave souls march forth on blood-stained ground   with dreams of peace forevermore   yet in their hearts the lost are found.
+gpt-4o-mini;0.8        ;Solve 2+2                                ;20    ;2 + 2 equals 4.
+gpt-4o-mini;0.8        ;Solve 2+2                                ;50    ;2 + 2 equals 4.
+gpt-4o-mini;0.8        ;Solve 2+2                                ;100   ;2 + 2 = 4.     
+gpt-4o-mini;0.8        ;Solve 2+2                                ;200   ;2 + 2 equals 4.
+gpt-4o-mini;0.8        ;Solve 2+2                                ;400   ;2 + 2 equals 4.
+gpt-4o-mini;1.0        ;Explain quantum mechanics in one sentence;20    ;quantum mechanics is a fundamental theory in physics that describes the behavior of matter and energy at the smallest scales
+gpt-4o-mini;1.0        ;Explain quantum mechanics in one sentence;50    ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and probabilistic characteristics.
+gpt-4o-mini;1.0        ;Explain quantum mechanics in one sentence;100   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit both wave-like and particle-like properties leading to phenomena such as superposition entanglement and uncertainty.
+gpt-4o-mini;1.0        ;Explain quantum mechanics in one sentence;200   ;quantum mechanics is the branch of physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and are governed by probabilistic rather than deterministic laws.
+gpt-4o-mini;1.0        ;Explain quantum mechanics in one sentence;400   ;quantum mechanics is a fundamental theory in physics that describes the behavior of matter and energy at the smallest scales where particles exhibit wave-particle duality and are governed by probabilistic rather than deterministic laws.
+gpt-4o-mini;1.0        ;Write a quatrain about war               ;20    ;in shadows deep where silence bleeds   the clash of steel the call of greed
+gpt-4o-mini;1.0        ;Write a quatrain about war               ;50    ;in fields where echoes of the brave resound   the clash of steel and sorrow's whispered breath   for honor's claim the blood-soaked ground is found   in shadows deep the price of peace is death.
+gpt-4o-mini;1.0        ;Write a quatrain about war               ;100   ;in fields where shadows dance with dread   the whispers of the brave now fade   with echoes of the fallen said   a haunting song that time won't trade.
+gpt-4o-mini;1.0        ;Write a quatrain about war               ;200   ;in fields where shadows stretch and fall   the echoes of the battle call   with courage forged in fire and strife   the cost of peace the price of life.
+gpt-4o-mini;1.0        ;Write a quatrain about war               ;400   ;in shadows deep where echoes mourn   the clash of steel the cries are borne   for every victory a heart lies slain   in fields of sorrow peace is vain.
+gpt-4o-mini;1.0        ;Solve 2+2                                ;20    ;2 + 2 = 4.     
+gpt-4o-mini;1.0        ;Solve 2+2                                ;50    ;2 + 2 equals 4.
+gpt-4o-mini;1.0        ;Solve 2+2                                ;100   ;2 + 2 equals 4.
+gpt-4o-mini;1.0        ;Solve 2+2                                ;200   ;2 + 2 = 4.     
+gpt-4o-mini;1.0        ;Solve 2+2                                ;400   ;2 + 2 equals 4.
