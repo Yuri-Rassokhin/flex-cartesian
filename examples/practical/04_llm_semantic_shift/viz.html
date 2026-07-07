@@ -22,7 +22,7 @@
 <body>
   <div id="chart"></div>
   <script>
-    const data = [{"type":"surface","name":"semantic_shift","x":[0.0,0.2,0.4,0.6,0.8,1.0],"y":[20,50,100,200,400],"z":[[0.0,0.0,0.1,0.0,0.12,0.0],[0.12,0.12,0.12,0.12,0.12,0.16],[0.12,0.12,0.12,0.12,0.12,0.2],[0.12,0.12,0.12,0.12,0.12,0.12],[0.12,0.12,0.13,0.12,0.2,0.12]],"opacity":0.85,"hovertemplate":"temperature: %{x}<br>tokens: %{y}<br>semantic_shift: %{z}<extra></extra>","connectgaps":false,"showscale":false,"colorscale":"Bluered","contours":{"x":{"show":true,"color":"#ffffff","width":1},"y":{"show":true,"color":"#ffffff","width":1}}}];
+    const data = [{"type":"surface","name":"semantic_shift","x":[0.0,0.2,0.4,0.6,0.8,1.0],"y":[20,50,100,200,400],"z":[[0.0,0.0,0.0,0.0,0.0,0.09],[0.12,0.12,0.12,0.12,0.19,0.12],[0.12,0.12,0.12,0.12,0.2,0.12],[0.12,0.12,0.12,0.13,0.2,0.12],[0.12,0.12,0.13,0.13,0.12,0.15]],"opacity":0.85,"hovertemplate":"temperature: %{x}<br>tokens: %{y}<br>semantic_shift: %{z}<extra></extra>","connectgaps":false,"showscale":false,"colorscale":"Bluered","contours":{"x":{"show":true,"color":"#ffffff","width":1},"y":{"show":true,"color":"#ffffff","width":1}}}];
 
     const layout = {
       title: '',
@@ -62,7 +62,7 @@
       margin: { l: 0, r: 0, b: 0, t: 50 }
     };
 
-    Plotly.newPlot("chart", data, layout, { responsive: true });
+    Plotly.newPlot("chart", data, layout, { responsive: true, contextAttributes: { willReadFrequently: true } });
   </script>
 </body>
 </html>

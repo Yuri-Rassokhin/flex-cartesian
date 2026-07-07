@@ -186,7 +186,7 @@ module FlexCartesianVisualization
             margin: { l: 0, r: 0, b: 0, t: 50 }
           };
 
-          Plotly.newPlot("chart", data, layout, { responsive: true });
+          Plotly.newPlot("chart", data, layout, { responsive: true, contextAttributes: { willReadFrequently: true } });
         </script>
       </body>
       </html>

@@ -73,7 +73,7 @@ Secondly, a space can be created from a tabular data source. In this approach, d
 def valid?(vector)
 ```
 
-Check if `vector` is consistent - that is, it has consistent dimensiality, consistent dimensional values, and satisfies conditions in the current space.
+Check if `vector` is consistent - that is, it has consistent dimensionality, consistent dimensional values, and satisfies conditions in the current space.
 
 ```ruby
 def values

@@ -23,16 +23,16 @@ s.func(:add, :response) do |v|
     temperature: v.temperature,
     max_tokens: v.tokens,
     messages: messages
-  ).gsub(/[\r\n]+/, ' ').delete(',;').downcase.strip
+  ).gsub(/[\r\n]+/, ' ').delete(%q{,;"'}).downcase.strip
 end
 
-s.func(:add, :embedding, hide: true) { |v| embed(v.response) }
-anchor = embed(s.source(:read, vector: { tokens: "20", temperature: "0.0" }, target: "response"))
+anchor = nil
+s.func(:add, :embedding, hide: true) { |v| res = embed(v.response); anchor = res if anchor.nil?; res }
 s.func(:add, :semantic_shift) { |v| (1.0 - cosine(v.embedding, anchor)).round(2) }
 
-s.func(:run, title: "Probing LLM, #{space.size} runs")
+s.func(:run, title: "Probing LLM, #{s.size} runs")
 
 path = "./examples/practical/01_llm_slices/chatgpt.csv"
 
-space.output(format: :csv, file: path)
+s.output(format: :csv, file: path)
 puts "\nParameter space saved to #{path}"

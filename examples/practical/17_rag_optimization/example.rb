@@ -5,8 +5,6 @@ require 'json'
 require 'uri'
 require_relative 'models'
 
-
-
 OPENAI_TOKEN = ENV["OPENAI_API_KEY"]
 raise "Missing OPENAI_API_KEY environment variable" unless OPENAI_TOKEN
 

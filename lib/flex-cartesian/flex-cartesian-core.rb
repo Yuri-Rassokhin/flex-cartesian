@@ -351,10 +351,12 @@ def fold(*dims_to_fold, mode: :flat, func: nil, &block)
 end
 
 # create a child space as a slice of given dimensions (that is, same dimensions but reduced values on given dimensions)
-def where(**filters)
-  raise ArgumentError, "No filters provided for .where" if filters.empty?
+def where(hash_filters = {}, **kw_filters)
+  filters = hash_filters.merge(kw_filters)
 
-  filters = filters.transform_keys(&:to_sym)
+  raise ArgumentError, "No filters provided" if filters.empty?
+  filters = filters.transform_keys(&:to_sym)  
+
   missing_dims = filters.keys - @names
   raise ArgumentError, "Dimensions not found: #{missing_dims.join(', ')}" unless missing_dims.empty?
 
@@ -765,7 +767,7 @@ end
   # Note: conditions are NOT checked
   def vector_consistent?(v)
     raise "Incorrect vector type `#{v.class}`" unless v.is_a?(Enumerable)
-    raise "Incorrect dimensiality of vector '#{v.inspect}'" unless vector_to_hash!(v).size == @dimensiality
+    raise "Incorrect dimensionality of vector '#{v.inspect}'" unless vector_to_hash!(v).size == @dimensiality
     raise "Incorrect vector dimensions #{v.keys.inspect}" unless @names.to_set == vector_to_hash!(v).keys.to_set
     true
   end
