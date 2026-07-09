@@ -3,7 +3,25 @@ module FlexCartesianVisualization
   require "json"
   require "tempfile"
 
-  def visualize(format: :html, x:, y:, func:, output: nil, text: :dark, show_legend: false, show_z_title: true, show_grid: true, equal_axes: true, start_at_zero: true, show_plot_title: false, bg_color: 'transparent', font_color: nil, grid_color: nil, colorscale: 'Bluered')
+  def visualize(format: :html,
+                x:,
+                y:,
+                func:,
+                output: nil,
+                text: :dark,
+                show_legend: false,
+                show_z_title: true,
+                show_grid: true,
+                equal_axes: true,
+                start_at_zero: true,
+                show_plot_title: false,
+                bg_color: 'transparent',
+                font_color: nil,
+                grid_color: nil,
+                colorscale: 'Bluered',
+                name_prefix: nil,
+                name_verbose: true
+               )
     raise "X-axis of visualization cannot be empty" unless x
     
     funcs = Array(func).map(&:to_s)
@@ -12,6 +30,11 @@ module FlexCartesianVisualization
     # if colors aren't specified, we'll pick them based on theme
     actual_font_color = font_color || (text == :dark ? '#333333' : '#edf5ff')
     actual_grid_color = grid_color || (text == :dark ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.15)')
+
+    # generate name of the visualization as HTML title tag
+    name = ""
+    name = name_prefix unless name_prefix.nil?
+    name = name + "#{func} by #{x} and #{y}" if name_verbose
 
     case format
     when :html
@@ -29,14 +52,30 @@ module FlexCartesianVisualization
         bg_color: bg_color,
         font_color: actual_font_color,
         grid_color: actual_grid_color,
-        colorscale: colorscale
+        colorscale: colorscale,
+        name: name
       )
     else
       raise "Incorrect visualize format #{format}"
     end
   end
 
-  def generate_html(x:, y: nil, func:, output:, show_legend:, show_z_title:, show_grid:, equal_axes:, start_at_zero:, show_plot_title:, bg_color:, font_color:, grid_color:, colorscale:)
+  def generate_html(x:,
+                    y: nil,
+                    func:,
+                    output:,
+                    show_legend:,
+                    show_z_title:,
+                    show_grid:,
+                    equal_axes:,
+                    start_at_zero:,
+                    show_plot_title:,
+                    bg_color:,
+                    font_color:,
+                    grid_color:,
+                    colorscale:,
+                    name:
+                   )
     temp_file = Tempfile.new
     output(format: :csv, file: temp_file)
     table = CSV.read(temp_file, headers: true, col_sep: ";")
@@ -126,7 +165,7 @@ module FlexCartesianVisualization
       <html>
       <head>
         <meta charset="UTF-8">
-        <title>Surface Plot</title>
+        <title>#{name}</title>
         <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
         <style>
           html, body {
@@ -136,6 +175,7 @@ module FlexCartesianVisualization
             width: 100%;
             height: 100%;
             font-family: Arial, sans-serif;
+            overflow: hidden;
           }
           #chart {
             width: 100vw;
