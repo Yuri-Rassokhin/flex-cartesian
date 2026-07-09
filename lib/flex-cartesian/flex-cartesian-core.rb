@@ -65,8 +65,13 @@ def func(command = :print, *names, hide: false, progress: false, title: "Computi
       functions_missing = names.empty? ? [] : names - @derived.keys
 
       functions_found.each do |fname, fblock|
-        source = fblock.source rescue '(source unavailable)'
-        body = source.sub(/^.*?\s(?=(\{|\bdo\b))/, '').strip
+        if fblock == :materialized
+          body = "[MATERIALIZED AGGREGATE]"
+        else
+          source = fblock.source rescue '(source unavailable)'
+          body = source.sub(/^.*?\s(?=(\{|\bdo\b))/, '').strip
+        end
+
         order = ""
         if @order.value?(fname.to_sym)
           case @order.key(fname.to_sym)
@@ -94,7 +99,7 @@ def func(command = :print, *names, hide: false, progress: false, title: "Computi
   end
 end
 
-def cartesian(dims = nil, lazy: false, progress: false, title: "Iterating over parameter space")
+def cartesian(dims = nil, lazy: false, progress: false, title: nil)
 
   # process edge cases and initialize data structures
   return to_enum(:cartesian, dims, lazy: lazy) unless block_given?
@@ -106,8 +111,15 @@ def cartesian(dims = nil, lazy: false, progress: false, title: "Iterating over p
   enum = Enumerator.product(*values) 
   space = lazy ? enum.lazy : enum
 
+  # title, if specified, automatically enables progress bar
+  if title.nil?
+    progress_flag = progress
+  else
+    progress_flag = true
+  end
+
   # visualize progress bar, if requested
-  bar = progress ? ProgressBar.create(title: title, total: self.size, format: '%t [%B] %p%% %e') : nil
+  bar = progress_flag ? ProgressBar.create(title: title, total: self.size, format: '%t [%B] %p%% %e') : nil
 
   space.each do |combination|
     # create current vector as Struct
@@ -264,6 +276,151 @@ def dim(command, *dims)
   else
     raise "Incorrect dimension command: #{command}"
   end
+end
+
+def fold(*dims_to_fold, mode: :flat, func: nil, &block)
+  raise ArgumentError, "Block required for fold" unless block_given?
+  raise ArgumentError, "No dimensions specified for fold" if dims_to_fold.empty?
+  raise ArgumentError, "Unknown folding mode `#{mode}`" unless [:flat, :cascade, :hash].include?(mode)
+
+  dims_to_fold.map!(&:to_sym)
+  missing_dims = dims_to_fold - @names
+  raise ArgumentError, "Dimensions not found: #{missing_dims.join(', ')}" unless missing_dims.empty?
+
+  targets = func ? Array(func).map(&:to_sym) : @derived.keys
+  missing_funcs = targets - @derived.keys
+  raise ArgumentError, "Functions not found: #{missing_funcs.join(', ')}" unless missing_funcs.empty?
+
+  # MODE: CASCADE
+  if mode == :cascade
+    current_space = self
+    dims_to_fold.each do |dim_name|
+      current_space = current_space.fold(dim_name, mode: :flat, func: targets, &block)
+    end
+    return current_space
+  end
+
+  # MODES: FLAT OR HASH
+  remaining_dims_keys = @names - dims_to_fold
+  grouped_data = {}
+
+  # Traverse the space and group the data
+  # NOTE: we intentionally use manual iteration instead of standard .cartesian
+  # As the matter, .cartesian slows things down because of its checks
+  # While we don't need the checks actually, given that we inherit new space from
+  # the parent space which has already been checked in itself
+  @function_results.each do |v_hash, funcs_data|
+    remaining_key = v_hash.slice(*remaining_dims_keys)
+    
+    # If it's :hash mode, we take the folded dimensions strictly in the order they specified in the call
+    folded_coords = dims_to_fold.map { |d| v_hash[d] } if mode == :hash
+
+    grouped_data[remaining_key] ||= {}
+
+    targets.each do |f|
+      if mode == :hash
+        grouped_data[remaining_key][f] ||= {}
+        # Save to hash: ['us', :premium] => 120.0 } where keys are folded dimensions, and value is value of the function
+        grouped_data[remaining_key][f][folded_coords] = funcs_data[f]
+      else
+        # If :flat then we just add it to flat array
+        grouped_data[remaining_key][f] ||= []
+        grouped_data[remaining_key][f] << funcs_data[f]
+      end
+    end
+  end
+
+  # Calculate the aggregates via the block
+  new_function_results = {}
+  grouped_data.each do |rem_key, funcs_hash|
+    new_function_results[rem_key] = {}
+    targets.each do |f|
+      # We pass either Array (if :flat) or Hash (if :hash) to the block
+      new_function_results[rem_key][f] = yield(funcs_hash[f], f)
+    end
+  end
+
+  # Create child space, FlexCartesian
+  remaining_dims_hash = @dimensions.slice(*remaining_dims_keys)
+  child_space = self.class.new(remaining_dims_hash, logger: @logger, log_level: @logger.level)
+
+  # Inject the materialized data to the child space
+  child_space.send(:inject_materialized_data!, new_function_results)
+
+  child_space
+end
+
+# create a child space as a slice of given dimensions (that is, same dimensions but reduced values on given dimensions)
+def where(hash_filters = {}, **kw_filters)
+  filters = hash_filters.merge(kw_filters)
+
+  raise ArgumentError, "No filters provided" if filters.empty?
+  filters = filters.transform_keys(&:to_sym)  
+
+  missing_dims = filters.keys - @names
+  raise ArgumentError, "Dimensions not found: #{missing_dims.join(', ')}" unless missing_dims.empty?
+
+  new_function_results = {}
+
+  # Step 1: slice function values
+  @function_results.each do |v_hash, funcs_data|
+    # Check the vector against all the filters
+    match = filters.all? do |dim, condition|
+      val = v_hash[dim]
+      
+      case condition
+      when Range
+        # Attempt to compare as numbers, otherwise as strings
+        val_numeric = Float(val) rescue nil
+        val_numeric ? condition.cover?(val_numeric) : condition.cover?(val.to_s)
+      when Array
+        # Convert to string for a safe search
+        condition.map(&:to_s).include?(val.to_s)
+      when Proc
+        # Execute user-defined lambda
+        condition.call(val)
+      else
+        # Check conventional strict equality
+        val.to_s == condition.to_s
+      end
+    end
+
+    # If the vector has passed the checks, add it to the slice
+    new_function_results[v_hash] = funcs_data.dup if match
+  end
+
+  # Step #2: slice dimensional values
+  new_dimensions = {}
+  @dimensions.each do |dim_name, values|
+    if filters.key?(dim_name)
+      condition = filters[dim_name]
+      # We keep only those dimensional values that have passed the filters
+      new_dimensions[dim_name] = values.select do |val|
+        case condition
+        when Range
+          val_numeric = Float(val) rescue nil
+          val_numeric ? condition.cover?(val_numeric) : condition.cover?(val.to_s)
+        when Array
+          condition.map(&:to_s).include?(val.to_s)
+        when Proc
+          condition.call(val)
+        else
+          val.to_s == condition.to_s
+        end
+      end
+    else
+      # If there was no applicable filter for this value, we just keep it
+      new_dimensions[dim_name] = values.dup
+    end
+  end
+
+  # Create a child space with THE SAME dimensions
+  child_space = self.class.new(new_dimensions, logger: @logger, log_level: @logger.level)
+  
+  # Inject all the checked functions to the new space
+  child_space.send(:inject_materialized_data!, new_function_results)
+
+  child_space
 end
 
 
@@ -610,7 +767,7 @@ end
   # Note: conditions are NOT checked
   def vector_consistent?(v)
     raise "Incorrect vector type `#{v.class}`" unless v.is_a?(Enumerable)
-    raise "Incorrect dimensiality of vector '#{v.inspect}'" unless vector_to_hash!(v).size == @dimensiality
+    raise "Incorrect dimensionality of vector '#{v.inspect}'" unless vector_to_hash!(v).size == @dimensiality
     raise "Incorrect vector dimensions #{v.keys.inspect}" unless @names.to_set == vector_to_hash!(v).keys.to_set
     true
   end
@@ -618,6 +775,31 @@ end
 def add_dimension(dim)
   raise "Incorrect description of the dimension #{dim.inspect}, Hash required" unless dim.is_a(Hash)
   @dimensions << dim
+end
+
+def inject_materialized_data!(data_hash)
+  @function_results = data_hash
+  
+  # Unless the space is empty, take function keys from the first vector
+  return if data_hash.empty?
+  
+  functions = data_hash.first.last.keys
+  
+  functions.each do |func_name|
+    # mark the function as static, so that AST checker and print methods would know why the function has no body
+    @derived[func_name] = :materialized
+    @function_hidden.delete(func_name)
+    
+    # initialize column widths for the future output
+    ensure_dimension_width(func_name)
+  end
+
+  # apply column widths
+  data_hash.each do |_vector, funcs|
+    funcs.each do |f_name, f_val|
+      ensure_dimension_width(f_name, f_val)
+    end
+  end
 end
 
 end

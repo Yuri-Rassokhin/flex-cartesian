@@ -1,13 +1,23 @@
 # Changelog
 
-## 2.0.0.beta - 2026-06-30
-### Fixed
-- Performance scalability on large spaces
+## 2.1.0 - 2026
+## Fixed
+- More concise semantics of multiple formatting flags
+## Added
+- Method .fold for the transformation of space functions against folded dimensions
+- .fold supports three folding modes for mult-dimensional folding
+- Method .where for the slicing of a space
+
+## 2.0.1 - 2026-06-20
 ## Added
 - Dynamic dimensions (adding/removing)
 - Interactive HTML heatmaps
 - Connecting parameter space to external data sources
 - Enhanced and more robust Morris analysis
+
+## 2.0.0.beta - 2026-06-17
+### Fixed
+- Performance scalability on large spaces
 
 ## 1.3.1 - 2025-09-03
 ### Fixed
